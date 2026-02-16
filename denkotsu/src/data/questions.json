@@ -73,7 +73,7 @@
 
   {"id":"q069","category":"equipment_material","question":"VVFケーブルの正式名称は？","options":["600Vビニル絶縁ビニルシースケーブル平形","600V架橋ポリエチレン絶縁ケーブル","600Vポリエチレン絶縁耐燃性ケーブル","引込用ビニル絶縁電線"],"correctIndex":0,"explanation":"VVF=Vinyl insulated Vinyl sheathed Flat-type cable。屋内配線の標準ケーブル。"},
   {"id":"q070","category":"equipment_material","question":"IV電線の用途として正しいものは？","options":["屋内の電線管内配線","屋外の架空配線","直接埋設配線","水中配線"],"correctIndex":0,"explanation":"IV(Indoor Vinyl)電線は屋内の電線管内に収めて使用する。単線で被覆は1層。"},
-  {"id":"q071","category":"equipment_material","question":"VVFケーブル1.6mmの許容電流は？","options":["15A","19A","24A","27A"],"correctIndex":1,"explanation":"VVF1.6mm-2C=19A、VVF2.0mm-2C=24A、VVF2.6mm-2C=33A。"},
+  {"id":"q071","category":"equipment_material","question":"VVFケーブル1.6mmの許容電流は？","options":["15A","19A","24A","27A"],"correctIndex":1,"explanation":"VVFケーブルの許容電流（代表値）は1.6mm-2C=19A、2.0mm-2C=24A、2.6mm-2C=33A。電線種別・布設条件で値は変わる。"},
   {"id":"q072","category":"equipment_material","question":"配線用遮断器（ブレーカー）の主な役割は？","image":"/images/tools/breaker.svg","options":["漏電の検出","過電流の遮断","電圧の安定","電力の測定"],"correctIndex":1,"explanation":"配線用遮断器は過電流（短絡・過負荷）時に自動で回路を遮断する。"},
   {"id":"q073","category":"equipment_material","question":"漏電遮断器が検出するものは？","image":"/images/tools/elcb.svg","options":["過電流","地絡電流（漏電）","電圧低下","周波数変動"],"correctIndex":1,"explanation":"漏電遮断器は零相変流器で地絡電流を検出し、回路を遮断する。"},
   {"id":"q074","category":"equipment_material","question":"埋込連用取付枠に取り付けられる器具の最大数は？","options":["1個","2個","3個","4個"],"correctIndex":2,"explanation":"連用取付枠には最大3個まで器具を取り付けられる。"},

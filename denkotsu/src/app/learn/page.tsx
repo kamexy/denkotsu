@@ -32,6 +32,8 @@ function LearnPageContent() {
     setPrevCategoryParam(categoryParam);
     if (categoryParam && ALL_CATEGORIES.includes(categoryParam)) {
       setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory("all");
     }
   }
 
