@@ -37,3 +37,10 @@ next-env.d.ts
 
 # cloudflare
 .wrangler/
+
+# claude code / playwright
+.claude/
+.playwright-mcp/
+
+# screenshots (conversation artifacts)
+*.png
