@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>コンセントの図記号</title>
+  <desc>JIS C 0303に基づくコンセントの図記号</desc>
+  <!-- 二重線記号 -->
+  <line x1="30" y1="50" x2="90" y2="50" stroke="#1a1a1a" stroke-width="3"/>
+  <line x1="30" y1="60" x2="90" y2="60" stroke="#1a1a1a" stroke-width="3"/>
+</svg>

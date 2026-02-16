@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 140" width="260" height="140">
+  <title>工具の簡易図</title>
+  <desc>電気工事用の工具</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- ハンドル上 -->
+  <path d="M 20,55 Q 50,20 100,40 L 140,42 L 140,52 L 100,50 Q 60,38 30,58 Z" fill="#f1c40f" stroke="#d4a800" stroke-width="1.5"/>
+  <!-- ハンドル下 -->
+  <path d="M 20,65 Q 50,100 100,82 L 140,78 L 140,68 L 100,72 Q 60,85 30,63 Z" fill="#f1c40f" stroke="#d4a800" stroke-width="1.5"/>
+  <!-- ダイス部（先端） -->
+  <rect x="135" y="40" width="25" height="40" rx="2" fill="#aaa" stroke="#777" stroke-width="1.5"/>
+  <!-- ダイスの刻印マーク -->
+  <circle cx="147" cy="50" r="4" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="147" y="53" style="font-size:5px;fill:#2563eb;text-anchor:middle;font-weight:bold;">○</text>
+  <text x="147" y="65" style="font-size:6px;fill:#2563eb;text-anchor:middle;font-weight:bold;">小</text>
+  <text x="147" y="76" style="font-size:6px;fill:#2563eb;text-anchor:middle;font-weight:bold;">中</text>
+  <!-- JISマーク -->
+  <rect x="175" y="42" width="55" height="22" rx="3" fill="#fff3cd" stroke="#ffc107" stroke-width="1"/>
+  <text x="202" y="50" style="font-size:7px;fill:#856404;text-anchor:middle;font-weight:bold;">JIS C 9711</text>
+  <text x="202" y="60" style="font-size:7px;fill:#856404;text-anchor:middle;">適合品を使用</text>
+</svg>

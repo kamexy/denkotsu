@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
+  <title>測定計器と測定方法</title>
+  <desc>電気工事用の測定方法（3極法）</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+    .wire { stroke-width: 1.5; fill: none; }
+  </style>
+  <!-- 接地抵抗計本体 -->
+  <rect x="110" y="10" width="90" height="55" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="2"/>
+  <rect x="125" y="18" width="60" height="22" rx="3" fill="#fff" stroke="#888" stroke-width="1"/>
+  <text x="155" y="34" style="font-size:10px;text-anchor:middle;fill:#333;font-weight:bold;">Ω</text>
+  <!-- 端子 -->
+  <circle cx="130" cy="58" r="4" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <circle cx="155" cy="58" r="4" fill="#2563eb" stroke="#1a4eb8" stroke-width="1"/>
+  <circle cx="180" cy="58" r="4" fill="#333" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="130" y="53" style="font-size:6px;text-anchor:middle;fill:#e74c3c;">E</text>
+  <text x="155" y="53" style="font-size:6px;text-anchor:middle;fill:#2563eb;">P</text>
+  <text x="180" y="53" style="font-size:6px;text-anchor:middle;fill:#333;">C</text>
+  <!-- リード線 -->
+  <line x1="130" y1="62" x2="60" y2="100" stroke="#e74c3c" stroke-width="1.5"/>
+  <line x1="155" y1="62" x2="155" y2="100" stroke="#2563eb" stroke-width="1.5"/>
+  <line x1="180" y1="62" x2="260" y2="100" stroke="#333" stroke-width="1.5"/>
+  <!-- 地面 -->
+  <line x1="20" y1="115" x2="300" y2="115" stroke="#8B7355" stroke-width="2"/>
+  <rect x="20" y="115" width="280" height="25" fill="#f5e6c8" opacity="0.5"/>
+  <!-- 接地極E -->
+  <line x1="60" y1="100" x2="60" y2="135" stroke="#e74c3c" stroke-width="2"/>
+  <line x1="52" y1="130" x2="68" y2="130" stroke="#e74c3c" stroke-width="2"/>
+  <line x1="55" y1="135" x2="65" y2="135" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="60" y="150" class="small" fill="#e74c3c">接地極(E)</text>
+  <!-- 補助極P -->
+  <line x1="155" y1="100" x2="155" y2="132" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="151,132 159,132 155,140" fill="#2563eb"/>
+  <text x="155" y="155" class="small" fill="#2563eb">補助極(P)</text>
+  <!-- 補助極C -->
+  <line x1="260" y1="100" x2="260" y2="132" stroke="#333" stroke-width="2"/>
+  <polygon points="256,132 264,132 260,140" fill="#333"/>
+  <text x="260" y="155" class="small">補助極(C)</text>
+  <!-- 距離表示 -->
+  <line x1="65" y1="165" x2="150" y2="165" stroke="#888" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="160" y1="165" x2="255" y2="165" stroke="#888" stroke-width="1" marker-end="url(#arr)"/>
+  <text x="108" y="178" class="small">約10m</text>
+  <text x="208" y="178" class="small">約10m</text>
+  <defs>
+    <marker id="arr" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

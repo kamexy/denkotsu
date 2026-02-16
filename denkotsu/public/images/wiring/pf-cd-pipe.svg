@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <title>PF管とCD管の外観</title>
+  <desc>合成樹脂製可とう電線管の外観図</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- PF管 -->
+  <text x="85" y="18" class="label" font-weight="bold">PF管</text>
+  <!-- 管本体（グレー/ベージュ） -->
+  <rect x="30" y="25" width="110" height="30" rx="8" fill="#c8c0b0" stroke="#999" stroke-width="2"/>
+  <!-- 波形表現 -->
+  <path d="M 35 40 Q 42 30, 50 40 Q 58 50, 66 40 Q 74 30, 82 40 Q 90 50, 98 40 Q 106 30, 114 40 Q 122 50, 130 40" fill="none" stroke="#aaa" stroke-width="1"/>
+
+  <!-- 区切り線 -->
+  <line x1="160" y1="15" x2="160" y2="130" stroke="#ddd" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- CD管 -->
+  <text x="240" y="18" class="label" font-weight="bold">CD管</text>
+  <!-- 管本体（オレンジ） -->
+  <rect x="185" y="25" width="110" height="30" rx="8" fill="#f39c12" stroke="#e67e22" stroke-width="2"/>
+  <!-- 波形表現 -->
+  <path d="M 190 40 Q 197 30, 205 40 Q 213 50, 221 40 Q 229 30, 237 40 Q 245 50, 253 40 Q 261 30, 269 40 Q 277 50, 285 40" fill="none" stroke="#e67e22" stroke-width="1"/>
+
+  <!-- 見出し -->
+  <text x="160" y="150" text-anchor="middle" font-size="10" fill="#666" font-family="sans-serif">合成樹脂製可とう電線管の比較</text>
+</svg>

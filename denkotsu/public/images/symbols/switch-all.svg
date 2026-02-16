@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" width="360" height="200">
+  <title>スイッチ図記号一覧</title>
+  <desc>配線図で使われる主なスイッチの図記号</desc>
+  <style>
+    text { font-family: sans-serif; }
+    .name { font-size: 10px; fill: #333; text-anchor: middle; }
+    .code { font-size: 9px; fill: #888; text-anchor: middle; }
+    .sym { font-size: 16px; fill: #1a1a1a; font-weight: bold; text-anchor: start; }
+  </style>
+  <!-- Row 1 -->
+  <!-- 単極スイッチ -->
+  <circle cx="40" cy="35" r="12" fill="#1a1a1a"/>
+  <text x="40" y="65" class="name">単極スイッチ</text>
+  <text x="40" y="77" class="code">●</text>
+  <!-- 3路スイッチ -->
+  <circle cx="120" cy="35" r="12" fill="#1a1a1a"/>
+  <text x="140" y="40" class="sym">3</text>
+  <text x="125" y="65" class="name">3路スイッチ</text>
+  <text x="125" y="77" class="code">●3</text>
+  <!-- 4路スイッチ -->
+  <circle cx="210" cy="35" r="12" fill="#1a1a1a"/>
+  <text x="230" y="40" class="sym">4</text>
+  <text x="215" y="65" class="name">4路スイッチ</text>
+  <text x="215" y="77" class="code">●4</text>
+  <!-- タイマースイッチ -->
+  <circle cx="305" cy="35" r="12" fill="#1a1a1a"/>
+  <text x="325" y="40" class="sym" font-size="13">ET</text>
+  <text x="315" y="65" class="name">タイマーSW</text>
+  <text x="315" y="77" class="code">●ET</text>
+
+  <!-- Row 2 -->
+  <!-- 位置表示灯 -->
+  <circle cx="40" cy="120" r="12" fill="#1a1a1a"/>
+  <text x="60" y="125" class="sym">H</text>
+  <text x="45" y="150" class="name">位置表示灯</text>
+  <text x="45" y="162" class="code">●H (OFF時点灯)</text>
+  <!-- 確認表示灯 -->
+  <circle cx="140" cy="120" r="12" fill="#1a1a1a"/>
+  <text x="160" y="125" class="sym">L</text>
+  <text x="145" y="150" class="name">確認表示灯</text>
+  <text x="145" y="162" class="code">●L (ON時点灯)</text>
+  <!-- 自動点滅器 -->
+  <circle cx="245" cy="120" r="12" fill="#1a1a1a"/>
+  <text x="265" y="125" class="sym">A</text>
+  <text x="250" y="150" class="name">自動点滅器</text>
+  <text x="250" y="162" class="code">●A</text>
+
+  <!-- 見出し -->
+  <text x="180" y="193" text-anchor="middle" font-size="10" fill="#666" font-family="sans-serif">スイッチ図記号一覧（JIS）</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="200" height="180">
+  <title>測定計器の簡易図</title>
+  <desc>電気工事用の測定計器</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- クランプ部（開閉式） -->
+  <path d="M 75 60 C 75 25, 125 25, 125 60" fill="none" stroke="#555" stroke-width="4"/>
+  <path d="M 78 60 C 78 30, 122 30, 122 60" fill="none" stroke="#888" stroke-width="2"/>
+  <!-- クランプ開閉レバー -->
+  <rect x="118" y="35" width="18" height="10" rx="2" fill="#ddd" stroke="#888" stroke-width="1"/>
+  <text x="127" y="43" style="font-size:6px;text-anchor:middle;fill:#666;">OPEN</text>
+  <!-- 電線（クランプに通している） -->
+  <line x1="100" y1="15" x2="100" y2="55" stroke="#e74c3c" stroke-width="6" stroke-linecap="round"/>
+  <text x="100" y="10" style="font-size:8px;text-anchor:middle;fill:#e74c3c;">電線</text>
+  <!-- 本体 -->
+  <rect x="70" y="60" width="60" height="80" rx="5" fill="#f5f5f5" stroke="#555" stroke-width="2"/>
+  <!-- 表示部 -->
+  <rect x="80" y="68" width="40" height="22" rx="3" fill="#d4edda" stroke="#888" stroke-width="1"/>
+  <text x="100" y="84" style="font-size:12px;text-anchor:middle;fill:#333;font-weight:bold;">10.5A</text>
+  <!-- ダイヤル -->
+  <circle cx="100" cy="108" r="10" fill="#ddd" stroke="#888" stroke-width="1.5"/>
+  <line x1="100" y1="108" x2="100" y2="100" stroke="#333" stroke-width="2"/>
+  <text x="90" y="107" style="font-size:5px;fill:#666;">A</text>
+  <text x="111" y="107" style="font-size:5px;fill:#666;">V</text>
+  <!-- 端子 -->
+  <circle cx="85" cy="133" r="3" fill="#e74c3c"/>
+  <circle cx="115" cy="133" r="3" fill="#333"/>
+</svg>

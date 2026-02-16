@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" width="360" height="220">
+  <title>単線図→複線図の変換</title>
+  <desc>単線図から複線図への変換手順</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .wire { stroke-width: 2; fill: none; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+    .step { font-size: 9px; fill: #2563eb; }
+  </style>
+
+  <!-- 単線図（上部） -->
+  <text x="10" y="14" font-size="11" font-weight="bold" fill="#333">単線図</text>
+  <rect x="5" y="20" width="160" height="70" rx="5" fill="#f8f9fa" stroke="#ddd" stroke-width="1"/>
+  <!-- 電源 -->
+  <text x="20" y="55" font-size="10" fill="#333">電源</text>
+  <!-- 単線 -->
+  <line x1="45" y1="50" x2="80" y2="50" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- スイッチ -->
+  <circle cx="88" cy="50" r="7" fill="#1a1a1a"/>
+  <text x="88" y="75" class="small">SW</text>
+  <!-- 単線 -->
+  <line x1="95" y1="50" x2="125" y2="50" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- 照明 -->
+  <circle cx="135" cy="50" r="10" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <line x1="128" y1="43" x2="142" y2="57" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="135" y="75" class="small">照明</text>
+
+  <!-- 矢印 -->
+  <text x="85" y="105" text-anchor="middle" font-size="16" fill="#2563eb">↓</text>
+  <text x="85" y="115" class="step" text-anchor="middle">変換</text>
+
+  <!-- 複線図（下部） -->
+  <text x="10" y="130" font-size="11" font-weight="bold" fill="#333">複線図</text>
+  <rect x="5" y="136" width="220" height="75" rx="5" fill="#f0f7ff" stroke="#bdd7ff" stroke-width="1"/>
+  <!-- 電源 -->
+  <text x="18" y="162" font-size="8" fill="#333">L</text>
+  <text x="18" y="195" font-size="8" fill="#333">N</text>
+  <!-- 非接地側（黒） -->
+  <line x1="25" y1="158" x2="70" y2="158" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="48" y="154" style="font-size:7px;fill:#1a1a1a;">黒</text>
+  <!-- スイッチ -->
+  <circle cx="78" cy="158" r="6" fill="#1a1a1a"/>
+  <!-- スイッチ→照明（黒） -->
+  <line x1="84" y1="158" x2="155" y2="158" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- 照明 -->
+  <circle cx="165" cy="170" r="10" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <line x1="158" y1="163" x2="172" y2="177" stroke="#1a1a1a" stroke-width="1.5"/>
+  <!-- 照明→接地側 -->
+  <line x1="165" y1="180" x2="165" y2="192" stroke="#fff" stroke-width="2"/>
+  <line x1="165" y1="192" x2="25" y2="192" stroke="#2563eb" stroke-width="2"/>
+  <text x="95" y="203" style="font-size:7px;fill:#2563eb;">白（接地側）</text>
+  <!-- 接地側 -->
+  <text x="48" y="203" style="font-size:7px;fill:#2563eb;">白</text>
+
+  <!-- 手順 -->
+  <rect x="235" y="20" width="120" height="190" rx="5" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="295" y="38" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">変換手順</text>
+  <text x="245" y="58" class="step">❶ 接地側(白)を</text>
+  <text x="245" y="70" class="step">　 負荷に接続</text>
+  <text x="245" y="92" class="step">❷ 非接地側(黒)を</text>
+  <text x="245" y="104" class="step">　 スイッチに接続</text>
+  <text x="245" y="126" class="step">❸ スイッチから</text>
+  <text x="245" y="138" class="step">　 負荷に接続</text>
+  <text x="245" y="168" style="font-size:8px;fill:#e04040;">※ 非接地側(黒)→</text>
+  <text x="245" y="180" style="font-size:8px;fill:#e04040;">　 SW→器具→</text>
+  <text x="245" y="192" style="font-size:8px;fill:#e04040;">　 接地側(白)</text>
+</svg>

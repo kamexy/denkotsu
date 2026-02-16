@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <title>接続部品の簡易図</title>
+  <desc>電線接続用の部品と対応表</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+    .mark { font-size: 16px; text-anchor: middle; font-weight: bold; fill: #2563eb; }
+  </style>
+  <!-- 小スリーブ ○ -->
+  <rect x="20" y="20" width="25" height="40" rx="3" fill="#ccc" stroke="#888" stroke-width="1.5"/>
+  <rect x="17" y="30" width="31" height="6" rx="1" fill="#aaa" stroke="#888" stroke-width="1"/>
+  <text x="32" y="80" class="mark">○</text>
+  <text x="32" y="98" class="label">小スリーブ</text>
+  <!-- 小スリーブ 小 -->
+  <rect x="105" y="20" width="25" height="40" rx="3" fill="#ccc" stroke="#888" stroke-width="1.5"/>
+  <rect x="102" y="30" width="31" height="6" rx="1" fill="#aaa" stroke="#888" stroke-width="1"/>
+  <text x="117" y="80" class="mark">小</text>
+  <text x="117" y="98" class="label">小スリーブ</text>
+  <!-- 中スリーブ 中 -->
+  <rect x="192" y="16" width="30" height="48" rx="3" fill="#ccc" stroke="#888" stroke-width="1.5"/>
+  <rect x="188" y="28" width="38" height="6" rx="1" fill="#aaa" stroke="#888" stroke-width="1"/>
+  <text x="207" y="80" class="mark">中</text>
+  <text x="207" y="98" class="label">中スリーブ</text>
+  <!-- 注意書き -->
+  <rect x="255" y="20" width="60" height="50" rx="5" fill="#fff3cd" stroke="#ffc107" stroke-width="1.5"/>
+  <text x="285" y="38" style="font-size:9px;text-anchor:middle;fill:#856404;font-weight:bold;">注意</text>
+  <text x="285" y="52" style="font-size:8px;text-anchor:middle;fill:#856404;">工具の刻印と</text>
+  <text x="285" y="63" style="font-size:8px;text-anchor:middle;fill:#856404;">必ず一致させる</text>
+</svg>

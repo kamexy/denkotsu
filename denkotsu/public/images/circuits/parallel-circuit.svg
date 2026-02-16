@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 200" width="280" height="200">
+  <title>並列回路</title>
+  <desc>抵抗R1とR2が並列接続された回路</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .wire { stroke: #1a1a1a; stroke-width: 2; fill: none; }
+    .component { stroke: #1a1a1a; stroke-width: 2; fill: none; }
+    .label { font-size: 13px; text-anchor: middle; }
+    .small { font-size: 11px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- 電源 -->
+  <line x1="40" y1="50" x2="40" y2="150" class="wire"/>
+  <line x1="32" y1="80" x2="48" y2="80" stroke="#1a1a1a" stroke-width="3"/>
+  <line x1="35" y1="90" x2="45" y2="90" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="20" y="75" class="small">+</text>
+  <text x="20" y="98" class="small">−</text>
+  <text x="20" y="110" class="label">V</text>
+  <!-- 上部配線（分岐点まで） -->
+  <line x1="40" y1="50" x2="100" y2="50" class="wire"/>
+  <!-- 分岐点 -->
+  <circle cx="100" cy="50" r="3" fill="#1a1a1a"/>
+  <circle cx="100" cy="150" r="3" fill="#1a1a1a"/>
+  <!-- 上側分岐: R1 -->
+  <line x1="100" y1="50" x2="130" y2="50" class="wire"/>
+  <rect x="130" y="38" width="60" height="24" class="component"/>
+  <text x="160" y="55" class="label">R₁</text>
+  <line x1="190" y1="50" x2="220" y2="50" class="wire"/>
+  <!-- 下側分岐: R2 -->
+  <line x1="100" y1="50" x2="100" y2="100" class="wire"/>
+  <line x1="100" y1="100" x2="130" y2="100" class="wire"/>
+  <rect x="130" y="88" width="60" height="24" class="component"/>
+  <text x="160" y="105" class="label">R₂</text>
+  <line x1="190" y1="100" x2="220" y2="100" class="wire"/>
+  <line x1="220" y1="100" x2="220" y2="50" class="wire"/>
+  <!-- 合流点 -->
+  <circle cx="220" cy="50" r="3" fill="#1a1a1a"/>
+  <!-- 右側配線 -->
+  <line x1="220" y1="50" x2="240" y2="50" class="wire"/>
+  <line x1="240" y1="50" x2="240" y2="150" class="wire"/>
+  <!-- 下部配線 -->
+  <line x1="40" y1="150" x2="240" y2="150" class="wire"/>
+  <!-- 合成抵抗の式 -->
+  <text x="140" y="185" class="small">R = (R₁×R₂)/(R₁+R₂)</text>
+</svg>

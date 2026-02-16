@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <title>直列回路</title>
+  <desc>抵抗R1とR2が直列接続された回路</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .wire { stroke: #1a1a1a; stroke-width: 2; fill: none; }
+    .component { stroke: #1a1a1a; stroke-width: 2; fill: none; }
+    .label { font-size: 13px; text-anchor: middle; }
+    .small { font-size: 11px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- 電源 -->
+  <line x1="40" y1="40" x2="40" y2="120" class="wire"/>
+  <line x1="32" y1="55" x2="48" y2="55" stroke="#1a1a1a" stroke-width="3"/>
+  <line x1="35" y1="65" x2="45" y2="65" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="22" y="50" class="small">+</text>
+  <text x="22" y="72" class="small">−</text>
+  <text x="20" y="90" class="label">V</text>
+  <!-- 上部配線 -->
+  <line x1="40" y1="40" x2="100" y2="40" class="wire"/>
+  <!-- R1 -->
+  <rect x="100" y="28" width="60" height="24" class="component"/>
+  <text x="130" y="45" class="label">R₁</text>
+  <!-- 中間配線 -->
+  <line x1="160" y1="40" x2="200" y2="40" class="wire"/>
+  <!-- R2 -->
+  <rect x="200" y="28" width="60" height="24" class="component"/>
+  <text x="230" y="45" class="label">R₂</text>
+  <!-- 右側・下部配線 -->
+  <line x1="260" y1="40" x2="280" y2="40" class="wire"/>
+  <line x1="280" y1="40" x2="280" y2="120" class="wire"/>
+  <line x1="40" y1="120" x2="280" y2="120" class="wire"/>
+  <!-- 電流の方向 -->
+  <polygon points="170,34 176,40 170,46" fill="#2563eb"/>
+  <text x="173" y="24" style="font-size:11px;fill:#2563eb;text-anchor:middle">I</text>
+  <!-- 合成抵抗の式 -->
+  <text x="160" y="150" class="small">R = R₁ + R₂</text>
+</svg>

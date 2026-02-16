@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" width="240" height="180">
+  <title>測定計器の簡易図</title>
+  <desc>電気工事用の測定計器</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- 本体 -->
+  <rect x="60" y="15" width="120" height="100" rx="8" fill="#f0f0f0" stroke="#555" stroke-width="2"/>
+  <!-- メーター表示部 -->
+  <rect x="80" y="25" width="80" height="35" rx="4" fill="#fff" stroke="#888" stroke-width="1.5"/>
+  <!-- メーター目盛り -->
+  <path d="M 95 55 A 40 40 0 0 1 145 55" fill="none" stroke="#ccc" stroke-width="1"/>
+  <line x1="100" y1="50" x2="130" y2="35" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="120" y="48" style="font-size:8px;text-anchor:middle;fill:#333;">MΩ</text>
+  <!-- 切替ダイヤル -->
+  <circle cx="120" cy="80" r="12" fill="#ddd" stroke="#888" stroke-width="1.5"/>
+  <line x1="120" y1="80" x2="120" y2="70" stroke="#333" stroke-width="2"/>
+  <text x="102" y="76" style="font-size:6px;fill:#666;">125V</text>
+  <text x="138" y="76" style="font-size:6px;fill:#666;">250V</text>
+  <text x="120" y="95" style="font-size:6px;fill:#666;">500V</text>
+  <!-- リード線端子 -->
+  <circle cx="85" cy="108" r="5" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+  <circle cx="120" cy="108" r="5" fill="#2563eb" stroke="#1a4eb8" stroke-width="1.5"/>
+  <circle cx="155" cy="108" r="5" fill="#333" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="85" y="125" style="font-size:7px;text-anchor:middle;fill:#e74c3c;">L(線路)</text>
+  <text x="120" y="125" style="font-size:7px;text-anchor:middle;fill:#2563eb;">E(接地)</text>
+  <text x="155" y="125" style="font-size:7px;text-anchor:middle;fill:#333;">G(ガード)</text>
+</svg>

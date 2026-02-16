@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 140" width="260" height="140">
+  <title>工具の簡易図</title>
+  <desc>電気工事用の工具</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 11px; text-anchor: middle; }
+    .small { font-size: 9px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- ハンドル（上） -->
+  <path d="M 30,60 Q 60,20 130,40 L 160,42 L 160,55 L 130,55 Q 80,42 40,65 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+  <!-- ハンドル（下） -->
+  <path d="M 30,70 Q 60,110 130,85 L 160,83 L 160,70 L 130,72 Q 80,88 40,68 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
+  <!-- 刃の部分 -->
+  <rect x="155" y="42" width="30" height="42" rx="2" fill="#ddd" stroke="#888" stroke-width="1.5"/>
+  <!-- ケーブル挿入部 -->
+  <rect x="180" y="50" width="60" height="26" rx="3" fill="#e8e8e8" stroke="#999" stroke-width="1"/>
+  <!-- 目盛り表示 -->
+  <text x="210" y="48" style="font-size:7px;fill:#666;text-anchor:middle;">1.6  2.0  2.6</text>
+  <!-- VVFケーブル -->
+  <line x1="235" y1="63" x2="255" y2="63" stroke="#ccc" stroke-width="8" stroke-linecap="round"/>
+  <text x="252" y="80" class="small">VVF</text>
+  <!-- 矢印 -->
+  <text x="168" y="68" style="font-size:10px;fill:#2563eb;text-anchor:middle;">↔</text>
+</svg>

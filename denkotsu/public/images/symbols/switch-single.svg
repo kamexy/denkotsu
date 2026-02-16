@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>スイッチの図記号</title>
+  <desc>JIS C 0303に基づくスイッチの図記号</desc>
+  <!-- 黒丸 -->
+  <circle cx="60" cy="60" r="20" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="2"/>
+</svg>

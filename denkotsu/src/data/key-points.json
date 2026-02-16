@@ -1,0 +1,253 @@
+[
+  {
+    "id": "et-01",
+    "category": "electrical_theory",
+    "title": "オームの法則",
+    "formula": "V = I × R",
+    "body": "電圧(V) = 電流(A) × 抵抗(R)。電気の最重要公式。V・I・Rのどれか2つが分かれば残り1つが求まる。",
+    "example": "100Vの回路に10Aが流れている → R = 100/10 = 10\u03a9"
+  },
+  {
+    "id": "et-02",
+    "category": "electrical_theory",
+    "title": "電力の公式",
+    "formula": "P = V × I",
+    "body": "電力(W) = 電圧(V) × 電流(A)。電気機器の消費電力を求める基本。オームの法則と組み合わせて P=I\u00b2R や P=V\u00b2/R も導ける。",
+    "example": "100V・10A → P = 100×10 = 1000W = 1kW"
+  },
+  {
+    "id": "et-03",
+    "category": "electrical_theory",
+    "title": "電力量",
+    "formula": "W = P × t [Wh]",
+    "body": "電力量(Wh) = 電力(W) × 時間(h)。電気料金の計算に使う。1kWhは1000Wを1時間使った量。",
+    "example": "1000Wのドライヤーを30分 → 1000×0.5 = 500Wh"
+  },
+  {
+    "id": "et-04",
+    "category": "electrical_theory",
+    "title": "抵抗の直列接続",
+    "formula": "R = R\u2081 + R\u2082 + R\u2083...",
+    "body": "直列接続では抵抗値を足し算するだけ。電流は同じ、電圧は分かれる。",
+    "example": "10\u03a9と20\u03a9の直列 → R = 10+20 = 30\u03a9",
+    "image": "/images/circuits/series-circuit.svg"
+  },
+  {
+    "id": "et-05",
+    "category": "electrical_theory",
+    "title": "抵抗の並列接続",
+    "formula": "1/R = 1/R\u2081 + 1/R\u2082",
+    "body": "並列接続は逆数の和。2つなら「積÷和」で計算可能: R = (R\u2081×R\u2082)/(R\u2081+R\u2082)。電圧は同じ、電流は分かれる。",
+    "example": "10\u03a9と10\u03a9の並列 → R = (10×10)/(10+10) = 5\u03a9",
+    "image": "/images/circuits/parallel-circuit.svg"
+  },
+  {
+    "id": "et-06",
+    "category": "electrical_theory",
+    "title": "許容電流",
+    "formula": null,
+    "body": "電線に安全に流せる最大電流のこと。電線の太さ(断面積)と周囲温度で決まる。太い電線ほど許容電流が大きい。超えると発熱→絶縁劣化→火災の原因に。",
+    "example": "1.6mm単線: 27A、2.0mm単線: 35A、2.6mm単線: 48A"
+  },
+  {
+    "id": "et-07",
+    "category": "electrical_theory",
+    "title": "電圧降下",
+    "formula": "e = 2 × I × R × L / 1000",
+    "body": "電線が長いと抵抗で電圧が下がる。単相2線式の電圧降下の公式。幹線は3%以内、分岐は4%以内にする。",
+    "example": null,
+    "image": "/images/circuits/single-phase-2wire.svg"
+  },
+  {
+    "id": "wd-01",
+    "category": "wiring_diagram",
+    "title": "単線図と複線図",
+    "formula": null,
+    "body": "単線図: 配線を1本の線で簡略表示。複線図: 実際の電線本数で表示。試験では単線図→複線図の変換が重要。非接地側(黒)→スイッチ→器具→接地側(白)の順で描く。",
+    "example": null,
+    "image": "/images/circuits/single-to-multi.svg"
+  },
+  {
+    "id": "wd-02",
+    "category": "wiring_diagram",
+    "title": "VVFケーブルの表記",
+    "formula": null,
+    "body": "VVF 1.6-2C: ビニル外装・1.6mm・2芯。VVF 2.0-3C: 2.0mm・3芯。「C」は芯数(Core)。スイッチ回路の渡り線は3Cが必要になることが多い。",
+    "example": "VVF 1.6-2C → 太さ1.6mmの電線が2本入ったケーブル",
+    "image": "/images/wiring/vvf-cable.svg"
+  },
+  {
+    "id": "wd-03",
+    "category": "wiring_diagram",
+    "title": "配線図の記号（スイッチ系）",
+    "formula": null,
+    "body": "●: 片切スイッチ、●(3): 3路スイッチ、●(4): 4路スイッチ、●(ET): タイマースイッチ(電子タイマー)、●(A): 自動点滅器。",
+    "example": null,
+    "image": "/images/symbols/switch-all.svg"
+  },
+  {
+    "id": "wd-04",
+    "category": "wiring_diagram",
+    "title": "配線図の記号（コンセント系）",
+    "formula": null,
+    "body": "=: 一般コンセント、=E: 接地極付、=ET: 接地端子付、=EET: 接地極付接地端子付、=20A: 20Aコンセント。200V回路には必ず接地極付を使用。",
+    "example": null,
+    "image": "/images/symbols/outlet-all.svg"
+  },
+  {
+    "id": "wd-05",
+    "category": "wiring_diagram",
+    "title": "3路スイッチの仕組み",
+    "formula": null,
+    "body": "2箇所から1つの照明をON/OFFできるスイッチ。階段や廊下で使う。0番端子(共通)に電源側/負荷側を接続。1番・3番を2本の渡り線でつなぐ。",
+    "example": "1階と2階のスイッチで階段の照明を操作",
+    "image": "/images/circuits/3way-switch-circuit.svg"
+  },
+  {
+    "id": "lw-01",
+    "category": "laws",
+    "title": "電気工事士でないとできない工事",
+    "formula": null,
+    "body": "600V以下の一般用電気工作物の工事には電気工事士の資格が必要。無資格での工事は3月以下の懲役又は3万円以下の罰金(電気工事士法第14条)。例外: 電球交換、ヒューズ交換、露出コンセントへの差込み等の「軽微な工事」。",
+    "example": null
+  },
+  {
+    "id": "lw-02",
+    "category": "laws",
+    "title": "電気用品安全法(PSE)",
+    "formula": null,
+    "body": "電気用品は販売前にPSEマークが必要。◆PSE(菱形): 特定電気用品(ケーブル、コンセント等)。○PSE(丸): 特定以外(照明器具等)。PSEマークなしの販売は法律違反。",
+    "example": null
+  },
+  {
+    "id": "lw-03",
+    "category": "laws",
+    "title": "接地工事の種類",
+    "formula": null,
+    "body": "A種: 高圧機器の外箱(10\u03a9以下)。B種: 変圧器の中性点。C種: 300V超の低圧機器(10\u03a9以下)。D種: 300V以下の機器(100\u03a9以下)。一般住宅はほとんどD種。",
+    "example": "洗濯機のアース線 → D種接地工事(100\u03a9以下)"
+  },
+  {
+    "id": "lw-04",
+    "category": "laws",
+    "title": "漏電遮断器の設置義務",
+    "formula": null,
+    "body": "水気のある場所(浴室、台所、屋外等)のコンセントには漏電遮断器(感度電流15mA以下、動作時間0.1秒以内)の設置が義務。人体への感電を防ぐ。",
+    "example": null
+  },
+  {
+    "id": "cm-01",
+    "category": "construction_method",
+    "title": "ケーブル工事",
+    "formula": null,
+    "body": "木造住宅で最も一般的な工事方法。VVFケーブルをステープルで固定。曲げ半径はケーブル外径の6倍以上。造営材に沿って配線する。",
+    "example": null,
+    "image": "/images/wiring/vvf-cable.svg"
+  },
+  {
+    "id": "cm-02",
+    "category": "construction_method",
+    "title": "金属管工事",
+    "formula": null,
+    "body": "鉄筋コンクリート造の建物で使用。管内に絶縁電線を通す。管の曲げは4箇所以下(90°換算)。管内にはD種接地工事が必要。",
+    "example": null
+  },
+  {
+    "id": "cm-03",
+    "category": "construction_method",
+    "title": "合成樹脂管工事(PF管・CD管)",
+    "formula": null,
+    "body": "PF管: 自己消火性あり(露出OK)。CD管: 自己消火性なし(コンクリート埋設専用)。オレンジ色がCD管。接地工事不要で施工が簡単。",
+    "example": "PF管: 露出配管OK / CD管: コンクリート埋込み専用",
+    "image": "/images/wiring/pf-cd-pipe.svg"
+  },
+  {
+    "id": "cm-04",
+    "category": "construction_method",
+    "title": "リングスリーブの選び方",
+    "formula": null,
+    "body": "電線の組み合わせで圧着マーク(○/小/中)が決まる。1.6mm×2本→○印(小スリーブ)。1.6mm×3-4本→小印。2.0mm含む→小or中印。圧着工具の刻印を必ず合わせる。",
+    "example": "1.6mm×2本=○、1.6mm×3本=小、2.0mm+1.6mm×2=小",
+    "image": "/images/tools/ring-sleeve.svg"
+  },
+  {
+    "id": "cm-05",
+    "category": "construction_method",
+    "title": "差込形コネクタ",
+    "formula": null,
+    "body": "電線を差し込むだけで接続できる。ストリップゲージに合わせて被覆を剥く(12mm程度)。対応する導体種別・サイズは製品仕様による。やり直しが効くのが利点。",
+    "example": null,
+    "image": "/images/tools/push-connector.svg"
+  },
+  {
+    "id": "em-01",
+    "category": "equipment_material",
+    "title": "配線用遮断器(ブレーカー)",
+    "formula": null,
+    "body": "過電流から電線を保護する。定格電流の1.25倍で60分以内、2倍で2分以内にトリップ。20Aブレーカーには2.0mm以上の電線を使用。",
+    "example": "20Aブレーカー: 25Aで60分以内、40Aで2分以内に遮断",
+    "image": "/images/tools/breaker.svg"
+  },
+  {
+    "id": "em-02",
+    "category": "equipment_material",
+    "title": "漏電遮断器",
+    "formula": null,
+    "body": "漏れ電流を検知して回路を遮断。感度電流は15mAまたは30mA。テストボタンで月1回の動作確認を推奨。過電流保護機能付きが一般的。",
+    "example": null,
+    "image": "/images/tools/elcb.svg"
+  },
+  {
+    "id": "em-03",
+    "category": "equipment_material",
+    "title": "電線の種類",
+    "formula": null,
+    "body": "IV: 600Vビニル絶縁電線(管内用)。VVF: 平形ケーブル(住宅の主力)。VVR: 丸形ケーブル。EM-EEF: エコケーブル(ハロゲンフリー)。CV: 架橋ポリエチレンケーブル(高圧用)。",
+    "example": null,
+    "image": "/images/wiring/vvf-cable.svg"
+  },
+  {
+    "id": "em-04",
+    "category": "equipment_material",
+    "title": "工具の用途",
+    "formula": null,
+    "body": "リングスリーブ用圧着工具: JIS C 9711適合品を使用。ケーブルストリッパ: VVFの被覆剥き。ウォーターポンププライヤ: 金属管のロックナット締め。電工ナイフ: 電線の被覆むき。",
+    "example": null,
+    "image": "/images/tools/crimping-tool.svg"
+  },
+  {
+    "id": "in-01",
+    "category": "inspection",
+    "title": "絶縁抵抗測定",
+    "formula": null,
+    "body": "絶縁抵抗計(メガー)で測定。分電盤のブレーカーをOFFにして測定。対地電圧150V以下: 0.1MΩ以上。150V超300V以下: 0.2MΩ以上。300V超: 0.4MΩ以上。一般住宅(100V)は0.1MΩ以上でOK。",
+    "example": "100V回路 → 0.1MΩ以上あればOK",
+    "image": "/images/tools/megger.svg"
+  },
+  {
+    "id": "in-02",
+    "category": "inspection",
+    "title": "接地抵抗測定",
+    "formula": null,
+    "body": "接地抵抗計で測定。補助接地極を2本打ち込んで測定する(3極法)。D種接地: 100Ω以下(漏電遮断器があれば500Ω以下に緩和)。",
+    "example": null,
+    "image": "/images/tools/ground-tester.svg"
+  },
+  {
+    "id": "in-03",
+    "category": "inspection",
+    "title": "竣工検査の手順",
+    "formula": null,
+    "body": "1.目視検査(配線の損傷確認) → 2.接地抵抗測定 → 3.絶縁抵抗測定 → 4.導通試験 → 5.通電試験。この順番で行うのが基本。通電試験は必ず最後。",
+    "example": null
+  },
+  {
+    "id": "in-04",
+    "category": "inspection",
+    "title": "検電器・テスタ",
+    "formula": null,
+    "body": "検電器: 電圧の有無を確認(充電部に近づけるだけ)。回路計(テスタ): 電圧・電流・抵抗を測定。クランプメータ: 電線を挟んで電流を非接触測定。",
+    "example": null,
+    "image": "/images/tools/clamp-meter.svg"
+  }
+]

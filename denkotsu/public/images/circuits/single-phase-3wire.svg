@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
+  <title>単相3線式の回路図</title>
+  <desc>単相3線式回路の概略図</desc>
+  <style>
+    text { font-family: sans-serif; fill: #333; }
+    .label { font-size: 12px; text-anchor: middle; }
+    .small { font-size: 10px; text-anchor: middle; fill: #666; }
+  </style>
+  <!-- 変圧器 -->
+  <rect x="20" y="25" width="50" height="120" fill="none" stroke="#1a1a1a" stroke-width="2" rx="4"/>
+  <text x="45" y="90" class="label">変圧器</text>
+  <!-- L1（赤線）上 -->
+  <line x1="70" y1="45" x2="260" y2="45" stroke="#d42020" stroke-width="2.5"/>
+  <text x="86" y="38" style="font-size:10px;fill:#d42020;">L1(赤)</text>
+  <!-- N（白線）中間 -->
+  <line x1="70" y1="85" x2="260" y2="85" stroke="#666" stroke-width="2.5"/>
+  <text x="86" y="78" style="font-size:10px;fill:#666;">N(白)</text>
+  <!-- L2（黒線）下 -->
+  <line x1="70" y1="125" x2="260" y2="125" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="86" y="143" style="font-size:10px;fill:#1a1a1a;">L2(黒)</text>
+  <!-- 接地マーク(中性線) -->
+  <line x1="100" y1="85" x2="100" y2="100" stroke="#666" stroke-width="1.5"/>
+  <line x1="94" y1="100" x2="106" y2="100" stroke="#666" stroke-width="1.5"/>
+  <line x1="96" y1="104" x2="104" y2="104" stroke="#666" stroke-width="1.5"/>
+  <line x1="98" y1="108" x2="102" y2="108" stroke="#666" stroke-width="1.5"/>
+  <!-- 電圧表示（L1-N間） -->
+  <line x1="220" y1="45" x2="220" y2="85" stroke="#2563eb" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="240" y="68" style="font-size:12px;fill:#2563eb;font-weight:bold;">?V</text>
+  <!-- 電圧表示（N-L2間） -->
+  <line x1="220" y1="85" x2="220" y2="125" stroke="#2563eb" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="240" y="110" style="font-size:12px;fill:#2563eb;font-weight:bold;">?V</text>
+  <!-- 電圧表示（L1-L2間） -->
+  <line x1="280" y1="45" x2="280" y2="125" stroke="#e04040" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="302" y="90" style="font-size:13px;fill:#e04040;font-weight:bold;">?V</text>
+  <!-- タイトル -->
+  <text x="160" y="170" class="small">単相3線式</text>
+</svg>
