@@ -7,6 +7,11 @@ on:
       - master
   pull_request:
 
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
