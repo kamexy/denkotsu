@@ -277,28 +277,46 @@ export default function SettingsPage() {
 
             <div className="rounded-lg border border-slate-200 bg-slate-50/90 p-3 space-y-2">
               <p className="text-xs font-semibold text-slate-700">まず目的を選択</p>
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-2">
                 <button
                   type="button"
                   onClick={() => setSyncWizardMode("backup")}
-                  className={`px-3 py-2 rounded-lg border text-sm font-semibold transition-colors ${
+                  className={`px-3 py-2 rounded-lg border text-left transition-colors ${
                     syncWizardMode === "backup"
                       ? "border-teal-600 bg-teal-700 text-white"
                       : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                   }`}
                 >
-                  この端末をバックアップ
+                  <span className="block text-sm font-semibold leading-tight">バックアップを作る</span>
+                  <span
+                    className={`block mt-0.5 text-xs leading-tight ${
+                      syncWizardMode === "backup"
+                        ? "text-teal-50/95"
+                        : "text-slate-500"
+                    }`}
+                  >
+                    この端末の学習データをクラウドに保存
+                  </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSyncWizardMode("restore")}
-                  className={`px-3 py-2 rounded-lg border text-sm font-semibold transition-colors ${
+                  className={`px-3 py-2 rounded-lg border text-left transition-colors ${
                     syncWizardMode === "restore"
                       ? "border-teal-600 bg-teal-700 text-white"
                       : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                   }`}
                 >
-                  別端末に復元したい
+                  <span className="block text-sm font-semibold leading-tight">バックアップを復元</span>
+                  <span
+                    className={`block mt-0.5 text-xs leading-tight ${
+                      syncWizardMode === "restore"
+                        ? "text-teal-50/95"
+                        : "text-slate-500"
+                    }`}
+                  >
+                    クラウドのデータをこの端末に読み込む
+                  </span>
                 </button>
               </div>
             </div>
@@ -330,6 +348,16 @@ export default function SettingsPage() {
                   spellCheck={false}
                 />
               </label>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleGenerateSyncId}
+                  disabled={syncPending !== null}
+                  className="w-full sm:w-auto px-2.5 py-1.5 rounded-md border border-teal-300 bg-teal-50 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
+                >
+                  新しいコードを作る
+                </button>
+              </div>
               <p className="text-xs text-slate-500">
                 英字と数字を含む12文字以上（推測しやすいコードは利用不可）
               </p>
@@ -346,24 +374,14 @@ export default function SettingsPage() {
               {syncIdValidationError && (
                 <p className="text-xs font-semibold text-amber-700">{syncIdValidationError}</p>
               )}
-              <div className="grid gap-2 sm:grid-cols-2">
-                <button
-                  type="button"
-                  onClick={handleGenerateSyncId}
-                  disabled={syncPending !== null}
-                  className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
-                >
-                  新しい同期コードを作る
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSaveSyncId}
-                  disabled={syncPending !== null}
-                  className="px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
-                >
-                  {syncPending === "save" ? "保存中..." : "このコードを保存"}
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={handleSaveSyncId}
+                disabled={syncPending !== null}
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
+              >
+                {syncPending === "save" ? "保存中..." : "このコードを保存"}
+              </button>
             </div>
 
             <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-3">
@@ -405,10 +423,10 @@ export default function SettingsPage() {
                 {syncWizardMode === "backup"
                   ? syncPending === "push"
                     ? "バックアップ中..."
-                    : "この端末をバックアップ"
+                    : "バックアップを実行"
                   : syncPending === "pull"
                     ? "読込中..."
-                    : "バックアップを読み込む"}
+                    : "復元を実行"}
               </button>
             </div>
 
