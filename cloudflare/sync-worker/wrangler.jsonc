@@ -7,7 +7,7 @@
     {
       "binding": "DB",
       "database_name": "denkotsu_sync",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_id": "181433b6-ab57-4bd3-9d94-d3082e886694"
     }
   ],
   "vars": {
