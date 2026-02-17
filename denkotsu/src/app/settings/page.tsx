@@ -15,11 +15,14 @@ import {
 } from "@/lib/cloud-sync";
 import type { UserSettings } from "@/types";
 
+type SyncWizardMode = "backup" | "restore";
+
 export default function SettingsPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [syncIdInput, setSyncIdInput] = useState("");
   const [syncPending, setSyncPending] = useState<null | "push" | "pull" | "save">(null);
   const [syncNotice, setSyncNotice] = useState<string | null>(null);
+  const [syncWizardMode, setSyncWizardMode] = useState<SyncWizardMode>("backup");
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [resetPending, setResetPending] = useState(false);
   const [resetDone, setResetDone] = useState(false);
@@ -33,6 +36,8 @@ export default function SettingsPage() {
   const savedSyncId = settings?.syncId?.trim() ?? "";
   const hasSavedSyncId = savedSyncId.length > 0;
   const isSyncIdSaved = normalizedSyncIdInput.length > 0 && normalizedSyncIdInput === savedSyncId;
+  const hasValidInputSyncId = normalizedSyncIdInput.length > 0 && !syncIdValidationError;
+  const isWizardStep1Done = hasValidInputSyncId && isSyncIdSaved;
 
   useEffect(() => {
     getSettings().then(setSettings);
@@ -193,6 +198,14 @@ export default function SettingsPage() {
     setSyncNotice("新しい同期コードを作成しました。まず「このコードを保存」を押してください。");
   };
 
+  const handleRunWizardAction = async () => {
+    if (syncWizardMode === "backup") {
+      await handlePushCloud();
+      return;
+    }
+    await handlePullCloud();
+  };
+
   return (
     <div className="pb-28">
       <header className="px-4 pt-3">
@@ -262,47 +275,77 @@ export default function SettingsPage() {
               2台以上の端末で学習データを移すための機能です。
             </p>
 
-            <div className="rounded-lg border border-teal-100 bg-teal-50/70 p-3">
-              <p className="text-xs font-semibold text-teal-900 mb-1">使い方（2ステップ）</p>
-              <ol className="list-decimal pl-4 space-y-1 text-xs text-teal-900">
-                <li>元の端末で「新しい同期コードを作る」→「このコードを保存」→「この端末をバックアップ」</li>
-                <li>移行先の端末で同じ同期コードを入力して「バックアップを読み込む」</li>
-              </ol>
+            <div className="rounded-lg border border-slate-200 bg-slate-50/90 p-3 space-y-2">
+              <p className="text-xs font-semibold text-slate-700">まず目的を選択</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => setSyncWizardMode("backup")}
+                  className={`px-3 py-2 rounded-lg border text-sm font-semibold transition-colors ${
+                    syncWizardMode === "backup"
+                      ? "border-teal-600 bg-teal-700 text-white"
+                      : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  この端末をバックアップ
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSyncWizardMode("restore")}
+                  className={`px-3 py-2 rounded-lg border text-sm font-semibold transition-colors ${
+                    syncWizardMode === "restore"
+                      ? "border-teal-600 bg-teal-700 text-white"
+                      : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  別端末に復元したい
+                </button>
+              </div>
             </div>
 
-            <label className="block space-y-1">
-              <span className="text-xs text-slate-500">同期コード（端末間で共通）</span>
-              <input
-                type="text"
-                value={syncIdInput}
-                onChange={(e) => setSyncIdInput(e.target.value)}
-                placeholder="例: dkt-p4n7-z8k2-v6w9"
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
-                disabled={syncPending !== null}
-                autoCapitalize="off"
-                autoCorrect="off"
-                spellCheck={false}
-              />
-            </label>
-            <p className="text-xs text-slate-500">
-              英字と数字を含む12文字以上を推奨（推測しやすいコードは利用不可）
-            </p>
-            {hasSavedSyncId && (
+            <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-semibold text-slate-700">STEP 1: 同期コードを準備</p>
+                <span
+                  className={`text-[11px] font-semibold rounded-full px-2 py-0.5 ${
+                    isWizardStep1Done
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-amber-100 text-amber-700"
+                  }`}
+                >
+                  {isWizardStep1Done ? "完了" : "未完了"}
+                </span>
+              </div>
+              <label className="block space-y-1">
+                <span className="text-xs text-slate-500">同期コード（端末間で共通）</span>
+                <input
+                  type="text"
+                  value={syncIdInput}
+                  onChange={(e) => setSyncIdInput(e.target.value)}
+                  placeholder="例: dkt-p4n7-z8k2-v6w9"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                  disabled={syncPending !== null}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                />
+              </label>
               <p className="text-xs text-slate-500">
-                この端末に保存中のコード: <span className="font-mono">{savedSyncId}</span>
+                英字と数字を含む12文字以上（推測しやすいコードは利用不可）
               </p>
-            )}
-            {normalizedSyncIdInput && !isSyncIdSaved && (
-              <p className="text-xs font-semibold text-amber-700">
-                入力中のコードは未保存です。「このコードを保存」を押すとこの端末の既定コードになります。
-              </p>
-            )}
-            {syncIdValidationError && (
-              <p className="text-xs font-semibold text-amber-700">{syncIdValidationError}</p>
-            )}
-
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-600">1. 同期コードを準備</p>
+              {hasSavedSyncId && (
+                <p className="text-xs text-slate-500">
+                  この端末に保存中のコード: <span className="font-mono">{savedSyncId}</span>
+                </p>
+              )}
+              {normalizedSyncIdInput && !isSyncIdSaved && (
+                <p className="text-xs font-semibold text-amber-700">
+                  入力中のコードは未保存です。「このコードを保存」を押してください。
+                </p>
+              )}
+              {syncIdValidationError && (
+                <p className="text-xs font-semibold text-amber-700">{syncIdValidationError}</p>
+              )}
               <div className="grid gap-2 sm:grid-cols-2">
                 <button
                   type="button"
@@ -323,26 +366,50 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-600">2. データを移す</p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <button
-                  type="button"
-                  onClick={handlePushCloud}
-                  disabled={syncPending !== null || !cloudSyncEnabled}
-                  className="px-3 py-2 rounded-lg bg-teal-700 text-white text-sm font-semibold transition-colors hover:bg-teal-800 disabled:opacity-60"
+            <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-semibold text-slate-700">
+                  STEP 2: {syncWizardMode === "backup" ? "バックアップを作成" : "バックアップを復元"}
+                </p>
+                <span
+                  className={`text-[11px] font-semibold rounded-full px-2 py-0.5 ${
+                    isWizardStep1Done
+                      ? "bg-teal-100 text-teal-700"
+                      : "bg-slate-200 text-slate-600"
+                  }`}
                 >
-                  {syncPending === "push" ? "バックアップ中..." : "この端末をバックアップ"}
-                </button>
-                <button
-                  type="button"
-                  onClick={handlePullCloud}
-                  disabled={syncPending !== null || !cloudSyncEnabled}
-                  className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-teal-800 text-sm font-semibold transition-colors hover:bg-teal-100 disabled:opacity-60"
-                >
-                  {syncPending === "pull" ? "読込中..." : "バックアップを読み込む"}
-                </button>
+                  {isWizardStep1Done ? "実行可能" : "STEP1完了後"}
+                </span>
               </div>
+              <p className="text-xs text-slate-600">
+                {syncWizardMode === "backup"
+                  ? "この端末の学習データをクラウドに保存します（元端末で実行）"
+                  : "クラウド上の学習データをこの端末へ読み込みます（移行先端末で実行）"}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  void handleRunWizardAction();
+                }}
+                disabled={
+                  syncPending !== null ||
+                  !cloudSyncEnabled ||
+                  !isWizardStep1Done
+                }
+                className={`w-full px-3 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-60 ${
+                  syncWizardMode === "backup"
+                    ? "bg-teal-700 text-white hover:bg-teal-800"
+                    : "border border-teal-300 bg-teal-50 text-teal-800 hover:bg-teal-100"
+                }`}
+              >
+                {syncWizardMode === "backup"
+                  ? syncPending === "push"
+                    ? "バックアップ中..."
+                    : "この端末をバックアップ"
+                  : syncPending === "pull"
+                    ? "読込中..."
+                    : "バックアップを読み込む"}
+              </button>
             </div>
 
             {!cloudSyncEnabled && (
