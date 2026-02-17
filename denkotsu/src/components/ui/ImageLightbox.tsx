@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
@@ -24,11 +25,13 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
 
   return (
     <>
-      <img
+      <Image
         src={src}
         alt={alt}
-        className={`${className} cursor-zoom-in`}
-        loading="lazy"
+        width={1200}
+        height={900}
+        sizes="(max-width: 480px) 100vw, 480px"
+        className={`${className} h-auto cursor-zoom-in`}
         onClick={handleOpen}
       />
       {open &&
@@ -50,9 +53,12 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
                 className="w-[92vw] max-h-[85vh] flex items-center justify-center bg-white rounded-xl p-4 shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
-                <img
+                <Image
                   src={src}
                   alt={alt}
+                  width={1600}
+                  height={1200}
+                  sizes="92vw"
                   className="w-full h-full max-h-[78vh] object-contain"
                 />
               </motion.div>

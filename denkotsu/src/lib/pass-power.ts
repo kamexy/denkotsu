@@ -1,11 +1,6 @@
 import { db } from "./db";
 import { getAllQuestions } from "./questions";
-import type {
-  PassPower,
-  Category,
-  ALL_CATEGORIES,
-  CATEGORY_WEIGHTS,
-} from "@/types";
+import type { PassPower, Category } from "@/types";
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 

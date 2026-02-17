@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { getAllQuestions } from "./questions";
-import type { Question, Category, ALL_CATEGORIES } from "@/types";
+import type { Question } from "@/types";
 
 /**
  * 次に出題する問題を選択する
