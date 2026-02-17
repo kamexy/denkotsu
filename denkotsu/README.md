@@ -81,6 +81,45 @@ denkotsu/
 
 Secrets が未設定の場合、`deploy` ジョブ内でデプロイ手順のみ自動スキップされます。
 
+## クラウド同期（Phase 2 / D1 + Workers）
+
+このリポジトリには、学習データ同期用の Worker 雛形を同梱しています。
+
+### 1. D1 データベースを作成
+
+```bash
+npx wrangler d1 create denkotsu_sync
+```
+
+出力される `database_id` を `cloudflare/sync-worker/wrangler.jsonc` の  
+`REPLACE_WITH_D1_DATABASE_ID` に設定してください。
+
+### 2. マイグレーション適用
+
+```bash
+cd cloudflare/sync-worker
+npx wrangler d1 migrations apply denkotsu_sync --remote
+```
+
+### 3. 同期 Worker をデプロイ
+
+```bash
+npx wrangler deploy
+```
+
+### 4. フロントへ同期API URLを設定
+
+`denkotsu` をビルド/デプロイする環境に、次の公開変数を設定します。
+
+- `NEXT_PUBLIC_SYNC_API_BASE`  
+  例: `https://denkotsu-sync.<your-subdomain>.workers.dev`
+
+設定後、設定画面の `クラウド同期（β）` から以下を実行できます。
+
+- 同期コードの保存
+- クラウドへ保存（push）
+- クラウドから復元（pull）
+
 ## 運用ルール
 
 - リポジトリ共通ルールはルートの `AGENTS.md` を参照してください。

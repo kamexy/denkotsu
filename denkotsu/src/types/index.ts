@@ -111,4 +111,21 @@ export interface UserSettings {
   id: string;
   soundEnabled: boolean;
   vibrationEnabled: boolean;
+  syncId?: string;
+  lastSyncedAt?: number;
+  updatedAt: number;
+}
+
+/** クラウド同期向け設定スナップショット */
+export interface SyncSettingsSnapshot {
+  soundEnabled: boolean;
+  vibrationEnabled: boolean;
+  updatedAt: number;
+}
+
+/** クラウド同期向けスナップショット */
+export interface SyncSnapshot {
+  answers: Omit<AnswerRecord, "id">[];
+  spacedRepetition: SpacedRepetition[];
+  settings: SyncSettingsSnapshot;
 }

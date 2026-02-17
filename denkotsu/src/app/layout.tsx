@@ -2,6 +2,19 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ServiceWorkerRegistrar } from "@/components/layout/ServiceWorkerRegistrar";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { CloudSyncBootstrap } from "@/components/layout/CloudSyncBootstrap";
+
+const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
+let syncApiOrigin = "";
+if (syncApiBase) {
+  try {
+    syncApiOrigin = new URL(syncApiBase).origin;
+  } catch {
+    syncApiOrigin = "";
+  }
+}
+
+const connectSrc = ["'self'", syncApiOrigin || "https://*.workers.dev"].join(" ");
 
 export const metadata: Metadata = {
   title: "デンコツ - 第二種電気工事士",
@@ -35,7 +48,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';"
+          content={`default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src ${connectSrc};`}
         />
       </head>
       <body className="antialiased">
@@ -44,6 +57,7 @@ export default function RootLayout({
           <BottomNav />
         </div>
         <ServiceWorkerRegistrar />
+        <CloudSyncBootstrap />
       </body>
     </html>
   );

@@ -4,25 +4,133 @@ import { useEffect, useState } from "react";
 
 import { getSettings, updateSettings, resetAllData } from "@/lib/db";
 import { getAllQuestions } from "@/lib/questions";
+import {
+  applyRemoteSnapshot,
+  getLocalLatestTimestamp,
+  isCloudSyncEnabled,
+  pullCloudSnapshot,
+  pushCloudSnapshot,
+} from "@/lib/cloud-sync";
 import type { UserSettings } from "@/types";
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
+  const [syncIdInput, setSyncIdInput] = useState("");
+  const [syncPending, setSyncPending] = useState<null | "push" | "pull" | "save">(null);
+  const [syncNotice, setSyncNotice] = useState<string | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [resetPending, setResetPending] = useState(false);
   const [resetDone, setResetDone] = useState(false);
   const [cancelNotice, setCancelNotice] = useState(false);
   const totalQuestions = getAllQuestions().length;
+  const cloudSyncEnabled = isCloudSyncEnabled();
 
   useEffect(() => {
     getSettings().then(setSettings);
   }, []);
+
+  useEffect(() => {
+    if (!settings) return;
+    setSyncIdInput(settings.syncId ?? "");
+  }, [settings]);
 
   const toggleSetting = async (key: "soundEnabled" | "vibrationEnabled") => {
     if (!settings) return;
     const newValue = !settings[key];
     await updateSettings({ [key]: newValue });
     setSettings({ ...settings, [key]: newValue });
+  };
+
+  const handleSaveSyncId = async () => {
+    if (!settings || syncPending) return;
+    const normalized = syncIdInput.trim();
+    setSyncPending("save");
+    setSyncNotice(null);
+    try {
+      await updateSettings({
+        syncId: normalized || undefined,
+      });
+      const latest = await getSettings();
+      setSettings(latest);
+      setSyncNotice(normalized ? "同期コードを保存しました" : "同期コードを解除しました");
+    } catch {
+      setSyncNotice("同期コードの保存に失敗しました");
+    } finally {
+      setSyncPending(null);
+    }
+  };
+
+  const handlePushCloud = async () => {
+    if (syncPending) return;
+    const syncId = syncIdInput.trim();
+    if (!cloudSyncEnabled) {
+      setSyncNotice("同期APIが未設定です。NEXT_PUBLIC_SYNC_API_BASE を設定してください。");
+      return;
+    }
+    if (!syncId) {
+      setSyncNotice("先に同期コードを入力してください。");
+      return;
+    }
+
+    setSyncPending("push");
+    setSyncNotice(null);
+    try {
+      const result = await pushCloudSnapshot(syncId);
+      const latest = await getSettings();
+      setSettings(latest);
+      setSyncNotice(
+        result.applied
+          ? "クラウドへ保存しました。"
+          : "サーバー側が新しいため、保存をスキップしました。"
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "クラウド保存に失敗しました";
+      setSyncNotice(message);
+    } finally {
+      setSyncPending(null);
+    }
+  };
+
+  const handlePullCloud = async () => {
+    if (syncPending) return;
+    const syncId = syncIdInput.trim();
+    if (!cloudSyncEnabled) {
+      setSyncNotice("同期APIが未設定です。NEXT_PUBLIC_SYNC_API_BASE を設定してください。");
+      return;
+    }
+    if (!syncId) {
+      setSyncNotice("先に同期コードを入力してください。");
+      return;
+    }
+
+    setSyncPending("pull");
+    setSyncNotice(null);
+    try {
+      const [result, localLatestAt] = await Promise.all([
+        pullCloudSnapshot(syncId),
+        getLocalLatestTimestamp(),
+      ]);
+
+      if (!result.hasSnapshot) {
+        setSyncNotice("クラウドに保存データがありません。");
+        return;
+      }
+
+      if (result.serverUpdatedAt <= localLatestAt) {
+        setSyncNotice("この端末のデータが新しいため、復元をスキップしました。");
+        return;
+      }
+
+      await applyRemoteSnapshot(result.snapshot, syncId, result.serverUpdatedAt);
+      const latest = await getSettings();
+      setSettings(latest);
+      setSyncNotice("クラウドから復元しました。");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "クラウド読込に失敗しました";
+      setSyncNotice(message);
+    } finally {
+      setSyncPending(null);
+    }
   };
 
   const handleReset = async () => {
@@ -113,6 +221,70 @@ export default function SettingsPage() {
           <p className="text-xs text-slate-500 uppercase tracking-[0.12em] mb-3">
             データ
           </p>
+
+          <div className="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-3 mb-3">
+            <p className="text-sm font-semibold text-slate-700">クラウド同期（β）</p>
+            <p className="text-xs text-slate-500">
+              同じ同期コードを入力した端末間で、学習データを手動同期できます。
+            </p>
+
+            <label className="block space-y-1">
+              <span className="text-xs text-slate-500">同期コード</span>
+              <input
+                type="text"
+                value={syncIdInput}
+                onChange={(e) => setSyncIdInput(e.target.value)}
+                placeholder="例: denkotsu-main-01"
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                disabled={syncPending !== null}
+              />
+            </label>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={handleSaveSyncId}
+                disabled={syncPending !== null}
+                className="px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
+              >
+                {syncPending === "save" ? "保存中..." : "同期コードを保存"}
+              </button>
+              <button
+                type="button"
+                onClick={handlePushCloud}
+                disabled={syncPending !== null || !cloudSyncEnabled}
+                className="px-3 py-2 rounded-lg bg-teal-700 text-white text-sm font-semibold transition-colors hover:bg-teal-800 disabled:opacity-60"
+              >
+                {syncPending === "push" ? "保存中..." : "クラウドへ保存"}
+              </button>
+              <button
+                type="button"
+                onClick={handlePullCloud}
+                disabled={syncPending !== null || !cloudSyncEnabled}
+                className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-teal-800 text-sm font-semibold transition-colors hover:bg-teal-100 disabled:opacity-60"
+              >
+                {syncPending === "pull" ? "読込中..." : "クラウドから復元"}
+              </button>
+            </div>
+
+            {!cloudSyncEnabled && (
+              <p className="text-xs text-amber-700">
+                同期API未設定: `NEXT_PUBLIC_SYNC_API_BASE` を設定すると利用できます。
+              </p>
+            )}
+
+            {settings?.lastSyncedAt && (
+              <p className="text-xs text-slate-500">
+                最終同期: {new Date(settings.lastSyncedAt).toLocaleString("ja-JP")}
+              </p>
+            )}
+
+            {syncNotice && (
+              <p className="text-xs font-semibold text-slate-600" aria-live="polite">
+                {syncNotice}
+              </p>
+            )}
+          </div>
 
           {!showResetConfirm ? (
             <button

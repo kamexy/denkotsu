@@ -4,6 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import type { Question, SessionStats } from "@/types";
 import { selectNextQuestion, recordAnswer } from "@/lib/quiz-engine";
 import { calculatePassPower } from "@/lib/pass-power";
+import { triggerBackgroundSyncPush } from "@/lib/cloud-sync";
 
 export type QuizState = "loading" | "question" | "feedback" | "complete" | "error";
 
@@ -57,6 +58,7 @@ export function useQuiz() {
 
       try {
         await recordAnswer(currentQuestion.id, correct, timeSpent);
+        triggerBackgroundSyncPush();
         const pp = await calculatePassPower();
         setPassPower(pp.overall);
       } catch {

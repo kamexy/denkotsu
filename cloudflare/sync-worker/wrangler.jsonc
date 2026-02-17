@@ -1,0 +1,16 @@
+{
+  "name": "denkotsu-sync",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-02-17",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "denkotsu_sync",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    "CORS_ORIGIN": "*"
+  }
+}
