@@ -30,6 +30,9 @@ export default function SettingsPage() {
   const syncIdValidationError = normalizedSyncIdInput
     ? validateSyncId(normalizedSyncIdInput)
     : null;
+  const savedSyncId = settings?.syncId?.trim() ?? "";
+  const hasSavedSyncId = savedSyncId.length > 0;
+  const isSyncIdSaved = normalizedSyncIdInput.length > 0 && normalizedSyncIdInput === savedSyncId;
 
   useEffect(() => {
     getSettings().then(setSettings);
@@ -66,9 +69,9 @@ export default function SettingsPage() {
       });
       const latest = await getSettings();
       setSettings(latest);
-      setSyncNotice(normalized ? "同期コードを保存しました" : "同期コードを解除しました");
+      setSyncNotice(normalized ? "この端末に同期コードを保存しました。" : "この端末の同期コードを解除しました。");
     } catch {
-      setSyncNotice("同期コードの保存に失敗しました");
+      setSyncNotice("同期コードの保存に失敗しました。");
     } finally {
       setSyncPending(null);
     }
@@ -82,7 +85,7 @@ export default function SettingsPage() {
       return;
     }
     if (!syncId) {
-      setSyncNotice("先に同期コードを入力してください。");
+      setSyncNotice("同期コードを入力してください。初回は「新しい同期コードを作る」が簡単です。");
       return;
     }
     const syncIdError = validateSyncId(syncId);
@@ -99,11 +102,11 @@ export default function SettingsPage() {
       setSettings(latest);
       setSyncNotice(
         result.applied
-          ? "クラウドへ保存しました。"
-          : "サーバー側が新しいため、保存をスキップしました。"
+          ? "この端末の学習データをクラウドにバックアップしました。"
+          : "クラウド側により新しいバックアップがあるため、上書きしませんでした。"
       );
     } catch (error) {
-      const message = error instanceof Error ? error.message : "クラウド保存に失敗しました";
+      const message = error instanceof Error ? error.message : "バックアップに失敗しました。";
       setSyncNotice(message);
     } finally {
       setSyncPending(null);
@@ -118,7 +121,7 @@ export default function SettingsPage() {
       return;
     }
     if (!syncId) {
-      setSyncNotice("先に同期コードを入力してください。");
+      setSyncNotice("同期コードを入力してください。");
       return;
     }
     const syncIdError = validateSyncId(syncId);
@@ -136,21 +139,21 @@ export default function SettingsPage() {
       ]);
 
       if (!result.hasSnapshot) {
-        setSyncNotice("クラウドに保存データがありません。");
+        setSyncNotice("この同期コードのバックアップはまだありません。");
         return;
       }
 
       if (result.serverUpdatedAt <= localLatestAt) {
-        setSyncNotice("この端末のデータが新しいため、復元をスキップしました。");
+        setSyncNotice("この端末の方が新しいため、復元は行いませんでした。");
         return;
       }
 
       await applyRemoteSnapshot(result.snapshot, syncId, result.serverUpdatedAt);
       const latest = await getSettings();
       setSettings(latest);
-      setSyncNotice("クラウドから復元しました。");
+      setSyncNotice("クラウドのバックアップをこの端末に復元しました。");
     } catch (error) {
-      const message = error instanceof Error ? error.message : "クラウド読込に失敗しました";
+      const message = error instanceof Error ? error.message : "復元に失敗しました。";
       setSyncNotice(message);
     } finally {
       setSyncPending(null);
@@ -187,7 +190,7 @@ export default function SettingsPage() {
     if (syncPending) return;
     const generated = generateStrongSyncId();
     setSyncIdInput(generated);
-    setSyncNotice("推測されにくい同期コードを生成しました。保存してから利用してください。");
+    setSyncNotice("新しい同期コードを作成しました。まず「このコードを保存」を押してください。");
   };
 
   return (
@@ -256,11 +259,19 @@ export default function SettingsPage() {
           <div className="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-3 mb-3">
             <p className="text-sm font-semibold text-slate-700">クラウド同期（β）</p>
             <p className="text-xs text-slate-500">
-              同じ同期コードを入力した端末間で、学習データを手動同期できます。
+              2台以上の端末で学習データを移すための機能です。
             </p>
 
+            <div className="rounded-lg border border-teal-100 bg-teal-50/70 p-3">
+              <p className="text-xs font-semibold text-teal-900 mb-1">使い方（2ステップ）</p>
+              <ol className="list-decimal pl-4 space-y-1 text-xs text-teal-900">
+                <li>元の端末で「新しい同期コードを作る」→「このコードを保存」→「この端末をバックアップ」</li>
+                <li>移行先の端末で同じ同期コードを入力して「バックアップを読み込む」</li>
+              </ol>
+            </div>
+
             <label className="block space-y-1">
-              <span className="text-xs text-slate-500">同期コード</span>
+              <span className="text-xs text-slate-500">同期コード（端末間で共通）</span>
               <input
                 type="text"
                 value={syncIdInput}
@@ -276,43 +287,62 @@ export default function SettingsPage() {
             <p className="text-xs text-slate-500">
               英字と数字を含む12文字以上を推奨（推測しやすいコードは利用不可）
             </p>
+            {hasSavedSyncId && (
+              <p className="text-xs text-slate-500">
+                この端末に保存中のコード: <span className="font-mono">{savedSyncId}</span>
+              </p>
+            )}
+            {normalizedSyncIdInput && !isSyncIdSaved && (
+              <p className="text-xs font-semibold text-amber-700">
+                入力中のコードは未保存です。「このコードを保存」を押すとこの端末の既定コードになります。
+              </p>
+            )}
             {syncIdValidationError && (
               <p className="text-xs font-semibold text-amber-700">{syncIdValidationError}</p>
             )}
 
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={handleGenerateSyncId}
-                disabled={syncPending !== null}
-                className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
-              >
-                強いコードを生成
-              </button>
-              <button
-                type="button"
-                onClick={handleSaveSyncId}
-                disabled={syncPending !== null}
-                className="px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
-              >
-                {syncPending === "save" ? "保存中..." : "同期コードを保存"}
-              </button>
-              <button
-                type="button"
-                onClick={handlePushCloud}
-                disabled={syncPending !== null || !cloudSyncEnabled}
-                className="px-3 py-2 rounded-lg bg-teal-700 text-white text-sm font-semibold transition-colors hover:bg-teal-800 disabled:opacity-60"
-              >
-                {syncPending === "push" ? "保存中..." : "クラウドへ保存"}
-              </button>
-              <button
-                type="button"
-                onClick={handlePullCloud}
-                disabled={syncPending !== null || !cloudSyncEnabled}
-                className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-teal-800 text-sm font-semibold transition-colors hover:bg-teal-100 disabled:opacity-60"
-              >
-                {syncPending === "pull" ? "読込中..." : "クラウドから復元"}
-              </button>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-slate-600">1. 同期コードを準備</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={handleGenerateSyncId}
+                  disabled={syncPending !== null}
+                  className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
+                >
+                  新しい同期コードを作る
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveSyncId}
+                  disabled={syncPending !== null}
+                  className="px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
+                >
+                  {syncPending === "save" ? "保存中..." : "このコードを保存"}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-slate-600">2. データを移す</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={handlePushCloud}
+                  disabled={syncPending !== null || !cloudSyncEnabled}
+                  className="px-3 py-2 rounded-lg bg-teal-700 text-white text-sm font-semibold transition-colors hover:bg-teal-800 disabled:opacity-60"
+                >
+                  {syncPending === "push" ? "バックアップ中..." : "この端末をバックアップ"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePullCloud}
+                  disabled={syncPending !== null || !cloudSyncEnabled}
+                  className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-teal-800 text-sm font-semibold transition-colors hover:bg-teal-100 disabled:opacity-60"
+                >
+                  {syncPending === "pull" ? "読込中..." : "バックアップを読み込む"}
+                </button>
+              </div>
             </div>
 
             {!cloudSyncEnabled && (
@@ -323,7 +353,7 @@ export default function SettingsPage() {
 
             {settings?.lastSyncedAt && (
               <p className="text-xs text-slate-500">
-                最終同期: {new Date(settings.lastSyncedAt).toLocaleString("ja-JP")}
+                最終バックアップ/復元: {new Date(settings.lastSyncedAt).toLocaleString("ja-JP")}
               </p>
             )}
 
