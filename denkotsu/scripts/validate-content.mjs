@@ -24,6 +24,7 @@ const CATEGORIES = [
 
 const errors = [];
 const warnings = [];
+const failOnWarn = process.argv.includes("--fail-on-warn");
 
 function addError(message) {
   errors.push(message);
@@ -202,6 +203,10 @@ function printReport() {
     console.warn(`\n[validate-content] warnings: ${warnings.length}`);
     for (const message of warnings) {
       console.warn(`- ${message}`);
+    }
+    if (failOnWarn) {
+      console.error("[validate-content] warnings are treated as errors in strict mode.");
+      process.exit(1);
     }
   }
 
