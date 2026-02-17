@@ -23,6 +23,15 @@
 - dev-log は対応する実装コミットに含める。
 - ユーザーが明示的に指示しない限り、履歴改変（rebase/squash/amend）は行わない。
 
+## バージョン運用ルール（SemVer）
+- アプリバージョンは `denkotsu/package.json` の `version` を正とする。
+- Conventional Commits に基づき、次の粒度でバージョンを上げる。
+  - `fix:` は `patch`（例: `0.1.0` → `0.1.1`）
+  - `feat:` は `minor`（例: `0.1.0` → `0.2.0`）
+  - `feat!:` または `BREAKING CHANGE:` は `major`（例: `0.1.0` → `1.0.0`）
+- `docs:` / `chore:` / `ci:` / `test:` は原則バージョンを上げない。
+- リリース時は `npm version patch|minor|major` を使い、タグ `vX.Y.Z` を付与する。
+
 ## UI変更時の承認フロー
 - UIに変更を入れた場合は、コミット前にローカルで画面確認（スクリーンショット共有を含む）を行う。
 - UI確認結果をユーザーに提示し、承認を得るまで `git commit` / `git push` / デプロイを実行しない。

@@ -38,6 +38,11 @@ npm run build:turbopack
 
 # 一括チェック（lint + data check + build）
 npm run check
+
+# リリース（バージョン更新）
+npm run release:patch
+npm run release:minor
+npm run release:major
 ```
 
 ## ディレクトリ（主要）
@@ -66,6 +71,26 @@ denkotsu/
   - `npm run lint`
   - `npm run check:data:ci`
   - `npm run build`
+
+## バージョニング運用（SemVer）
+
+- バージョンの正本は `denkotsu/package.json` の `version`
+- コミット種別に応じて更新
+  - `fix:` → patch（`0.1.0` → `0.1.1`）
+  - `feat:` → minor（`0.1.0` → `0.2.0`）
+  - `feat!:` / `BREAKING CHANGE:` → major（`0.1.0` → `1.0.0`）
+- `docs:` / `chore:` / `ci:` / `test:` は原則バージョン更新なし
+
+### リリース手順
+
+1. `denkotsu` でリリースコマンドを実行（`release:patch|minor|major`）
+2. 生成されたコミット `chore(release): vX.Y.Z` とタグを push
+
+```bash
+cd denkotsu
+npm run release:patch
+git push origin main --follow-tags
+```
 
 ## デプロイ（Cloudflare Pages / 無料枠）
 
