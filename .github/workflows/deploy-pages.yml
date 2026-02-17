@@ -13,15 +13,31 @@ jobs:
     defaults:
       run:
         working-directory: denkotsu
-
-    # Secrets未設定時は安全にスキップ。
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' && secrets.CLOUDFLARE_PROJECT_NAME != '' }}
+    env:
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CF_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check Cloudflare secrets
+        id: secrets_check
+        shell: bash
+        run: |
+          if [[ -n "${CF_API_TOKEN}" && -n "${CF_ACCOUNT_ID}" && -n "${CF_PROJECT_NAME}" ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip deploy (Secrets not configured)
+        if: steps.secrets_check.outputs.ready != 'true'
+        run: echo "Cloudflare Secrets are not configured. Deploy steps are skipped."
+
       - name: Setup Node.js
+        if: steps.secrets_check.outputs.ready == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -29,29 +45,31 @@ jobs:
           cache-dependency-path: denkotsu/package-lock.json
 
       - name: Install dependencies
+        if: steps.secrets_check.outputs.ready == 'true'
         run: npm ci
 
       - name: Build static files
+        if: steps.secrets_check.outputs.ready == 'true'
         run: npm run build
 
       - name: Deploy (Production)
-        if: github.event_name == 'push'
+        if: steps.secrets_check.outputs.ready == 'true' && github.event_name == 'push'
         uses: cloudflare/pages-action@v1
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          apiToken: ${{ env.CF_API_TOKEN }}
+          accountId: ${{ env.CF_ACCOUNT_ID }}
+          projectName: ${{ env.CF_PROJECT_NAME }}
           directory: denkotsu/out
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: main
 
       - name: Deploy (Preview)
-        if: github.event_name == 'pull_request'
+        if: steps.secrets_check.outputs.ready == 'true' && github.event_name == 'pull_request'
         uses: cloudflare/pages-action@v1
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          apiToken: ${{ env.CF_API_TOKEN }}
+          accountId: ${{ env.CF_ACCOUNT_ID }}
+          projectName: ${{ env.CF_PROJECT_NAME }}
           directory: denkotsu/out
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: preview

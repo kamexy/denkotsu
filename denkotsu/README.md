@@ -79,7 +79,7 @@ denkotsu/
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_PROJECT_NAME`
 
-Secrets が未設定の場合、`deploy` ジョブは自動でスキップされます。
+Secrets が未設定の場合、`deploy` ジョブ内でデプロイ手順のみ自動スキップされます。
 
 ## 運用ルール
 
