@@ -13,6 +13,7 @@ import {
   pushCloudSnapshot,
   validateSyncId,
 } from "@/lib/cloud-sync";
+import { RecommendedToolsSection } from "@/components/monetization/RecommendedToolsSection";
 import type { UserSettings } from "@/types";
 
 type SyncWizardMode = "backup" | "restore";
@@ -509,6 +510,8 @@ export default function SettingsPage() {
             </p>
           )}
         </div>
+
+        <RecommendedToolsSection />
 
         {/* About */}
         <div className="panel p-4">

@@ -154,6 +154,33 @@ npx wrangler deploy
 - 英字と数字を両方含む
 - `123456` など推測されやすい文字列は不可
 
+## 収益化導線（初期）
+
+設定画面に「試験対策グッズ（スポンサーリンク）」を表示できます。
+
+- `NEXT_PUBLIC_MONETIZATION_ENABLED`
+  - `1`（デフォルト）: 表示する
+  - `0`: 非表示にする
+- `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG`
+  - Amazonアソシエイトタグ（任意）
+  - 設定すると Amazon URL に `tag` パラメータを自動付与します
+
+### AdSense（バナー広告）基盤
+
+セッション完了画面に、無料ユーザー向けのバナー広告枠を表示できます。
+
+- `NEXT_PUBLIC_ADSENSE_ENABLED`
+  - `1`: 広告表示を有効化
+  - `0`（デフォルト）: 広告表示を無効化
+- `NEXT_PUBLIC_ADSENSE_CLIENT_ID`
+  - 例: `ca-pub-xxxxxxxxxxxxxxxx`
+- `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`
+  - セッション完了画面の広告スロットID
+- `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`
+  - 広告表示を開始する最小回答数（デフォルト `10`）
+- `NEXT_PUBLIC_ADS_PREVIEW`
+  - `1` のとき、AdSense ID未設定でも広告プレースホルダーを表示（UI確認用）
+
 ## 運用ルール
 
 - リポジトリ共通ルールはルートの `AGENTS.md` を参照してください。

@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { SessionStats } from "@/types";
+import { AdSlot } from "@/components/ads/AdSlot";
+import {
+  getSessionCompleteAdSlot,
+  shouldShowSessionCompleteAd,
+} from "@/lib/ads";
 
 interface SessionCompleteProps {
   session: SessionStats;
@@ -31,6 +36,8 @@ export function SessionComplete({
       ? Math.round((session.correctCount / session.totalAnswered) * 100)
       : 0;
   const diff = passPower - session.previousPassPower;
+  const showBannerAd = shouldShowSessionCompleteAd(session.totalAnswered);
+  const adSlot = getSessionCompleteAdSlot();
 
   return (
     <motion.div
@@ -91,6 +98,7 @@ export function SessionComplete({
           またいつでもどうぞ
         </button>
       </div>
+      {showBannerAd && <AdSlot slot={adSlot} className="mt-3 w-full max-w-sm" />}
     </motion.div>
   );
 }

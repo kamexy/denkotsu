@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { ServiceWorkerRegistrar } from "@/components/layout/ServiceWorkerRegistrar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { CloudSyncBootstrap } from "@/components/layout/CloudSyncBootstrap";
+import { getAdsenseClientId, isAdsenseScriptEnabled } from "@/lib/ads";
 
 const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
 let syncApiOrigin = "";
@@ -14,7 +16,46 @@ if (syncApiBase) {
   }
 }
 
-const connectSrc = ["'self'", syncApiOrigin || "https://*.workers.dev"].join(" ");
+const shouldLoadAdsenseScript = isAdsenseScriptEnabled();
+const adsenseClientId = getAdsenseClientId();
+
+const scriptSrcTokens = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
+const styleSrcTokens = ["'self'", "'unsafe-inline'"];
+const imgSrcTokens = ["'self'", "data:"];
+const connectSrcTokens = ["'self'", syncApiOrigin || "https://*.workers.dev"];
+const frameSrcTokens = ["'self'"];
+
+if (shouldLoadAdsenseScript) {
+  scriptSrcTokens.push("https://pagead2.googlesyndication.com");
+  imgSrcTokens.push(
+    "https://pagead2.googlesyndication.com",
+    "https://tpc.googlesyndication.com",
+    "https://googleads.g.doubleclick.net",
+    "https://*.doubleclick.net",
+    "https://*.googleusercontent.com"
+  );
+  connectSrcTokens.push(
+    "https://pagead2.googlesyndication.com",
+    "https://tpc.googlesyndication.com",
+    "https://googleads.g.doubleclick.net",
+    "https://*.doubleclick.net"
+  );
+  frameSrcTokens.push(
+    "https://tpc.googlesyndication.com",
+    "https://googleads.g.doubleclick.net",
+    "https://*.doubleclick.net"
+  );
+}
+
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src ${scriptSrcTokens.join(" ")}`,
+  `style-src ${styleSrcTokens.join(" ")}`,
+  `img-src ${imgSrcTokens.join(" ")}`,
+  "font-src 'self'",
+  `connect-src ${connectSrcTokens.join(" ")}`,
+  `frame-src ${frameSrcTokens.join(" ")}`,
+].join("; ");
 
 export const metadata: Metadata = {
   title: "デンコツ - 第二種電気工事士",
@@ -48,7 +89,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta
           httpEquiv="Content-Security-Policy"
-          content={`default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src ${connectSrc};`}
+          content={contentSecurityPolicy}
         />
       </head>
       <body className="antialiased">
@@ -56,6 +97,15 @@ export default function RootLayout({
           {children}
           <BottomNav />
         </div>
+        {shouldLoadAdsenseScript && (
+          <Script
+            id="adsense-script"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <ServiceWorkerRegistrar />
         <CloudSyncBootstrap />
       </body>
