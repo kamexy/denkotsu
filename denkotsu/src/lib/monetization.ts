@@ -10,8 +10,11 @@ export interface RecommendedTool {
 
 const monetizationEnabled =
   (process.env.NEXT_PUBLIC_MONETIZATION_ENABLED ?? "1").trim() !== "0";
+
+const DEFAULT_AMAZON_ASSOCIATE_TAG = "kamexy-22";
 const amazonAssociateTag = (
-  process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG ?? ""
+  process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG ??
+  DEFAULT_AMAZON_ASSOCIATE_TAG
 ).trim();
 
 function appendAmazonAssociateTag(url: string): string {
@@ -37,4 +40,3 @@ export function getRecommendedTools(): RecommendedTool[] {
     url: appendAmazonAssociateTag(tool.url),
   }));
 }
-

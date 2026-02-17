@@ -163,7 +163,8 @@ npx wrangler deploy
   - `0`: 非表示にする
 - `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG`
   - Amazonアソシエイトタグ（任意）
-  - 設定すると Amazon URL に `tag` パラメータを自動付与します
+  - 未設定時は `kamexy-22` を使用します
+  - 設定すると Amazon URL の `tag` パラメータを上書きします
 
 ### AdSense（バナー広告）基盤
 
