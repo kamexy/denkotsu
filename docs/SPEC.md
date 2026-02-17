@@ -609,17 +609,17 @@ questions テーブル:
 
 4択クイズ + 合格力メーター + PWA。サーバー不要、月額125円で公開。
 
-- [ ] プロジェクトセットアップ (Next.js 15, Tailwind, TypeScript)
-- [ ] 問題データ100問の作成 (JSON)
-- [ ] IndexedDB スキーマ構築 (Dexie.js)
-- [ ] クイズ画面 (QuizCard, OptionButton, QuizResult)
-- [ ] 出題アルゴリズム (未回答優先 → 苦手優先 → 時間経過順)
-- [ ] 合格力計算エンジン (正答率 × カバー率 × 時間減衰)
-- [ ] 学習統計画面 (ProgressRing, CategoryBar)
-- [ ] 設定画面 (サウンド/バイブ切替, データリセット)
-- [ ] PWA対応 (manifest.json, Service Worker, オフラインキャッシュ)
-- [ ] Cloudflare Pages デプロイ + GitHub Actions CI/CD
-- [ ] Lighthouse 全項目90点以上の確認
+- [x] プロジェクトセットアップ (Next.js 15, Tailwind, TypeScript)
+- [x] 問題データ100問の作成 (JSON)
+- [x] IndexedDB スキーマ構築 (Dexie.js)
+- [x] クイズ画面 (QuizCard, OptionButton, QuizResult)
+- [x] 出題アルゴリズム (未回答優先 → 苦手優先 → 時間経過順)
+- [x] 合格力計算エンジン (正答率 × カバー率 × 時間減衰)
+- [x] 学習統計画面 (ProgressRing, CategoryBar)
+- [x] 設定画面 (サウンド/バイブ切替, データリセット)
+- [x] PWA対応 (manifest.json, Service Worker, オフラインキャッシュ)
+- [x] Cloudflare Pages デプロイ + GitHub Actions CI/CD
+- [x] Lighthouse 全項目90点以上の確認
 
 ### Phase 2: エンゲージメント強化 — [詳細仕様書](phase2-engagement.md)
 
