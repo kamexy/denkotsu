@@ -23,11 +23,11 @@ function LearnFallback() {
         <div className="h-8 w-36 rounded bg-slate-200 animate-pulse" />
         <div className="mt-2 h-4 w-56 rounded bg-slate-200 animate-pulse" />
       </div>
-      <div className="mt-3 flex gap-2 overflow-hidden">
-        {Array.from({ length: 4 }).map((_, idx) => (
+      <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {Array.from({ length: 6 }).map((_, idx) => (
           <div
             key={idx}
-            className="h-8 w-20 rounded-full bg-slate-200 animate-pulse"
+            className="h-8 rounded-full bg-slate-200 animate-pulse"
           />
         ))}
       </div>
@@ -92,8 +92,8 @@ function LearnPageContent() {
       </header>
 
       {/* Category filter tabs */}
-      <div className="overflow-x-auto scrollbar-hide">
-        <div className="flex gap-2 px-4 py-3 min-w-max">
+      <div className="px-4 pt-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <CategoryTab
             label="すべて"
             count={categoryCounts["all"]}
@@ -159,7 +159,7 @@ function CategoryTab({
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border ${
+      className={`w-full px-3 py-1.5 rounded-full text-xs font-semibold transition-colors border text-center ${
         active
           ? "bg-teal-700 text-white border-teal-700"
           : "bg-white/75 border-slate-200 text-slate-600 hover:bg-white"
