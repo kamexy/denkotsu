@@ -88,16 +88,13 @@ function TabIcon({
   }
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="7.1" stroke="currentColor" strokeWidth="1.3" />
       <path
-        d="M12 8.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z"
+        d="M12 2.8v2.3M12 18.9v2.3M2.8 12h2.3M18.9 12h2.3M5.5 5.5l1.6 1.6M16.9 16.9l1.6 1.6M5.5 18.5l1.6-1.6M16.9 7.1l1.6-1.6"
         stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M19.4 13.5a1 1 0 0 0 .2-1.1l-.6-1.1.6-1.1a1 1 0 0 0-.2-1.1l-1-.9.1-1.2a1 1 0 0 0-.7-1l-1.2-.4-.5-1.1a1 1 0 0 0-1-.6h-1.3l-.9-.9a1 1 0 0 0-1.2 0l-.9.9H9.6a1 1 0 0 0-1 .6l-.5 1.1-1.2.4a1 1 0 0 0-.7 1l.1 1.2-1 .9a1 1 0 0 0-.2 1.1l.6 1.1-.6 1.1a1 1 0 0 0 .2 1.1l1 .9-.1 1.2a1 1 0 0 0 .7 1l1.2.4.5 1.1a1 1 0 0 0 1 .6h1.3l.9.9a1 1 0 0 0 1.2 0l.9-.9h1.3a1 1 0 0 0 1-.6l.5-1.1 1.2-.4a1 1 0 0 0 .7-1l-.1-1.2 1-.9z"
-        stroke="currentColor"
-        strokeWidth="1.2"
-        strokeLinejoin="round"
+        strokeWidth="1.3"
+        strokeLinecap="round"
       />
     </svg>
   );
