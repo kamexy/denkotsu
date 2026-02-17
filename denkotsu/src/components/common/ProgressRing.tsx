@@ -19,12 +19,12 @@ export function ProgressRing({
 
   const color =
     value >= 80
-      ? "#10b981"
+      ? "#0f766e"
       : value >= 60
-        ? "#3b82f6"
+        ? "#0284c7"
         : value >= 30
           ? "#f59e0b"
-          : "#ef4444";
+          : "#e11d48";
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
@@ -34,7 +34,7 @@ export function ProgressRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#f3f4f6"
+          stroke="#d7e0ec"
           strokeWidth={strokeWidth}
         />
         <circle
@@ -51,7 +51,7 @@ export function ProgressRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-4xl font-bold" style={{ color }}>
+        <span className="font-display text-4xl font-bold" style={{ color }}>
           {value}%
         </span>
       </div>

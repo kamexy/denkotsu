@@ -26,19 +26,19 @@ export function OptionButton({
   const isThisCorrect = index === correctIndex;
 
   let className =
-    "w-full p-4 rounded-xl border-2 text-left transition-all duration-200 flex items-center gap-3 min-h-[56px]";
+    "w-full px-4 py-3.5 rounded-2xl border text-left transition-all duration-200 flex items-center gap-3 min-h-[56px]";
 
   if (showResult) {
     if (isThisCorrect) {
-      className += " border-emerald-500 bg-emerald-50 text-emerald-800";
+      className += " border-emerald-400 bg-[var(--ok-soft)] text-emerald-900";
     } else if (selected && !isCorrect) {
-      className += " border-red-400 bg-red-50 text-red-800";
+      className += " border-rose-300 bg-[var(--danger-soft)] text-rose-900";
     } else {
-      className += " border-gray-200 bg-gray-50 text-gray-400";
+      className += " border-slate-200 bg-white/70 text-slate-400";
     }
   } else {
     className +=
-      " border-gray-200 bg-white hover:bg-gray-50 active:bg-gray-100 text-gray-800 cursor-pointer";
+      " border-slate-200 bg-white/90 hover:border-teal-300 hover:bg-white active:bg-slate-50 text-slate-800 cursor-pointer shadow-[0_4px_14px_rgba(16,35,64,0.05)]";
   }
 
   return (
@@ -49,13 +49,21 @@ export function OptionButton({
       disabled={showResult}
       type="button"
     >
-      <span className="text-sm font-medium shrink-0 w-6">{labels[index]}</span>
-      <span className="text-[15px] leading-snug">{text}</span>
+      <span
+        className={`text-xs font-bold shrink-0 h-7 w-7 rounded-full flex items-center justify-center ${
+          showResult
+            ? "bg-white/70 text-slate-700"
+            : "bg-teal-100 text-teal-800"
+        }`}
+      >
+        {labels[index]}
+      </span>
+      <span className="text-[15px] leading-snug font-medium">{text}</span>
       {showResult && isThisCorrect && (
-        <span className="ml-auto text-emerald-600 text-lg shrink-0">✓</span>
+        <span className="ml-auto text-emerald-700 text-lg shrink-0">✓</span>
       )}
       {showResult && selected && !isCorrect && (
-        <span className="ml-auto text-red-500 text-lg shrink-0">✗</span>
+        <span className="ml-auto text-rose-600 text-lg shrink-0">✗</span>
       )}
     </motion.button>
   );

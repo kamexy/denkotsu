@@ -33,41 +33,41 @@ export function QuizResult({
     >
       {/* Explanation */}
       <div
-        className={`rounded-xl p-4 ${
-          isCorrect ? "bg-blue-50" : "bg-amber-50"
+        className={`panel p-4 ${
+          isCorrect ? "bg-[var(--primary-soft)]/80" : "bg-[var(--accent-soft)]/80"
         }`}
       >
         <p
           className={`text-sm font-semibold mb-1 ${
-            isCorrect ? "text-blue-700" : "text-amber-700"
+            isCorrect ? "text-teal-800" : "text-amber-800"
           }`}
         >
           {isCorrect ? "💡 解説" : "💡 正解と解説"}
         </p>
-        <p className="text-sm text-gray-700 leading-relaxed">
+        <p className="text-sm text-slate-700 leading-relaxed">
           {question.explanation}
         </p>
       </div>
 
       {/* Related key points */}
       {relatedPoints.length > 0 && (
-        <div className="mt-3">
-          <p className="text-xs text-gray-400 font-medium mb-2">
+        <div className="mt-3 panel p-4">
+          <p className="text-xs text-slate-500 font-semibold tracking-wide mb-2">
             📖 関連する要点
           </p>
           <div className="space-y-2">
             {relatedPoints.map((kp) => (
               <div
                 key={kp.id}
-                className="bg-gray-50 rounded-lg px-3 py-2.5"
+                className="rounded-xl border border-slate-200 bg-white/90 px-3 py-2.5"
               >
-                <p className="text-xs font-bold text-gray-800">{kp.title}</p>
+                <p className="text-xs font-bold text-slate-800">{kp.title}</p>
                 {kp.formula && (
-                  <p className="text-xs font-mono text-blue-600 mt-0.5">
+                  <p className="text-xs font-mono text-teal-700 mt-0.5">
                     {kp.formula}
                   </p>
                 )}
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed line-clamp-2">
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed line-clamp-2">
                   {kp.body}
                 </p>
               </div>
@@ -75,7 +75,7 @@ export function QuizResult({
           </div>
           <Link
             href={`/learn?category=${question.category}`}
-            className="inline-block text-xs text-blue-600 font-medium mt-2 hover:text-blue-700"
+            className="inline-block text-xs text-teal-700 font-semibold mt-2 hover:text-teal-800"
           >
             {CATEGORY_LABELS[question.category]}の要点をもっと見る →
           </Link>
@@ -86,14 +86,14 @@ export function QuizResult({
       <div className="flex gap-3 mt-5">
         <button
           onClick={onNext}
-          className="flex-1 py-3.5 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 active:bg-blue-800 transition-colors"
+          className="flex-1 py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-sm hover:bg-teal-800 transition-colors shadow-sm"
           type="button"
         >
           もう1問
         </button>
         <button
           onClick={onEnd}
-          className="flex-1 py-3.5 rounded-xl bg-gray-100 text-gray-600 font-semibold text-sm hover:bg-gray-200 active:bg-gray-300 transition-colors"
+          className="flex-1 py-3.5 rounded-xl bg-white/85 text-slate-600 border border-slate-200 font-semibold text-sm hover:bg-white transition-colors"
           type="button"
         >
           ここまで

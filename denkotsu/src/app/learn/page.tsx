@@ -57,12 +57,14 @@ function LearnPageContent() {
   }, []);
 
   return (
-    <div className="pb-20">
-      <header className="px-4 py-4 border-b border-gray-100">
-        <h1 className="text-xl font-bold text-gray-900">要点チェック</h1>
-        <p className="text-xs text-gray-400 mt-1">
+    <div className="pb-28">
+      <header className="px-4 pt-3">
+        <div className="panel px-4 py-3">
+          <h1 className="font-display text-2xl font-bold text-teal-800">要点チェック</h1>
+          <p className="text-xs text-slate-500 mt-1">
           試験に出る重要ポイントをサクッと確認
-        </p>
+          </p>
+        </div>
       </header>
 
       {/* Category filter tabs */}
@@ -133,14 +135,14 @@ function CategoryTab({
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+      className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border ${
         active
-          ? "bg-blue-600 text-white"
-          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+          ? "bg-teal-700 text-white border-teal-700"
+          : "bg-white/75 border-slate-200 text-slate-600 hover:bg-white"
       }`}
     >
       {label}
-      <span className={`ml-1 ${active ? "text-blue-200" : "text-gray-400"}`}>
+      <span className={`ml-1 ${active ? "text-teal-200" : "text-slate-400"}`}>
         {count}
       </span>
     </button>
@@ -148,12 +150,12 @@ function CategoryTab({
 }
 
 const CATEGORY_ACCENT: Record<Category, { bg: string; text: string; tag: string }> = {
-  electrical_theory: { bg: "bg-blue-50", text: "text-blue-700", tag: "bg-blue-100 text-blue-600" },
-  wiring_diagram: { bg: "bg-purple-50", text: "text-purple-700", tag: "bg-purple-100 text-purple-600" },
-  laws: { bg: "bg-amber-50", text: "text-amber-700", tag: "bg-amber-100 text-amber-600" },
-  construction_method: { bg: "bg-emerald-50", text: "text-emerald-700", tag: "bg-emerald-100 text-emerald-600" },
-  equipment_material: { bg: "bg-rose-50", text: "text-rose-700", tag: "bg-rose-100 text-rose-600" },
-  inspection: { bg: "bg-cyan-50", text: "text-cyan-700", tag: "bg-cyan-100 text-cyan-600" },
+  electrical_theory: { bg: "bg-teal-50/90", text: "text-teal-800", tag: "bg-teal-100 text-teal-700" },
+  wiring_diagram: { bg: "bg-sky-50/90", text: "text-sky-800", tag: "bg-sky-100 text-sky-700" },
+  laws: { bg: "bg-amber-50/90", text: "text-amber-800", tag: "bg-amber-100 text-amber-700" },
+  construction_method: { bg: "bg-emerald-50/90", text: "text-emerald-800", tag: "bg-emerald-100 text-emerald-700" },
+  equipment_material: { bg: "bg-orange-50/90", text: "text-orange-800", tag: "bg-orange-100 text-orange-700" },
+  inspection: { bg: "bg-cyan-50/90", text: "text-cyan-800", tag: "bg-cyan-100 text-cyan-700" },
 };
 
 function KeyPointCard({
@@ -181,10 +183,10 @@ function KeyPointCard({
     <button
       type="button"
       onClick={onToggle}
-      className={`w-full text-left rounded-xl border transition-all ${
+      className={`w-full text-left rounded-2xl border transition-all ${
         expanded
-          ? `${accent.bg} border-transparent shadow-sm`
-          : "bg-white border-gray-100 hover:border-gray-200"
+          ? `${accent.bg} border-white/60 shadow-sm`
+          : "bg-white/82 border-slate-200 hover:border-slate-300"
       }`}
     >
       <div className="p-4">
@@ -192,14 +194,14 @@ function KeyPointCard({
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <span
-              className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium mb-1.5 ${accent.tag}`}
+              className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold mb-1.5 ${accent.tag}`}
             >
               {CATEGORY_LABELS[category]}
             </span>
-            <h3 className="text-sm font-bold text-gray-900">{title}</h3>
+            <h3 className="text-sm font-bold text-slate-900">{title}</h3>
           </div>
           <span
-            className={`text-gray-400 text-xs transition-transform ${
+            className={`text-slate-400 text-xs transition-transform ${
               expanded ? "rotate-180" : ""
             }`}
           >
@@ -211,7 +213,7 @@ function KeyPointCard({
         {formula && (
           <div
             className={`mt-2 px-3 py-2 rounded-lg font-mono text-sm font-bold text-center ${
-              expanded ? "bg-white/70" : "bg-gray-50"
+              expanded ? "bg-white/80" : "bg-slate-50"
             } ${accent.text}`}
           >
             {formula}
@@ -229,7 +231,7 @@ function KeyPointCard({
               className="overflow-hidden"
             >
               {image && (
-                <div className="mt-3 rounded-lg overflow-hidden bg-white/70">
+                <div className="mt-3 rounded-lg overflow-hidden bg-white/85 border border-white/70">
                   <ImageLightbox
                     src={image}
                     alt={title}
@@ -237,15 +239,15 @@ function KeyPointCard({
                   />
                 </div>
               )}
-              <p className="text-sm text-gray-700 leading-relaxed mt-3">
+              <p className="text-sm text-slate-700 leading-relaxed mt-3">
                 {body}
               </p>
               {example && (
-                <div className="mt-2 px-3 py-2 bg-white/60 rounded-lg">
-                  <p className="text-xs text-gray-500 font-medium mb-0.5">
+                <div className="mt-2 px-3 py-2 bg-white/70 rounded-lg border border-white/70">
+                  <p className="text-xs text-slate-500 font-semibold mb-0.5">
                     例
                   </p>
-                  <p className="text-sm text-gray-700">{example}</p>
+                  <p className="text-sm text-slate-700">{example}</p>
                 </div>
               )}
             </motion.div>

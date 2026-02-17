@@ -36,57 +36,61 @@ export function SessionComplete({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="flex flex-col items-center justify-center min-h-[60vh] px-6"
+      className="flex flex-col items-center justify-center min-h-[60vh] px-4"
     >
-      <p className="text-2xl font-bold text-gray-900 mb-6">{message}</p>
+      <div className="panel w-full max-w-sm px-5 py-6 text-center">
+        <p className="font-display text-3xl font-bold text-teal-800 mb-4">
+          {message}
+        </p>
 
-      <div className="text-center mb-6">
-        <span className="text-sm text-gray-500">合格力</span>
-        <div className="flex items-center justify-center gap-2 mt-1">
-          <span className="text-lg text-gray-400">
-            {session.previousPassPower}%
-          </span>
-          <span className="text-gray-400">→</span>
-          <span className="text-3xl font-bold text-blue-600">
-            {passPower}%
-          </span>
-          {diff > 0 && (
-            <span className="text-sm text-emerald-600 font-semibold">
-              +{diff}
+        <div className="mb-6">
+          <span className="text-sm text-slate-500 font-medium">合格力</span>
+          <div className="flex items-end justify-center gap-2 mt-1">
+            <span className="font-display text-lg text-slate-400">
+              {session.previousPassPower}%
             </span>
-          )}
-        </div>
-      </div>
-
-      <div className="bg-gray-50 rounded-xl p-5 w-full max-w-xs mb-8">
-        <p className="text-sm text-gray-500 mb-3">今回のまとめ</p>
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-gray-600">解いた問題</span>
-            <span className="font-semibold text-gray-900">
-              {session.totalAnswered}問
+            <span className="text-slate-400 pb-1">→</span>
+            <span className="font-display text-4xl font-bold text-teal-700 leading-none">
+              {passPower}%
             </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">正解率</span>
-            <span className="font-semibold text-gray-900">{correctRate}%</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">正解数</span>
-            <span className="font-semibold text-gray-900">
-              {session.correctCount}/{session.totalAnswered}
-            </span>
+            {diff > 0 && (
+              <span className="text-sm text-emerald-700 font-semibold pb-1">
+                +{diff}
+              </span>
+            )}
           </div>
         </div>
-      </div>
 
-      <button
-        onClick={onRestart}
-        className="w-full max-w-xs py-3.5 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm hover:bg-gray-200 transition-colors"
-        type="button"
-      >
-        またいつでもどうぞ
-      </button>
+        <div className="rounded-xl bg-white/85 border border-slate-200 p-4 mb-5 text-left">
+          <p className="text-sm text-slate-500 mb-3 font-semibold">今回のまとめ</p>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-slate-600">解いた問題</span>
+              <span className="font-semibold text-slate-900">
+                {session.totalAnswered}問
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-600">正解率</span>
+              <span className="font-semibold text-slate-900">{correctRate}%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-600">正解数</span>
+              <span className="font-semibold text-slate-900">
+                {session.correctCount}/{session.totalAnswered}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={onRestart}
+          className="w-full py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-sm hover:bg-teal-800 transition-colors"
+          type="button"
+        >
+          またいつでもどうぞ
+        </button>
+      </div>
     </motion.div>
   );
 }

@@ -19,12 +19,12 @@ export const CATEGORY_LABELS: Record<Category, string> = {
 
 /** 分野の色 */
 export const CATEGORY_COLORS: Record<Category, string> = {
-  electrical_theory: "bg-blue-500",
-  wiring_diagram: "bg-purple-500",
+  electrical_theory: "bg-teal-600",
+  wiring_diagram: "bg-sky-600",
   laws: "bg-amber-500",
-  construction_method: "bg-emerald-500",
-  equipment_material: "bg-rose-500",
-  inspection: "bg-cyan-500",
+  construction_method: "bg-emerald-600",
+  equipment_material: "bg-orange-500",
+  inspection: "bg-cyan-600",
 };
 
 /** 試験での出題比率 */

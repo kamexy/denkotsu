@@ -32,6 +32,10 @@ export default function Home() {
   }, [loadNext]);
 
   const totalQuestions = useMemo(() => getAllQuestions().length, []);
+  const correctRate =
+    session.totalAnswered > 0
+      ? Math.round((session.correctCount / session.totalAnswered) * 100)
+      : 0;
 
   if (state === "complete") {
     return (
@@ -46,36 +50,45 @@ export default function Home() {
   }
 
   return (
-    <div className="pb-20">
+    <div className="pb-28">
       {/* Header */}
-      <header className="sticky top-0 bg-white z-40 px-4 py-3 border-b border-gray-100">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">⚡</span>
-            <span className="text-sm font-semibold text-gray-700">
-              合格力 {passPower}%
-            </span>
+      <header className="sticky top-0 z-40 px-4 pt-3 pb-2 backdrop-blur-sm">
+        <div className="panel px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.12em] text-slate-500">
+                PASS POWER
+              </p>
+              <p className="font-display text-2xl font-bold text-teal-800">
+                {passPower}%
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-[11px] font-medium text-slate-500">進行</p>
+              <p className="font-display text-base font-semibold text-slate-700">
+                Q.{session.totalAnswered + 1}/{totalQuestions}
+              </p>
+            </div>
           </div>
-          {session.totalAnswered > 0 && (
-            <span className="text-xs text-gray-400">
-              今回 {session.totalAnswered}問 ・ 正解率{" "}
-              {Math.round(
-                (session.correctCount / session.totalAnswered) * 100
-              )}
-              %
-            </span>
-          )}
-          <span className="text-xs text-gray-400">
-            Q.{session.totalAnswered + 1}/{totalQuestions}
-          </span>
+          <div className="mt-2.5 h-2 rounded-full bg-teal-900/10 overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-teal-700 to-emerald-500 transition-all duration-500"
+              style={{ width: `${passPower}%` }}
+            />
+          </div>
+          <p className="mt-2 text-xs text-slate-500">
+            {session.totalAnswered > 0
+              ? `今回 ${session.totalAnswered}問 ・ 正解率 ${correctRate}%`
+              : "まずは1問、10秒でスタート"}
+          </p>
         </div>
       </header>
 
       {/* Quiz content */}
-      <div className="pt-5">
+      <div className="pt-3">
         {state === "loading" && (
           <div className="flex items-center justify-center h-64">
-            <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-2 border-teal-700 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
@@ -100,15 +113,17 @@ export default function Home() {
           )}
 
         {state === "error" && (
-          <div className="flex flex-col items-center justify-center h-64 gap-4 px-4">
-            <p className="text-sm text-gray-500">問題の読み込みに失敗しました</p>
+          <div className="px-4">
+            <div className="panel flex flex-col items-center justify-center h-64 gap-4">
+              <p className="text-sm text-slate-600">問題の読み込みに失敗しました</p>
             <button
               type="button"
               onClick={loadNext}
-              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg font-medium"
+              className="px-4 py-2 rounded-lg bg-teal-700 text-white text-sm font-semibold hover:bg-teal-800"
             >
               再試行
             </button>
+            </div>
           </div>
         )}
       </div>

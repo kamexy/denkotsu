@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: "#2563eb",
+  themeColor: "#0f766e",
   viewportFit: "cover",
 };
 
@@ -39,7 +39,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <div className="mx-auto max-w-[480px] min-h-dvh bg-white relative pb-16">
+        <div className="app-frame relative pb-16">
           {children}
           <BottomNav />
         </div>
