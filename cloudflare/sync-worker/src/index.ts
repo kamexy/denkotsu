@@ -27,7 +27,26 @@ type SyncSnapshot = {
   settings: SyncSettingsSnapshot;
 };
 
-const SYNC_ID_PATTERN = /^[a-zA-Z0-9_-]{6,64}$/;
+const SYNC_ID_MIN_LENGTH = 12;
+const SYNC_ID_MAX_LENGTH = 64;
+const SYNC_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+const WEAK_SYNC_ID_TOKENS = new Set([
+  "123456",
+  "1234567",
+  "12345678",
+  "123456789",
+  "1234567890",
+  "000000",
+  "111111",
+  "999999",
+  "password",
+  "qwerty",
+  "abc123",
+  "letmein",
+  "test",
+  "sample",
+  "denkotsu",
+]);
 
 function corsHeaders(env: Env): Headers {
   const origin = (env.CORS_ORIGIN ?? "*").trim() || "*";
@@ -49,10 +68,42 @@ function jsonResponse(
   return new Response(JSON.stringify(body), { status, headers });
 }
 
+function compactSyncId(syncId: string): string {
+  return syncId.toLowerCase().replace(/[-_]/g, "");
+}
+
+function isSequentialChars(value: string): boolean {
+  if (value.length < 6) return false;
+  let ascending = true;
+  let descending = true;
+
+  for (let i = 1; i < value.length; i += 1) {
+    const diff = value.charCodeAt(i) - value.charCodeAt(i - 1);
+    if (diff !== 1) ascending = false;
+    if (diff !== -1) descending = false;
+  }
+
+  return ascending || descending;
+}
+
 function validateSyncId(syncId: unknown): string | null {
   if (typeof syncId !== "string") return null;
   const normalized = syncId.trim();
-  return SYNC_ID_PATTERN.test(normalized) ? normalized : null;
+  if (normalized.length < SYNC_ID_MIN_LENGTH || normalized.length > SYNC_ID_MAX_LENGTH) {
+    return null;
+  }
+  if (!SYNC_ID_PATTERN.test(normalized)) {
+    return null;
+  }
+
+  const compact = compactSyncId(normalized);
+  if (compact.length < 10) return null;
+  if (!/[a-z]/i.test(compact) || !/[0-9]/.test(compact)) return null;
+  if (/^([a-z0-9])\1+$/i.test(compact)) return null;
+  if (isSequentialChars(compact)) return null;
+  if (WEAK_SYNC_ID_TOKENS.has(compact)) return null;
+
+  return normalized;
 }
 
 function isValidSnapshot(input: unknown): input is SyncSnapshot {

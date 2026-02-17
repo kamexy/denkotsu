@@ -1,7 +1,27 @@
 import { db, getSettings, updateSettings } from "@/lib/db";
 import type { SyncSnapshot, UserSettings } from "@/types";
 
-const SYNC_ID_PATTERN = /^[a-zA-Z0-9_-]{6,64}$/;
+const SYNC_ID_MIN_LENGTH = 12;
+const SYNC_ID_MAX_LENGTH = 64;
+const SYNC_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+const SYNC_ID_GENERATE_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
+const WEAK_SYNC_ID_TOKENS = new Set([
+  "123456",
+  "1234567",
+  "12345678",
+  "123456789",
+  "1234567890",
+  "000000",
+  "111111",
+  "999999",
+  "password",
+  "qwerty",
+  "abc123",
+  "letmein",
+  "test",
+  "sample",
+  "denkotsu",
+]);
 const STARTUP_SYNC_GUARD_KEY = "denkotsu:startup-sync-done";
 
 type PullResponse =
@@ -28,14 +48,92 @@ function getSyncApiBase(): string {
   return (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim().replace(/\/+$/, "");
 }
 
-function normalizeSyncId(syncId: string): string {
+export function normalizeSyncId(syncId: string): string {
   return syncId.trim();
 }
 
-function assertValidSyncId(syncId: string): void {
-  if (!SYNC_ID_PATTERN.test(syncId)) {
-    throw new Error("同期コードは6〜64文字の英数字・ハイフン・アンダースコアで入力してください。");
+function compactSyncId(syncId: string): string {
+  return syncId.toLowerCase().replace(/[-_]/g, "");
+}
+
+function isSequentialChars(value: string): boolean {
+  if (value.length < 6) return false;
+  let ascending = true;
+  let descending = true;
+
+  for (let i = 1; i < value.length; i += 1) {
+    const diff = value.charCodeAt(i) - value.charCodeAt(i - 1);
+    if (diff !== 1) ascending = false;
+    if (diff !== -1) descending = false;
   }
+
+  return ascending || descending;
+}
+
+export function validateSyncId(rawSyncId: string): string | null {
+  const syncId = normalizeSyncId(rawSyncId);
+  if (syncId.length < SYNC_ID_MIN_LENGTH || syncId.length > SYNC_ID_MAX_LENGTH) {
+    return "同期コードは12〜64文字で入力してください。";
+  }
+  if (!SYNC_ID_PATTERN.test(syncId)) {
+    return "同期コードは英数字・ハイフン・アンダースコアのみ使用できます。";
+  }
+
+  const compact = compactSyncId(syncId);
+  if (compact.length < 10) {
+    return "同期コードは英数字を10文字以上含めてください。";
+  }
+  if (!/[a-z]/i.test(compact) || !/[0-9]/.test(compact)) {
+    return "同期コードには英字と数字を両方含めてください。";
+  }
+  if (/^([a-z0-9])\1+$/i.test(compact)) {
+    return "同じ文字の繰り返しは使用できません。";
+  }
+  if (isSequentialChars(compact)) {
+    return "連続した文字列（例: 123456）は使用できません。";
+  }
+  if (WEAK_SYNC_ID_TOKENS.has(compact)) {
+    return "推測されやすい同期コードは使用できません。";
+  }
+
+  return null;
+}
+
+function assertValidSyncId(syncId: string): void {
+  const error = validateSyncId(syncId);
+  if (error) {
+    throw new Error(error);
+  }
+}
+
+function secureRandomInt(maxExclusive: number): number {
+  const cryptoObject = globalThis.crypto;
+  if (cryptoObject?.getRandomValues) {
+    const values = new Uint32Array(1);
+    cryptoObject.getRandomValues(values);
+    return values[0] % maxExclusive;
+  }
+  return Math.floor(Math.random() * maxExclusive);
+}
+
+function randomSyncChunk(size: number): string {
+  let chunk = "";
+  for (let i = 0; i < size; i += 1) {
+    const index = secureRandomInt(SYNC_ID_GENERATE_ALPHABET.length);
+    chunk += SYNC_ID_GENERATE_ALPHABET[index];
+  }
+  return chunk;
+}
+
+export function generateStrongSyncId(): string {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const candidate = `dkt-${randomSyncChunk(4)}-${randomSyncChunk(4)}-${randomSyncChunk(4)}`;
+    if (!validateSyncId(candidate)) {
+      return candidate;
+    }
+  }
+
+  return `dkt-${Date.now().toString(36)}-${randomSyncChunk(6)}`;
 }
 
 function ensureSyncConfigured(): string {

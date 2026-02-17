@@ -6,10 +6,12 @@ import { getSettings, updateSettings, resetAllData } from "@/lib/db";
 import { getAllQuestions } from "@/lib/questions";
 import {
   applyRemoteSnapshot,
+  generateStrongSyncId,
   getLocalLatestTimestamp,
   isCloudSyncEnabled,
   pullCloudSnapshot,
   pushCloudSnapshot,
+  validateSyncId,
 } from "@/lib/cloud-sync";
 import type { UserSettings } from "@/types";
 
@@ -24,6 +26,10 @@ export default function SettingsPage() {
   const [cancelNotice, setCancelNotice] = useState(false);
   const totalQuestions = getAllQuestions().length;
   const cloudSyncEnabled = isCloudSyncEnabled();
+  const normalizedSyncIdInput = syncIdInput.trim();
+  const syncIdValidationError = normalizedSyncIdInput
+    ? validateSyncId(normalizedSyncIdInput)
+    : null;
 
   useEffect(() => {
     getSettings().then(setSettings);
@@ -44,6 +50,14 @@ export default function SettingsPage() {
   const handleSaveSyncId = async () => {
     if (!settings || syncPending) return;
     const normalized = syncIdInput.trim();
+    if (normalized) {
+      const error = validateSyncId(normalized);
+      if (error) {
+        setSyncNotice(error);
+        return;
+      }
+    }
+
     setSyncPending("save");
     setSyncNotice(null);
     try {
@@ -69,6 +83,11 @@ export default function SettingsPage() {
     }
     if (!syncId) {
       setSyncNotice("先に同期コードを入力してください。");
+      return;
+    }
+    const syncIdError = validateSyncId(syncId);
+    if (syncIdError) {
+      setSyncNotice(syncIdError);
       return;
     }
 
@@ -100,6 +119,11 @@ export default function SettingsPage() {
     }
     if (!syncId) {
       setSyncNotice("先に同期コードを入力してください。");
+      return;
+    }
+    const syncIdError = validateSyncId(syncId);
+    if (syncIdError) {
+      setSyncNotice(syncIdError);
       return;
     }
 
@@ -157,6 +181,13 @@ export default function SettingsPage() {
     setTimeout(() => {
       setCancelNotice(false);
     }, 1200);
+  };
+
+  const handleGenerateSyncId = () => {
+    if (syncPending) return;
+    const generated = generateStrongSyncId();
+    setSyncIdInput(generated);
+    setSyncNotice("推測されにくい同期コードを生成しました。保存してから利用してください。");
   };
 
   return (
@@ -234,13 +265,30 @@ export default function SettingsPage() {
                 type="text"
                 value={syncIdInput}
                 onChange={(e) => setSyncIdInput(e.target.value)}
-                placeholder="例: denkotsu-main-01"
+                placeholder="例: dkt-p4n7-z8k2-v6w9"
                 className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
                 disabled={syncPending !== null}
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
               />
             </label>
+            <p className="text-xs text-slate-500">
+              英字と数字を含む12文字以上を推奨（推測しやすいコードは利用不可）
+            </p>
+            {syncIdValidationError && (
+              <p className="text-xs font-semibold text-amber-700">{syncIdValidationError}</p>
+            )}
 
             <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={handleGenerateSyncId}
+                disabled={syncPending !== null}
+                className="px-3 py-2 rounded-lg border border-teal-300 bg-teal-50 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
+              >
+                強いコードを生成
+              </button>
               <button
                 type="button"
                 onClick={handleSaveSyncId}
