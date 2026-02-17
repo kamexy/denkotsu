@@ -16,6 +16,9 @@ import {
 import type { UserSettings } from "@/types";
 
 type SyncWizardMode = "backup" | "restore";
+const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0";
+const APP_BUILD = (process.env.NEXT_PUBLIC_APP_BUILD ?? "").trim();
+const APP_VERSION_LABEL = APP_BUILD ? `${APP_VERSION}+${APP_BUILD}` : APP_VERSION;
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
@@ -515,8 +518,7 @@ export default function SettingsPage() {
           <div className="space-y-2 text-sm text-slate-600">
             <div className="flex justify-between">
               <span>バージョン</span>
-              {/* TODO: package.jsonまたは環境変数からバージョンを取得する */}
-              <span className="text-slate-500 font-medium">1.0.0</span>
+              <span className="text-slate-500 font-medium">{APP_VERSION_LABEL}</span>
             </div>
             <div className="flex justify-between">
               <span>問題数</span>
