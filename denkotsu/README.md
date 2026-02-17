@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# デンコツ（第二種電気工事士 学習アプリ）
 
-## Getting Started
+第二種電気工事士向けの学習アプリです。  
+クイズ・要点チェック・成績可視化を中心に、PWA とオフライン学習に対応しています。
 
-First, run the development server:
+## 技術スタック
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS v4
+- Framer Motion
+- Dexie.js (IndexedDB)
+
+## セットアップ
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd denkotsu
+npm ci
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 開発コマンド
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# 開発サーバー
+npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# lint
+npm run lint
 
-## Learn More
+# 問題データ・画像整合チェック
+npm run check:data
 
-To learn more about Next.js, take a look at the following resources:
+# ビルド（安定重視: webpack）
+npm run build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 参考: Turbopackビルド
+npm run build:turbopack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 一括チェック（lint + data check + build）
+npm run check
+```
 
-## Deploy on Vercel
+## ディレクトリ（主要）
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+denkotsu/
+├── src/
+│   ├── app/                 # 画面
+│   ├── components/          # UIコンポーネント
+│   ├── data/                # questions / key-points JSON
+│   ├── hooks/               # useQuiz / usePassPower
+│   ├── lib/                 # quiz-engine / pass-power / db
+│   └── types/               # 型定義
+├── public/
+│   ├── images/              # 図記号・回路図・器具画像
+│   ├── manifest.json
+│   └── sw.js
+├── scripts/
+│   └── validate-content.mjs # データ整合チェック
+└── docs/dev-log/            # 開発ログ
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 品質ゲート
+
+- CI（`.github/workflows/ci.yml`）で以下を実行します。
+  - `npm run lint`
+  - `npm run check:data`
+  - `npm run build`
+
+## 運用ルール
+
+- リポジトリ共通ルールはルートの `AGENTS.md` を参照してください。
+- 変更時は `docs/dev-log/` に履歴を追記し、適切な粒度でコミットします。
