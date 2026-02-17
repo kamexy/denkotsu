@@ -10,9 +10,33 @@ import { ImageLightbox } from "@/components/ui/ImageLightbox";
 
 export default function LearnPage() {
   return (
-    <Suspense>
+    <Suspense fallback={<LearnFallback />}>
       <LearnPageContent />
     </Suspense>
+  );
+}
+
+function LearnFallback() {
+  return (
+    <div className="pb-28 px-4 pt-3">
+      <div className="panel px-4 py-3">
+        <div className="h-8 w-36 rounded bg-slate-200 animate-pulse" />
+        <div className="mt-2 h-4 w-56 rounded bg-slate-200 animate-pulse" />
+      </div>
+      <div className="mt-3 flex gap-2 overflow-hidden">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <div
+            key={idx}
+            className="h-8 w-20 rounded-full bg-slate-200 animate-pulse"
+          />
+        ))}
+      </div>
+      <div className="mt-3 space-y-3">
+        {Array.from({ length: 3 }).map((_, idx) => (
+          <div key={idx} className="panel h-28 animate-pulse" />
+        ))}
+      </div>
+    </div>
   );
 }
 
