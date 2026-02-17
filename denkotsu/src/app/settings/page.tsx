@@ -9,7 +9,9 @@ import type { UserSettings } from "@/types";
 export default function SettingsPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [resetPending, setResetPending] = useState(false);
   const [resetDone, setResetDone] = useState(false);
+  const [cancelNotice, setCancelNotice] = useState(false);
   const totalQuestions = getAllQuestions().length;
 
   useEffect(() => {
@@ -24,12 +26,29 @@ export default function SettingsPage() {
   };
 
   const handleReset = async () => {
-    await resetAllData();
+    if (resetPending) return;
+
+    setResetPending(true);
+    try {
+      await resetAllData();
+      setShowResetConfirm(false);
+      setCancelNotice(false);
+      setResetDone(true);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+    } finally {
+      setResetPending(false);
+    }
+  };
+
+  const handleCancelReset = () => {
+    if (resetPending) return;
     setShowResetConfirm(false);
-    setResetDone(true);
+    setCancelNotice(true);
     setTimeout(() => {
-      window.location.href = "/";
-    }, 1500);
+      setCancelNotice(false);
+    }, 1200);
   };
 
   return (
@@ -98,8 +117,12 @@ export default function SettingsPage() {
           {!showResetConfirm ? (
             <button
               type="button"
-              onClick={() => setShowResetConfirm(true)}
-              className="text-sm text-rose-600 hover:text-rose-700 py-2 font-semibold"
+              onClick={() => {
+                setResetDone(false);
+                setCancelNotice(false);
+                setShowResetConfirm(true);
+              }}
+              className="text-sm text-rose-600 hover:text-rose-700 py-2 font-semibold transition-colors active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 rounded-lg"
             >
               学習データをリセット
             </button>
@@ -112,14 +135,23 @@ export default function SettingsPage() {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="px-4 py-2 bg-rose-600 text-white text-sm rounded-lg font-semibold"
+                  disabled={resetPending}
+                  className="px-4 py-2 min-w-[118px] bg-rose-600 text-white text-sm rounded-lg font-semibold transition-all hover:bg-rose-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
                 >
-                  リセットする
+                  {resetPending ? (
+                    <span className="inline-flex items-center gap-2">
+                      <span className="h-3.5 w-3.5 rounded-full border-2 border-white/80 border-t-transparent animate-spin" />
+                      リセット中...
+                    </span>
+                  ) : (
+                    "リセットする"
+                  )}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowResetConfirm(false)}
-                  className="px-4 py-2 bg-white text-slate-600 text-sm rounded-lg font-semibold border border-slate-200"
+                  onClick={handleCancelReset}
+                  disabled={resetPending}
+                  className="px-4 py-2 bg-white text-slate-700 text-sm rounded-lg font-semibold border border-slate-300 transition-all hover:bg-slate-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
                 >
                   キャンセル
                 </button>
@@ -127,8 +159,14 @@ export default function SettingsPage() {
             </div>
           )}
 
+          {cancelNotice && (
+            <p className="text-sm text-slate-600 mt-2 font-semibold" aria-live="polite">
+              キャンセルしました
+            </p>
+          )}
+
           {resetDone && (
-            <p className="text-sm text-emerald-700 mt-2 font-semibold">
+            <p className="text-sm text-emerald-700 mt-2 font-semibold" aria-live="polite">
               リセットしました
             </p>
           )}
