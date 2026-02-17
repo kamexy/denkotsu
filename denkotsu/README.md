@@ -64,8 +64,22 @@ denkotsu/
 
 - CI（`.github/workflows/ci.yml`）で以下を実行します。
   - `npm run lint`
-  - `npm run check:data`
+  - `npm run check:data:ci`
   - `npm run build`
+
+## デプロイ（Cloudflare Pages / 無料枠）
+
+- デプロイ workflow: `.github/workflows/deploy-pages.yml`
+- `main` / `master` への push: 本番デプロイ
+- Pull Request: プレビューデプロイ
+
+### 必要な GitHub Secrets
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_PROJECT_NAME`
+
+Secrets が未設定の場合、`deploy` ジョブは自動でスキップされます。
 
 ## 運用ルール
 
