@@ -30,7 +30,7 @@ export function BottomNav() {
                 }`}
               >
                 <TabIcon name={tab.icon} active={active} />
-                <span className="text-[11px] mt-1 font-semibold tracking-wide">
+                <span className="text-[13px] mt-1 font-semibold tracking-wide">
                   {tab.label}
                 </span>
               </Link>
@@ -49,7 +49,7 @@ function TabIcon({
   name: (typeof tabs)[number]["icon"];
   active: boolean;
 }) {
-  const className = `h-4 w-4 ${active ? "text-white" : "text-teal-800"}`;
+  const className = `h-6 w-6 ${active ? "text-white" : "text-teal-800"}`;
   if (name === "quiz") {
     return (
       <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
