@@ -5,6 +5,7 @@
     "Yu Gothic", Meiryo, sans-serif;
   --font-display: "DIN Alternate", "Avenir Next", "Helvetica Neue",
     "Hiragino Sans", sans-serif;
+
   --bg-1: #f2f6fb;
   --bg-2: #e7eef7;
   --surface: rgba(255, 255, 255, 0.84);
@@ -12,12 +13,64 @@
   --ink: #112240;
   --muted: #4e5d78;
   --line: #cfdae8;
+  --panel-border: rgba(207, 218, 232, 0.9);
+  --panel-border-strong: rgba(204, 216, 233, 0.95);
+  --panel-shadow: 0 10px 30px rgba(23, 42, 79, 0.06);
+  --panel-shadow-strong: 0 6px 20px rgba(23, 42, 79, 0.06);
+  --panel-inset: rgba(255, 255, 255, 0.9);
+
+  --frame-glass-a: rgba(255, 255, 255, 0.7);
+  --frame-glass-b: rgba(255, 255, 255, 0.45);
+  --frame-grad-a: #eef4fb;
+  --frame-grad-b: #f5f9ff;
+  --bg-halo-teal: rgba(15, 118, 110, 0.16);
+  --bg-halo-amber: rgba(245, 158, 11, 0.14);
+  --frame-halo-teal: rgba(15, 118, 110, 0.22);
+  --frame-halo-amber: rgba(245, 158, 11, 0.18);
+
   --primary: #0f766e;
   --primary-soft: #d7f5ef;
   --accent: #f59e0b;
   --accent-soft: #ffeed0;
   --danger-soft: #ffe3db;
   --ok-soft: #daf6e8;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg-1: #0b1624;
+  --bg-2: #121f32;
+  --surface: rgba(20, 32, 48, 0.84);
+  --surface-strong: #1b2b43;
+  --ink: #e7eef9;
+  --muted: #9aacc8;
+  --line: #324762;
+  --panel-border: rgba(59, 79, 109, 0.9);
+  --panel-border-strong: rgba(66, 89, 122, 0.95);
+  --panel-shadow: 0 14px 32px rgba(0, 0, 0, 0.36);
+  --panel-shadow-strong: 0 10px 24px rgba(0, 0, 0, 0.3);
+  --panel-inset: rgba(255, 255, 255, 0.05);
+
+  --frame-glass-a: rgba(20, 32, 48, 0.78);
+  --frame-glass-b: rgba(12, 22, 36, 0.7);
+  --frame-grad-a: #0f1c2e;
+  --frame-grad-b: #15243a;
+  --bg-halo-teal: rgba(45, 212, 191, 0.2);
+  --bg-halo-amber: rgba(251, 191, 36, 0.18);
+  --frame-halo-teal: rgba(45, 212, 191, 0.26);
+  --frame-halo-amber: rgba(251, 191, 36, 0.24);
+
+  --primary: #2dd4bf;
+  --primary-soft: rgba(45, 212, 191, 0.24);
+  --accent: #fbbf24;
+  --accent-soft: rgba(251, 191, 36, 0.22);
+  --danger-soft: rgba(249, 168, 212, 0.2);
+  --ok-soft: rgba(110, 231, 183, 0.2);
+  color-scheme: dark;
+}
+
+:root[data-theme-preference="system"] {
+  color-scheme: light dark;
 }
 
 body {
@@ -27,11 +80,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--ink);
   background:
-    radial-gradient(circle at 8% 12%, rgba(15, 118, 110, 0.16), transparent 30%),
-    radial-gradient(circle at 88% 0%, rgba(245, 158, 11, 0.14), transparent 36%),
+    radial-gradient(circle at 8% 12%, var(--bg-halo-teal), transparent 30%),
+    radial-gradient(circle at 88% 0%, var(--bg-halo-amber), transparent 36%),
     linear-gradient(180deg, var(--bg-1), var(--bg-2));
   padding-top: env(safe-area-inset-top);
   min-height: 100dvh;
+  transition:
+    background-color 0.24s ease,
+    color 0.24s ease,
+    background-image 0.24s ease;
 }
 
 * {
@@ -57,10 +114,14 @@ a,
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(158deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.45)),
-    linear-gradient(0deg, #f5f9ff, #eef4fb);
+    linear-gradient(158deg, var(--frame-glass-a), var(--frame-glass-b)),
+    linear-gradient(0deg, var(--frame-grad-b), var(--frame-grad-a));
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
+  transition:
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    background-image 0.24s ease;
 }
 
 .app-frame::before {
@@ -73,7 +134,7 @@ a,
   border-radius: 999px;
   background: radial-gradient(
     circle at 40% 40%,
-    rgba(15, 118, 110, 0.22),
+    var(--frame-halo-teal),
     rgba(15, 118, 110, 0)
   );
   pointer-events: none;
@@ -89,7 +150,7 @@ a,
   border-radius: 999px;
   background: radial-gradient(
     circle at 55% 45%,
-    rgba(245, 158, 11, 0.18),
+    var(--frame-halo-amber),
     rgba(245, 158, 11, 0)
   );
   pointer-events: none;
@@ -97,17 +158,173 @@ a,
 
 .panel {
   background: var(--surface);
-  border: 1px solid rgba(207, 218, 232, 0.9);
+  border: 1px solid var(--panel-border);
   border-radius: 18px;
   box-shadow:
-    0 10px 30px rgba(23, 42, 79, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    var(--panel-shadow),
+    inset 0 1px 0 var(--panel-inset);
   backdrop-filter: blur(8px);
+  transition:
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    color 0.24s ease;
 }
 
 .panel-strong {
   background: var(--surface-strong);
-  border: 1px solid rgba(204, 216, 233, 0.95);
+  border: 1px solid var(--panel-border-strong);
   border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(23, 42, 79, 0.06);
+  box-shadow: var(--panel-shadow-strong);
+  transition:
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+:root[data-theme="dark"] .text-slate-900 {
+  color: #eff5ff !important;
+}
+
+:root[data-theme="dark"] .text-slate-800 {
+  color: #dde9f9 !important;
+}
+
+:root[data-theme="dark"] .text-slate-700 {
+  color: #cddcf2 !important;
+}
+
+:root[data-theme="dark"] .text-slate-600 {
+  color: #afc1dc !important;
+}
+
+:root[data-theme="dark"] .text-slate-500 {
+  color: #95a8c6 !important;
+}
+
+:root[data-theme="dark"] .text-slate-400 {
+  color: #7f95b6 !important;
+}
+
+:root[data-theme="dark"] .text-teal-800 {
+  color: #7be4d5 !important;
+}
+
+:root[data-theme="dark"] .text-teal-700 {
+  color: #61d9c8 !important;
+}
+
+:root[data-theme="dark"] .text-emerald-700 {
+  color: #8ae8c1 !important;
+}
+
+:root[data-theme="dark"] .text-amber-700 {
+  color: #ffd895 !important;
+}
+
+:root[data-theme="dark"] .text-rose-600,
+:root[data-theme="dark"] .text-rose-700 {
+  color: #ff9ab1 !important;
+}
+
+:root[data-theme="dark"] .bg-white {
+  background-color: rgba(26, 40, 60, 0.96) !important;
+}
+
+:root[data-theme="dark"] .bg-white\/90 {
+  background-color: rgba(28, 44, 66, 0.92) !important;
+}
+
+:root[data-theme="dark"] .bg-white\/85 {
+  background-color: rgba(28, 44, 66, 0.88) !important;
+}
+
+:root[data-theme="dark"] .bg-white\/82 {
+  background-color: rgba(28, 44, 66, 0.84) !important;
+}
+
+:root[data-theme="dark"] .bg-white\/80 {
+  background-color: rgba(28, 44, 66, 0.82) !important;
+}
+
+:root[data-theme="dark"] .bg-white\/75 {
+  background-color: rgba(28, 44, 66, 0.78) !important;
+}
+
+:root[data-theme="dark"] .bg-white\/70 {
+  background-color: rgba(28, 44, 66, 0.72) !important;
+}
+
+:root[data-theme="dark"] .bg-slate-50 {
+  background-color: rgba(28, 44, 66, 0.7) !important;
+}
+
+:root[data-theme="dark"] .bg-slate-50\/90 {
+  background-color: rgba(28, 44, 66, 0.84) !important;
+}
+
+:root[data-theme="dark"] .bg-slate-100 {
+  background-color: #2a3e5c !important;
+}
+
+:root[data-theme="dark"] .bg-slate-100\/70 {
+  background-color: rgba(42, 62, 92, 0.74) !important;
+}
+
+:root[data-theme="dark"] .bg-slate-200,
+:root[data-theme="dark"] .bg-slate-200\/70 {
+  background-color: #365070 !important;
+}
+
+:root[data-theme="dark"] .bg-slate-300 {
+  background-color: #4d6280 !important;
+}
+
+:root[data-theme="dark"] .border-slate-200 {
+  border-color: #4b6487 !important;
+}
+
+:root[data-theme="dark"] .border-slate-300 {
+  border-color: #5c7496 !important;
+}
+
+:root[data-theme="dark"] .border-white\/70 {
+  border-color: rgba(135, 165, 201, 0.36) !important;
+}
+
+:root[data-theme="dark"] .bg-teal-50 {
+  background-color: rgba(45, 212, 191, 0.22) !important;
+}
+
+:root[data-theme="dark"] .bg-teal-100 {
+  background-color: rgba(45, 212, 191, 0.28) !important;
+}
+
+:root[data-theme="dark"] .border-teal-300 {
+  border-color: rgba(77, 229, 209, 0.62) !important;
+}
+
+:root[data-theme="dark"] .bg-amber-100 {
+  background-color: rgba(251, 191, 36, 0.28) !important;
+}
+
+:root[data-theme="dark"] .bg-rose-50 {
+  background-color: rgba(244, 114, 182, 0.14) !important;
+}
+
+:root[data-theme="dark"] .border-rose-200 {
+  border-color: rgba(251, 113, 133, 0.44) !important;
+}
+
+:root[data-theme="dark"] .hover\:bg-slate-50:hover {
+  background-color: rgba(34, 51, 74, 0.94) !important;
+}
+
+:root[data-theme="dark"] .hover\:bg-white:hover,
+:root[data-theme="dark"] .hover\:bg-white\/70:hover {
+  background-color: rgba(35, 53, 77, 0.96) !important;
+}
+
+:root[data-theme="dark"] .hover\:border-slate-300:hover {
+  border-color: #6a83a8 !important;
 }

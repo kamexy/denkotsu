@@ -4,6 +4,7 @@ import "./globals.css";
 import { ServiceWorkerRegistrar } from "@/components/layout/ServiceWorkerRegistrar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { CloudSyncBootstrap } from "@/components/layout/CloudSyncBootstrap";
+import { ThemeBootstrap } from "@/components/layout/ThemeBootstrap";
 import { getAdsenseClientId, isAdsenseScriptEnabled } from "@/lib/ads";
 
 const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
@@ -57,6 +58,26 @@ const contentSecurityPolicy = [
   `frame-src ${frameSrcTokens.join(" ")}`,
 ].join("; ");
 
+const themeInitScript = `(() => {
+  try {
+    const key = "denkotsu:theme-preference";
+    const raw = window.localStorage.getItem(key);
+    const preference = raw === "light" || raw === "dark" || raw === "system"
+      ? raw
+      : "system";
+    const isDark = typeof window.matchMedia === "function"
+      && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const resolved = preference === "system" ? (isDark ? "dark" : "light") : preference;
+    const root = document.documentElement;
+    root.dataset.themePreference = preference;
+    root.dataset.theme = resolved;
+  } catch {
+    const root = document.documentElement;
+    root.dataset.themePreference = "system";
+    root.dataset.theme = "light";
+  }
+})();`;
+
 export const metadata: Metadata = {
   title: "デンコツ - 第二種電気工事士",
   description:
@@ -84,8 +105,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" data-theme-preference="system" data-theme="light">
       <head>
+        <script
+          id="theme-init"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta
           httpEquiv="Content-Security-Policy"
@@ -108,6 +133,7 @@ export default function RootLayout({
         )}
         <ServiceWorkerRegistrar />
         <CloudSyncBootstrap />
+        <ThemeBootstrap />
       </body>
     </html>
   );

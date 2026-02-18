@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { getSettings, updateSettings, resetAllData } from "@/lib/db";
 import { getAllQuestions } from "@/lib/questions";
+import { applyThemePreference } from "@/lib/theme";
 import {
   applyRemoteSnapshot,
   generateStrongSyncId,
@@ -14,9 +15,14 @@ import {
   validateSyncId,
 } from "@/lib/cloud-sync";
 import { RecommendedToolsSection } from "@/components/monetization/RecommendedToolsSection";
-import type { UserSettings } from "@/types";
+import type { ThemePreference, UserSettings } from "@/types";
 
 type SyncWizardMode = "backup" | "restore";
+const THEME_OPTIONS: ReadonlyArray<{ value: ThemePreference; label: string }> = [
+  { value: "system", label: "システム" },
+  { value: "light", label: "ライト" },
+  { value: "dark", label: "ダーク" },
+];
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0";
 const APP_BUILD = (process.env.NEXT_PUBLIC_APP_BUILD ?? "").trim();
 const APP_VERSION_LABEL = APP_BUILD ? `${APP_VERSION}+${APP_BUILD}` : APP_VERSION;
@@ -42,6 +48,7 @@ export default function SettingsPage() {
   const isSyncIdSaved = normalizedSyncIdInput.length > 0 && normalizedSyncIdInput === savedSyncId;
   const hasValidInputSyncId = normalizedSyncIdInput.length > 0 && !syncIdValidationError;
   const isWizardStep1Done = hasValidInputSyncId && isSyncIdSaved;
+  const themePreference = settings?.themePreference ?? "system";
 
   useEffect(() => {
     getSettings().then(setSettings);
@@ -57,6 +64,24 @@ export default function SettingsPage() {
     const newValue = !settings[key];
     await updateSettings({ [key]: newValue });
     setSettings({ ...settings, [key]: newValue });
+  };
+
+  const handleThemePreferenceChange = async (next: ThemePreference) => {
+    if (!settings) return;
+    const previous = settings.themePreference;
+    if (previous === next) return;
+
+    applyThemePreference(next);
+    setSettings((prev) => (prev ? { ...prev, themePreference: next } : prev));
+
+    try {
+      await updateSettings({ themePreference: next });
+      const latest = await getSettings();
+      setSettings(latest);
+    } catch {
+      applyThemePreference(previous);
+      setSettings((prev) => (prev ? { ...prev, themePreference: previous } : prev));
+    }
   };
 
   const handleSaveSyncId = async () => {
@@ -160,6 +185,7 @@ export default function SettingsPage() {
       await applyRemoteSnapshot(result.snapshot, syncId, result.serverUpdatedAt);
       const latest = await getSettings();
       setSettings(latest);
+      applyThemePreference(latest.themePreference);
       setSyncNotice("クラウドのバックアップをこの端末に復元しました。");
     } catch (error) {
       const message = error instanceof Error ? error.message : "復元に失敗しました。";
@@ -264,6 +290,36 @@ export default function SettingsPage() {
                 }`}
               />
             </button>
+          </div>
+
+          <div className="pt-2 pb-1">
+            <p className="text-sm text-slate-500 mb-2">テーマ</p>
+            <div className="grid grid-cols-3 gap-2">
+              {THEME_OPTIONS.map((option) => {
+                const active = themePreference === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      void handleThemePreferenceChange(option.value);
+                    }}
+                    aria-pressed={active}
+                    disabled={!settings}
+                    className={`px-2.5 py-2 rounded-lg border text-sm font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${
+                      active
+                        ? "border-teal-600 bg-teal-700 text-white"
+                        : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-2 text-sm text-slate-500">
+              デフォルトは「システム」で、端末の設定に連動します。
+            </p>
           </div>
         </div>
 

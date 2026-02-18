@@ -1,5 +1,5 @@
 import { db, getSettings, updateSettings } from "@/lib/db";
-import type { SyncSnapshot, UserSettings } from "@/types";
+import type { SyncSnapshot, ThemePreference, UserSettings } from "@/types";
 
 const SYNC_ID_MIN_LENGTH = 12;
 const SYNC_ID_MAX_LENGTH = 64;
@@ -148,8 +148,15 @@ function toSyncSettingsSnapshot(settings: UserSettings): SyncSnapshot["settings"
   return {
     soundEnabled: settings.soundEnabled,
     vibrationEnabled: settings.vibrationEnabled,
+    themePreference: settings.themePreference,
     updatedAt: settings.updatedAt ?? Date.now(),
   };
+}
+
+function normalizeThemePreference(value: unknown): ThemePreference {
+  return value === "light" || value === "dark" || value === "system"
+    ? value
+    : "system";
 }
 
 function sanitizeSnapshot(input: SyncSnapshot): SyncSnapshot {
@@ -185,6 +192,7 @@ function sanitizeSnapshot(input: SyncSnapshot): SyncSnapshot {
   const settings = {
     soundEnabled: Boolean(input.settings?.soundEnabled),
     vibrationEnabled: Boolean(input.settings?.vibrationEnabled),
+    themePreference: normalizeThemePreference(input.settings?.themePreference),
     updatedAt:
       typeof input.settings?.updatedAt === "number"
         ? input.settings.updatedAt
@@ -303,6 +311,7 @@ export async function applyRemoteSnapshot(
       id: "default",
       soundEnabled: normalized.settings.soundEnabled,
       vibrationEnabled: normalized.settings.vibrationEnabled,
+      themePreference: normalized.settings.themePreference,
       syncId,
       lastSyncedAt: serverUpdatedAt,
       updatedAt: normalized.settings.updatedAt || now,

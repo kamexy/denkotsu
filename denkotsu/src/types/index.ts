@@ -95,6 +95,9 @@ export interface SessionStats {
   previousPassPower: number;
 }
 
+/** テーマ設定 */
+export type ThemePreference = "system" | "light" | "dark";
+
 /** 要点カード */
 export interface KeyPoint {
   id: string;
@@ -111,6 +114,7 @@ export interface UserSettings {
   id: string;
   soundEnabled: boolean;
   vibrationEnabled: boolean;
+  themePreference: ThemePreference;
   syncId?: string;
   lastSyncedAt?: number;
   updatedAt: number;
@@ -120,6 +124,7 @@ export interface UserSettings {
 export interface SyncSettingsSnapshot {
   soundEnabled: boolean;
   vibrationEnabled: boolean;
+  themePreference: ThemePreference;
   updatedAt: number;
 }
 

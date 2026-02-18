@@ -1,5 +1,18 @@
 import Dexie, { type Table } from "dexie";
-import type { AnswerRecord, SpacedRepetition, UserSettings } from "@/types";
+import type {
+  AnswerRecord,
+  SpacedRepetition,
+  ThemePreference,
+  UserSettings,
+} from "@/types";
+
+const DEFAULT_THEME_PREFERENCE: ThemePreference = "system";
+
+function normalizeThemePreference(value: unknown): ThemePreference {
+  return value === "light" || value === "dark" || value === "system"
+    ? value
+    : DEFAULT_THEME_PREFERENCE;
+}
 
 export class DenkotsuDB extends Dexie {
   answers!: Table<AnswerRecord>;
@@ -27,6 +40,7 @@ export async function getSettings(): Promise<UserSettings> {
       id: "default",
       soundEnabled: s.soundEnabled ?? true,
       vibrationEnabled: s.vibrationEnabled ?? true,
+      themePreference: normalizeThemePreference(s.themePreference),
       syncId: s.syncId,
       lastSyncedAt: s.lastSyncedAt,
       updatedAt: s.updatedAt ?? now,
@@ -35,6 +49,7 @@ export async function getSettings(): Promise<UserSettings> {
     const needsUpdate =
       s.soundEnabled !== normalized.soundEnabled ||
       s.vibrationEnabled !== normalized.vibrationEnabled ||
+      s.themePreference !== normalized.themePreference ||
       s.syncId !== normalized.syncId ||
       s.lastSyncedAt !== normalized.lastSyncedAt ||
       s.updatedAt !== normalized.updatedAt;
@@ -50,6 +65,7 @@ export async function getSettings(): Promise<UserSettings> {
     id: "default",
     soundEnabled: true,
     vibrationEnabled: true,
+    themePreference: DEFAULT_THEME_PREFERENCE,
     updatedAt: now,
   };
   await db.settings.put(defaults);

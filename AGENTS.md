@@ -30,10 +30,12 @@
   - `feat:` は `minor`（例: `0.1.0` → `0.2.0`）
   - `feat!:` または `BREAKING CHANGE:` は `major`（例: `0.1.0` → `1.0.0`）
 - `docs:` / `chore:` / `ci:` / `test:` は原則バージョンを上げない。
-- リリース時は `npm version patch|minor|major` を使い、タグ `vX.Y.Z` を付与する。
+- エージェントが `fix:` / `feat:` / `feat!:` でコミットする際は、コミット前に必ず `denkotsu` で `npm version patch|minor|major --no-git-tag-version` を実行し、`package.json` と `package-lock.json` を同コミットに含める。
+- リリース時にタグを付与する場合は、別途 `npm version patch|minor|major` を実行して `vX.Y.Z` を作成する。
 
 ## UI変更時の承認フロー
-- UIに変更を入れた場合は、コミット前にローカルで画面確認（スクリーンショット共有を含む）を行う。
+- UIに変更を入れた場合は、コミット前にローカルで画面確認を行う。
+- スクリーンショット共有は必須としない（ユーザーがローカルアクセスで確認する運用を優先）。
 - UI確認結果をユーザーに提示し、承認を得るまで `git commit` / `git push` / デプロイを実行しない。
 
 ## 品質確認ルール
