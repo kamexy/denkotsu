@@ -13,6 +13,7 @@ interface ImageLightboxProps {
 
 export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
   const [open, setOpen] = useState(false);
+  const isSvg = src.toLowerCase().endsWith(".svg");
 
   const handleOpen = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -31,7 +32,7 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
         width={1200}
         height={900}
         sizes="(max-width: 480px) 100vw, 480px"
-        className={`${className} h-auto cursor-zoom-in`}
+        className={`${className} h-auto cursor-zoom-in ${isSvg ? "diagram-image rounded-md" : ""}`}
         onClick={handleOpen}
       />
       {open &&
@@ -59,7 +60,7 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
                   width={1600}
                   height={1200}
                   sizes="92vw"
-                  className="w-full h-full max-h-[78vh] object-contain"
+                  className={`w-full h-full max-h-[78vh] object-contain ${isSvg ? "diagram-image rounded-md" : ""}`}
                 />
               </motion.div>
               <button

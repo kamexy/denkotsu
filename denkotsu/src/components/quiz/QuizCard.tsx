@@ -35,7 +35,7 @@ export function QuizCard({
         </div>
 
         {question.image && (
-          <div className="mb-4 rounded-xl overflow-hidden bg-slate-100/70 border border-slate-200">
+          <div className="diagram-surface mb-4 rounded-xl overflow-hidden border">
             <ImageLightbox
               src={question.image}
               alt="問題画像"

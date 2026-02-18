@@ -255,7 +255,7 @@ function KeyPointCard({
               className="overflow-hidden"
             >
               {image && (
-                <div className="mt-3 rounded-lg overflow-hidden bg-white/85 border border-white/70">
+                <div className="diagram-surface mt-3 rounded-lg overflow-hidden border">
                   <ImageLightbox
                     src={image}
                     alt={title}
