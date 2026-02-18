@@ -221,23 +221,23 @@ export default function SettingsPage() {
       <div className="px-4 py-4 space-y-4">
         {/* Sound / Vibration toggles */}
         <div className="panel p-4 space-y-1">
-          <p className="text-xs text-slate-500 uppercase tracking-[0.12em] mb-1">
+          <p className="text-sm text-slate-500 uppercase tracking-[0.12em] mb-1">
             学習体験
           </p>
           <div className="flex items-center justify-between py-3">
-            <span className="text-sm text-slate-700 font-medium">サウンド</span>
+            <span className="text-base text-slate-700 font-medium">サウンド</span>
             <button
               type="button"
               role="switch"
               aria-checked={settings?.soundEnabled ?? false}
               aria-label="サウンド"
               onClick={() => toggleSetting("soundEnabled")}
-              className={`relative w-11 h-6 rounded-full transition-colors ${
+              className={`relative w-12 h-7 rounded-full transition-colors ${
                 settings?.soundEnabled ? "bg-teal-700" : "bg-slate-300"
               }`}
             >
               <span
-                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${
                   settings?.soundEnabled ? "translate-x-5" : "translate-x-0"
                 }`}
               />
@@ -245,19 +245,19 @@ export default function SettingsPage() {
           </div>
 
           <div className="flex items-center justify-between py-3">
-            <span className="text-sm text-slate-700 font-medium">バイブレーション</span>
+            <span className="text-base text-slate-700 font-medium">バイブレーション</span>
             <button
               type="button"
               role="switch"
               aria-checked={settings?.vibrationEnabled ?? false}
               aria-label="バイブレーション"
               onClick={() => toggleSetting("vibrationEnabled")}
-              className={`relative w-11 h-6 rounded-full transition-colors ${
+              className={`relative w-12 h-7 rounded-full transition-colors ${
                 settings?.vibrationEnabled ? "bg-teal-700" : "bg-slate-300"
               }`}
             >
               <span
-                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${
                   settings?.vibrationEnabled
                     ? "translate-x-5"
                     : "translate-x-0"
@@ -269,18 +269,18 @@ export default function SettingsPage() {
 
         {/* Data section */}
         <div className="panel p-4">
-          <p className="text-xs text-slate-500 uppercase tracking-[0.12em] mb-3">
+          <p className="text-sm text-slate-500 uppercase tracking-[0.12em] mb-3">
             データ
           </p>
 
           <div className="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-3 mb-3">
-            <p className="text-sm font-semibold text-slate-700">クラウド同期（β）</p>
-            <p className="text-xs text-slate-500">
+            <p className="text-base font-semibold text-slate-700">クラウド同期（β）</p>
+            <p className="text-sm text-slate-500">
               2台以上の端末で学習データを移すための機能です。
             </p>
 
             <div className="rounded-lg border border-slate-200 bg-slate-50/90 p-3 space-y-2">
-              <p className="text-xs font-semibold text-slate-700">まず目的を選択</p>
+              <p className="text-sm font-semibold text-slate-700">まず目的を選択</p>
               <div className="grid gap-2">
                 <button
                   type="button"
@@ -291,9 +291,9 @@ export default function SettingsPage() {
                       : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                   }`}
                 >
-                  <span className="block text-sm font-semibold leading-tight">バックアップを作る</span>
+                  <span className="block text-base font-semibold leading-tight">バックアップを作る</span>
                   <span
-                    className={`block mt-0.5 text-xs leading-tight ${
+                    className={`block mt-0.5 text-sm leading-tight ${
                       syncWizardMode === "backup"
                         ? "text-teal-50/95"
                         : "text-slate-500"
@@ -311,9 +311,9 @@ export default function SettingsPage() {
                       : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                   }`}
                 >
-                  <span className="block text-sm font-semibold leading-tight">バックアップを復元</span>
+                  <span className="block text-base font-semibold leading-tight">バックアップを復元</span>
                   <span
-                    className={`block mt-0.5 text-xs leading-tight ${
+                    className={`block mt-0.5 text-sm leading-tight ${
                       syncWizardMode === "restore"
                         ? "text-teal-50/95"
                         : "text-slate-500"
@@ -327,9 +327,9 @@ export default function SettingsPage() {
 
             <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-3">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-xs font-semibold text-slate-700">STEP 1: 同期コードを準備</p>
+                <p className="text-sm font-semibold text-slate-700">STEP 1: 同期コードを準備</p>
                 <span
-                  className={`text-[11px] font-semibold rounded-full px-2 py-0.5 ${
+                  className={`text-[12px] font-semibold rounded-full px-2 py-0.5 ${
                     isWizardStep1Done
                       ? "bg-emerald-100 text-emerald-700"
                       : "bg-amber-100 text-amber-700"
@@ -339,13 +339,13 @@ export default function SettingsPage() {
                 </span>
               </div>
               <label className="block space-y-1">
-                <span className="text-xs text-slate-500">同期コード（端末間で共通）</span>
+                <span className="text-sm text-slate-500">同期コード（端末間で共通）</span>
                 <input
                   type="text"
                   value={syncIdInput}
                   onChange={(e) => setSyncIdInput(e.target.value)}
                   placeholder="例: dkt-p4n7-z8k2-v6w9"
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
                   disabled={syncPending !== null}
                   autoCapitalize="off"
                   autoCorrect="off"
@@ -357,32 +357,32 @@ export default function SettingsPage() {
                   type="button"
                   onClick={handleGenerateSyncId}
                   disabled={syncPending !== null}
-                  className="w-full sm:w-auto px-2.5 py-1.5 rounded-md border border-teal-300 bg-teal-50 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
+                  className="w-full sm:w-auto px-2.5 py-1.5 rounded-md border border-teal-300 bg-teal-50 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100 disabled:opacity-60"
                 >
                   新しいコードを作る
                 </button>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-sm text-slate-500">
                 英字と数字を含む12文字以上（推測しやすいコードは利用不可）
               </p>
               {hasSavedSyncId && (
-                <p className="text-xs text-slate-500">
+                <p className="text-sm text-slate-500">
                   この端末に保存中のコード: <span className="font-mono">{savedSyncId}</span>
                 </p>
               )}
               {normalizedSyncIdInput && !isSyncIdSaved && (
-                <p className="text-xs font-semibold text-amber-700">
+                <p className="text-sm font-semibold text-amber-700">
                   入力中のコードは未保存です。「このコードを保存」を押してください。
                 </p>
               )}
               {syncIdValidationError && (
-                <p className="text-xs font-semibold text-amber-700">{syncIdValidationError}</p>
+                <p className="text-sm font-semibold text-amber-700">{syncIdValidationError}</p>
               )}
               <button
                 type="button"
                 onClick={handleSaveSyncId}
                 disabled={syncPending !== null}
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
               >
                 {syncPending === "save" ? "保存中..." : "このコードを保存"}
               </button>
@@ -390,11 +390,11 @@ export default function SettingsPage() {
 
             <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-3">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-xs font-semibold text-slate-700">
+                <p className="text-sm font-semibold text-slate-700">
                   STEP 2: {syncWizardMode === "backup" ? "バックアップを作成" : "バックアップを復元"}
                 </p>
                 <span
-                  className={`text-[11px] font-semibold rounded-full px-2 py-0.5 ${
+                  className={`text-[12px] font-semibold rounded-full px-2 py-0.5 ${
                     isWizardStep1Done
                       ? "bg-teal-100 text-teal-700"
                       : "bg-slate-200 text-slate-600"
@@ -403,7 +403,7 @@ export default function SettingsPage() {
                   {isWizardStep1Done ? "実行可能" : "STEP1完了後"}
                 </span>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-sm text-slate-600">
                 {syncWizardMode === "backup"
                   ? "この端末の学習データをクラウドに保存します（元端末で実行）"
                   : "クラウド上の学習データをこの端末へ読み込みます（移行先端末で実行）"}
@@ -418,7 +418,7 @@ export default function SettingsPage() {
                   !cloudSyncEnabled ||
                   !isWizardStep1Done
                 }
-                className={`w-full px-3 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-60 ${
+                className={`w-full px-3 py-2 rounded-lg text-base font-semibold transition-colors disabled:opacity-60 ${
                   syncWizardMode === "backup"
                     ? "bg-teal-700 text-white hover:bg-teal-800"
                     : "border border-teal-300 bg-teal-50 text-teal-800 hover:bg-teal-100"
@@ -435,19 +435,19 @@ export default function SettingsPage() {
             </div>
 
             {!cloudSyncEnabled && (
-              <p className="text-xs text-amber-700">
+              <p className="text-sm text-amber-700">
                 同期API未設定: `NEXT_PUBLIC_SYNC_API_BASE` を設定すると利用できます。
               </p>
             )}
 
             {settings?.lastSyncedAt && (
-              <p className="text-xs text-slate-500">
+              <p className="text-sm text-slate-500">
                 最終バックアップ/復元: {new Date(settings.lastSyncedAt).toLocaleString("ja-JP")}
               </p>
             )}
 
             {syncNotice && (
-              <p className="text-xs font-semibold text-slate-600" aria-live="polite">
+              <p className="text-sm font-semibold text-slate-600" aria-live="polite">
                 {syncNotice}
               </p>
             )}
@@ -461,13 +461,13 @@ export default function SettingsPage() {
                 setCancelNotice(false);
                 setShowResetConfirm(true);
               }}
-              className="text-sm text-rose-600 hover:text-rose-700 py-2 font-semibold transition-colors active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 rounded-lg"
+              className="text-base text-rose-600 hover:text-rose-700 py-2 font-semibold transition-colors active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 rounded-lg"
             >
               学習データをリセット
             </button>
           ) : (
             <div className="bg-rose-50 rounded-xl p-4 border border-rose-200">
-              <p className="text-sm text-rose-800 mb-3">
+              <p className="text-base text-rose-800 mb-3">
                 すべての学習データが削除されます。この操作は取り消せません。
               </p>
               <div className="flex gap-2">
@@ -475,7 +475,7 @@ export default function SettingsPage() {
                   type="button"
                   onClick={handleReset}
                   disabled={resetPending}
-                  className="px-4 py-2 min-w-[118px] bg-rose-600 text-white text-sm rounded-lg font-semibold transition-all hover:bg-rose-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
+                  className="px-4 py-2 min-w-[118px] bg-rose-600 text-white text-base rounded-lg font-semibold transition-all hover:bg-rose-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
                 >
                   {resetPending ? (
                     <span className="inline-flex items-center gap-2">
@@ -490,7 +490,7 @@ export default function SettingsPage() {
                   type="button"
                   onClick={handleCancelReset}
                   disabled={resetPending}
-                  className="px-4 py-2 bg-white text-slate-700 text-sm rounded-lg font-semibold border border-slate-300 transition-all hover:bg-slate-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
+                  className="px-4 py-2 bg-white text-slate-700 text-base rounded-lg font-semibold border border-slate-300 transition-all hover:bg-slate-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
                 >
                   キャンセル
                 </button>
@@ -499,13 +499,13 @@ export default function SettingsPage() {
           )}
 
           {cancelNotice && (
-            <p className="text-sm text-slate-600 mt-2 font-semibold" aria-live="polite">
+            <p className="text-base text-slate-600 mt-2 font-semibold" aria-live="polite">
               キャンセルしました
             </p>
           )}
 
           {resetDone && (
-            <p className="text-sm text-emerald-700 mt-2 font-semibold" aria-live="polite">
+            <p className="text-base text-emerald-700 mt-2 font-semibold" aria-live="polite">
               リセットしました
             </p>
           )}
@@ -515,10 +515,10 @@ export default function SettingsPage() {
 
         {/* About */}
         <div className="panel p-4">
-          <p className="text-xs text-slate-500 uppercase tracking-[0.12em] mb-3">
+          <p className="text-sm text-slate-500 uppercase tracking-[0.12em] mb-3">
             このアプリについて
           </p>
-          <div className="space-y-2 text-sm text-slate-600">
+          <div className="space-y-2 text-base text-slate-600">
             <div className="flex justify-between">
               <span>バージョン</span>
               <span className="text-slate-500 font-medium">{APP_VERSION_LABEL}</span>

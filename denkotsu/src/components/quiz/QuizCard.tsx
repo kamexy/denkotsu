@@ -29,7 +29,7 @@ export function QuizCard({
     >
       <div className="panel p-4 sm:p-5">
         <div className="mb-3 flex items-center justify-between">
-          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--primary-soft)] px-2.5 py-1 text-[10px] font-semibold text-teal-800 tracking-[0.08em]">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--primary-soft)] px-2.5 py-1 text-[11px] font-semibold text-teal-800 tracking-[0.08em]">
             QUICK QUIZ
           </span>
         </div>
@@ -44,7 +44,7 @@ export function QuizCard({
           </div>
         )}
 
-        <p className="text-base font-semibold text-slate-900 leading-relaxed mb-5">
+        <p className="text-lg font-semibold text-slate-900 leading-relaxed mb-5">
           {question.question}
         </p>
 

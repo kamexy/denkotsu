@@ -44,7 +44,7 @@ export default function StatsPage() {
 
         {/* Status message */}
         {pp && (
-          <p className="text-center text-sm text-slate-600 mb-5 font-medium">
+          <p className="text-center text-base text-slate-600 mb-5 font-medium">
             {pp.overall >= 80
               ? "合格圏内！"
               : pp.overall >= 60
@@ -59,7 +59,7 @@ export default function StatsPage() {
 
         {/* Category breakdown */}
         <div className="panel p-4 mb-4">
-          <h2 className="text-sm font-semibold text-slate-700 mb-4 tracking-wide">
+          <h2 className="text-base font-semibold text-slate-700 mb-4 tracking-wide">
             分野べつ
           </h2>
           <div className="space-y-3">
@@ -75,10 +75,10 @@ export default function StatsPage() {
 
         {/* Summary stats */}
         <div className="panel p-5">
-          <h2 className="text-sm font-semibold text-slate-700 mb-3 tracking-wide">
+          <h2 className="text-base font-semibold text-slate-700 mb-3 tracking-wide">
             これまでの学習
           </h2>
-          <div className="space-y-2.5 text-sm">
+          <div className="space-y-2.5 text-base">
             <div className="flex justify-between">
               <span className="text-slate-500">総回答数</span>
               <span className="font-semibold text-slate-900">

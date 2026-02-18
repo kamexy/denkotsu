@@ -6,7 +6,7 @@ export function RecommendedToolsSection() {
 
   return (
     <div className="panel p-4">
-      <p className="text-xs text-slate-500 uppercase tracking-[0.12em] mb-3">
+      <p className="text-sm text-slate-500 uppercase tracking-[0.12em] mb-3">
         試験対策グッズ
       </p>
       <div className="space-y-2">
@@ -15,20 +15,20 @@ export function RecommendedToolsSection() {
             key={tool.id}
             className="rounded-xl border border-slate-200 bg-white/80 p-3"
           >
-            <p className="text-sm font-semibold text-slate-800">{tool.name}</p>
-            <p className="mt-1 text-xs text-slate-500">{tool.description}</p>
+            <p className="text-base font-semibold text-slate-800">{tool.name}</p>
+            <p className="mt-1 text-sm text-slate-500">{tool.description}</p>
             <a
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="mt-2 inline-flex items-center rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1.5 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-100"
+              className="mt-2 inline-flex items-center rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1.5 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100"
             >
               {tool.label}
             </a>
           </article>
         ))}
       </div>
-      <p className="mt-3 text-[11px] text-slate-500">
+      <p className="mt-3 text-[12px] text-slate-500">
         外部サイトへのリンクを含みます（スポンサーリンク）。
       </p>
     </div>

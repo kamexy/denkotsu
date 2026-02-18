@@ -51,7 +51,7 @@ export function SessionComplete({
         </p>
 
         <div className="mb-6">
-          <span className="text-sm text-slate-500 font-medium">合格力</span>
+          <span className="text-base text-slate-500 font-medium">合格力</span>
           <div className="flex items-end justify-center gap-2 mt-1">
             <span className="font-display text-lg text-slate-400">
               {session.previousPassPower}%
@@ -61,7 +61,7 @@ export function SessionComplete({
               {passPower}%
             </span>
             {diff > 0 && (
-              <span className="text-sm text-emerald-700 font-semibold pb-1">
+              <span className="text-base text-emerald-700 font-semibold pb-1">
                 +{diff}
               </span>
             )}
@@ -69,8 +69,8 @@ export function SessionComplete({
         </div>
 
         <div className="rounded-xl bg-white/85 border border-slate-200 p-4 mb-5 text-left">
-          <p className="text-sm text-slate-500 mb-3 font-semibold">今回のまとめ</p>
-          <div className="space-y-2 text-sm">
+          <p className="text-base text-slate-500 mb-3 font-semibold">今回のまとめ</p>
+          <div className="space-y-2 text-base">
             <div className="flex justify-between">
               <span className="text-slate-600">解いた問題</span>
               <span className="font-semibold text-slate-900">
@@ -92,7 +92,7 @@ export function SessionComplete({
 
         <button
           onClick={onRestart}
-          className="w-full py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-sm hover:bg-teal-800 transition-colors"
+          className="w-full py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-base hover:bg-teal-800 transition-colors"
           type="button"
         >
           またいつでもどうぞ

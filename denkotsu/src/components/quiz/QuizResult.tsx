@@ -38,13 +38,13 @@ export function QuizResult({
         }`}
       >
         <p
-          className={`text-sm font-semibold mb-1 ${
+          className={`text-base font-semibold mb-1 ${
             isCorrect ? "text-teal-800" : "text-amber-800"
           }`}
         >
           {isCorrect ? "💡 解説" : "💡 正解と解説"}
         </p>
-        <p className="text-sm text-slate-700 leading-relaxed">
+        <p className="text-base text-slate-700 leading-relaxed">
           {question.explanation}
         </p>
       </div>
@@ -52,7 +52,7 @@ export function QuizResult({
       {/* Related key points */}
       {relatedPoints.length > 0 && (
         <div className="mt-3 panel p-4">
-          <p className="text-xs text-slate-500 font-semibold tracking-wide mb-2">
+          <p className="text-sm text-slate-500 font-semibold tracking-wide mb-2">
             📖 関連する要点
           </p>
           <div className="space-y-2">
@@ -61,13 +61,13 @@ export function QuizResult({
                 key={kp.id}
                 className="rounded-xl border border-slate-200 bg-white/90 px-3 py-2.5"
               >
-                <p className="text-xs font-bold text-slate-800">{kp.title}</p>
+                <p className="text-sm font-bold text-slate-800">{kp.title}</p>
                 {kp.formula && (
-                  <p className="text-xs font-mono text-teal-700 mt-0.5">
+                  <p className="text-sm font-mono text-teal-700 mt-0.5">
                     {kp.formula}
                   </p>
                 )}
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed line-clamp-2">
+                <p className="text-sm text-slate-600 mt-1 leading-relaxed line-clamp-2">
                   {kp.body}
                 </p>
               </div>
@@ -75,7 +75,7 @@ export function QuizResult({
           </div>
           <Link
             href={`/learn?category=${question.category}`}
-            className="inline-block text-xs text-teal-700 font-semibold mt-2 hover:text-teal-800"
+            className="inline-block text-sm text-teal-700 font-semibold mt-2 hover:text-teal-800"
           >
             {CATEGORY_LABELS[question.category]}の要点をもっと見る →
           </Link>
@@ -86,14 +86,14 @@ export function QuizResult({
       <div className="flex gap-3 mt-5">
         <button
           onClick={onNext}
-          className="flex-1 py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-sm hover:bg-teal-800 transition-colors shadow-sm"
+          className="flex-1 py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-base hover:bg-teal-800 transition-colors shadow-sm"
           type="button"
         >
           もう1問
         </button>
         <button
           onClick={onEnd}
-          className="flex-1 py-3.5 rounded-xl bg-white/85 text-slate-600 border border-slate-200 font-semibold text-sm hover:bg-white transition-colors"
+          className="flex-1 py-3.5 rounded-xl bg-white/85 text-slate-600 border border-slate-200 font-semibold text-base hover:bg-white transition-colors"
           type="button"
         >
           ここまで

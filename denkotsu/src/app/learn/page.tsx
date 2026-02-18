@@ -85,7 +85,7 @@ function LearnPageContent() {
       <header className="px-4 pt-3">
         <div className="panel px-4 py-3">
           <h1 className="font-display text-2xl font-bold text-teal-800">要点チェック</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
           試験に出る重要ポイントをサクッと確認
           </p>
         </div>
@@ -159,7 +159,7 @@ function CategoryTab({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full px-3 py-1.5 rounded-full text-xs font-semibold transition-colors border text-center ${
+      className={`w-full px-3 py-1.5 rounded-full text-sm font-semibold transition-colors border text-center ${
         active
           ? "bg-teal-700 text-white border-teal-700"
           : "bg-white/75 border-slate-200 text-slate-600 hover:bg-white"
@@ -218,14 +218,14 @@ function KeyPointCard({
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <span
-              className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold mb-1.5 ${accent.tag}`}
+              className={`inline-block px-2 py-0.5 rounded text-[11px] font-semibold mb-1.5 ${accent.tag}`}
             >
               {CATEGORY_LABELS[category]}
             </span>
-            <h3 className="text-sm font-bold text-slate-900">{title}</h3>
+            <h3 className="text-base font-bold text-slate-900">{title}</h3>
           </div>
           <span
-            className={`text-slate-400 text-xs transition-transform ${
+            className={`text-slate-400 text-sm transition-transform ${
               expanded ? "rotate-180" : ""
             }`}
           >
@@ -236,7 +236,7 @@ function KeyPointCard({
         {/* Formula (always visible if present) */}
         {formula && (
           <div
-            className={`mt-2 px-3 py-2 rounded-lg font-mono text-sm font-bold text-center ${
+            className={`mt-2 px-3 py-2 rounded-lg font-mono text-base font-bold text-center ${
               expanded ? "bg-white/80" : "bg-slate-50"
             } ${accent.text}`}
           >
@@ -263,15 +263,15 @@ function KeyPointCard({
                   />
                 </div>
               )}
-              <p className="text-sm text-slate-700 leading-relaxed mt-3">
+              <p className="text-base text-slate-700 leading-relaxed mt-3">
                 {body}
               </p>
               {example && (
                 <div className="mt-2 px-3 py-2 bg-white/70 rounded-lg border border-white/70">
-                  <p className="text-xs text-slate-500 font-semibold mb-0.5">
+                  <p className="text-sm text-slate-500 font-semibold mb-0.5">
                     例
                   </p>
-                  <p className="text-sm text-slate-700">{example}</p>
+                  <p className="text-base text-slate-700">{example}</p>
                 </div>
               )}
             </motion.div>

@@ -65,12 +65,12 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 text-white text-xl"
+                className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/20 text-white text-2xl"
                 aria-label="閉じる"
               >
                 ✕
               </button>
-              <p className="absolute bottom-6 text-white/60 text-xs">
+              <p className="absolute bottom-6 text-white/60 text-sm">
                 タップで閉じる
               </p>
             </motion.div>

@@ -56,7 +56,7 @@ export default function Home() {
         <div className="panel px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] font-semibold tracking-[0.12em] text-slate-500">
+              <p className="text-[12px] font-semibold tracking-[0.12em] text-slate-500">
                 PASS POWER
               </p>
               <p className="font-display text-2xl font-bold text-teal-800">
@@ -64,8 +64,8 @@ export default function Home() {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-[11px] font-medium text-slate-500">進行</p>
-              <p className="font-display text-base font-semibold text-slate-700">
+              <p className="text-[12px] font-medium text-slate-500">進行</p>
+              <p className="font-display text-lg font-semibold text-slate-700">
                 Q.{session.totalAnswered + 1}/{totalQuestions}
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function Home() {
               style={{ width: `${passPower}%` }}
             />
           </div>
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-sm text-slate-500">
             {session.totalAnswered > 0
               ? `今回 ${session.totalAnswered}問 ・ 正解率 ${correctRate}%`
               : "まずは1問、10秒でスタート"}
@@ -88,7 +88,7 @@ export default function Home() {
       <div className="pt-3">
         {state === "loading" && (
           <div className="flex items-center justify-center h-64">
-            <div className="w-8 h-8 border-2 border-teal-700 border-t-transparent rounded-full animate-spin" />
+            <div className="w-9 h-9 border-2 border-teal-700 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
@@ -115,11 +115,11 @@ export default function Home() {
         {state === "error" && (
           <div className="px-4">
             <div className="panel flex flex-col items-center justify-center h-64 gap-4">
-              <p className="text-sm text-slate-600">問題の読み込みに失敗しました</p>
+              <p className="text-base text-slate-600">問題の読み込みに失敗しました</p>
             <button
               type="button"
               onClick={loadNext}
-              className="px-4 py-2 rounded-lg bg-teal-700 text-white text-sm font-semibold hover:bg-teal-800"
+              className="px-4 py-2 rounded-lg bg-teal-700 text-white text-base font-semibold hover:bg-teal-800"
             >
               再試行
             </button>

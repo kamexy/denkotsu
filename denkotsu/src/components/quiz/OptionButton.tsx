@@ -50,7 +50,7 @@ export function OptionButton({
       type="button"
     >
       <span
-        className={`text-xs font-bold shrink-0 h-7 w-7 rounded-full flex items-center justify-center ${
+        className={`text-sm font-bold shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${
           showResult
             ? "bg-white/70 text-slate-700"
             : "bg-teal-100 text-teal-800"
@@ -58,12 +58,12 @@ export function OptionButton({
       >
         {labels[index]}
       </span>
-      <span className="text-[15px] leading-snug font-medium">{text}</span>
+      <span className="text-[16px] leading-snug font-medium">{text}</span>
       {showResult && isThisCorrect && (
-        <span className="ml-auto text-emerald-700 text-lg shrink-0">✓</span>
+        <span className="ml-auto text-emerald-700 text-xl shrink-0">✓</span>
       )}
       {showResult && selected && !isCorrect && (
-        <span className="ml-auto text-rose-600 text-lg shrink-0">✗</span>
+        <span className="ml-auto text-rose-600 text-xl shrink-0">✗</span>
       )}
     </motion.button>
   );

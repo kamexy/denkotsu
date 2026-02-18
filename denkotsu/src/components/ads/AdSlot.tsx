@@ -39,7 +39,7 @@ export function AdSlot({ slot, className }: AdSlotProps) {
   return (
     <aside className={className}>
       <div className="panel p-3">
-        <p className="text-[10px] uppercase tracking-[0.12em] text-slate-400">
+        <p className="text-[11px] uppercase tracking-[0.12em] text-slate-400">
           Sponsored
         </p>
         {shouldRenderRealAd ? (
@@ -52,7 +52,7 @@ export function AdSlot({ slot, className }: AdSlotProps) {
             data-full-width-responsive="true"
           />
         ) : (
-          <div className="mt-1 rounded-lg border border-dashed border-slate-300 bg-white/75 px-3 py-4 text-center text-xs text-slate-500">
+          <div className="mt-1 rounded-lg border border-dashed border-slate-300 bg-white/75 px-3 py-4 text-center text-sm text-slate-500">
             広告プレビュー（本番では AdSense の広告が表示されます）
           </div>
         )}
