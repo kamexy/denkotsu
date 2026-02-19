@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
 const AMAZON_ASSOCIATE_TAG_PATTERN = /^[a-z0-9][a-z0-9-]{0,60}-22$/i;
 const ADSENSE_CLIENT_ID_PATTERN = /^ca-pub-\d{16}$/;
 const ADSENSE_SLOT_PATTERN = /^\d{6,20}$/;
@@ -74,6 +77,30 @@ if (adsenseEnabled) {
     errors.push(
       "NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS は 1 以上の整数で指定してください。"
     );
+  }
+
+  if (ADSENSE_CLIENT_ID_PATTERN.test(adsenseClientId)) {
+    const expectedPublisherId = adsenseClientId.replace(/^ca-/, "");
+    const expectedAdsTxtLine = `google.com, ${expectedPublisherId}, DIRECT, f08c47fec0942fa0`;
+    const adsTxtPath = path.resolve(process.cwd(), "public/ads.txt");
+
+    try {
+      const adsTxt = readFileSync(adsTxtPath, "utf8");
+      const normalizedLines = adsTxt
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0 && !line.startsWith("#"))
+        .map((line) => line.replace(/\s+/g, ""));
+      const normalizedExpected = expectedAdsTxtLine.replace(/\s+/g, "");
+
+      if (!normalizedLines.includes(normalizedExpected)) {
+        errors.push(
+          `public/ads.txt に AdSense パブリッシャー行が見つかりません（期待値: ${expectedAdsTxtLine}）。`
+        );
+      }
+    } catch {
+      errors.push("public/ads.txt を読み取れませんでした。");
+    }
   }
 } else if (
   adsenseClientId.length > 0 ||

@@ -104,7 +104,16 @@ git push origin main --follow-tags
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_PROJECT_NAME`
 - `NEXT_PUBLIC_SYNC_API_BASE`（クラウド同期機能を有効にする場合）
+- `NEXT_PUBLIC_MONETIZATION_ENABLED`（収益導線の表示を切り替える場合）
+- `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG`（Amazonアソシエイトを利用する場合）
+- `NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENABLED`（収益導線計測を切り替える場合）
+- `NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT`（外部計測エンドポイントを使う場合）
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID`（GA4計測を有効にする場合）
+- `NEXT_PUBLIC_ADSENSE_ENABLED`（AdSenseを有効にする場合）
+- `NEXT_PUBLIC_ADSENSE_CLIENT_ID`（AdSenseを有効にする場合）
+- `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`（AdSenseを有効にする場合）
+- `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`（広告表示の閾値を変更する場合）
+- `NEXT_PUBLIC_ADS_PREVIEW`（広告プレビューを使う場合）
 
 Secrets が未設定の場合、`deploy` ジョブ内でデプロイ手順のみ自動スキップされます。
 
@@ -195,6 +204,9 @@ npx wrangler deploy
   - 広告表示を開始する最小回答数（デフォルト `10`）
 - `NEXT_PUBLIC_ADS_PREVIEW`
   - `1` のとき、AdSense ID未設定でも広告プレースホルダーを表示（UI確認用）
+- `public/ads.txt`
+  - AdSense のパブリッシャーID行を配置
+  - 例: `google.com, pub-xxxxxxxxxxxxxxxx, DIRECT, f08c47fec0942fa0`
 
 ### 収益化設定チェック
 

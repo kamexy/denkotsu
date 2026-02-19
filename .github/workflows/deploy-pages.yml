@@ -23,7 +23,16 @@ jobs:
       CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CF_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
       NEXT_PUBLIC_SYNC_API_BASE: ${{ secrets.NEXT_PUBLIC_SYNC_API_BASE }}
+      NEXT_PUBLIC_MONETIZATION_ENABLED: ${{ secrets.NEXT_PUBLIC_MONETIZATION_ENABLED }}
+      NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG: ${{ secrets.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG }}
+      NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENABLED: ${{ secrets.NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENABLED }}
+      NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT: ${{ secrets.NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT }}
       NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+      NEXT_PUBLIC_ADSENSE_ENABLED: ${{ secrets.NEXT_PUBLIC_ADSENSE_ENABLED }}
+      NEXT_PUBLIC_ADSENSE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT_ID }}
+      NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE: ${{ secrets.NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE }}
+      NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS: ${{ secrets.NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS }}
+      NEXT_PUBLIC_ADS_PREVIEW: ${{ secrets.NEXT_PUBLIC_ADS_PREVIEW }}
 
     steps:
       - name: Checkout
@@ -54,6 +63,10 @@ jobs:
       - name: Install dependencies
         if: steps.secrets_check.outputs.ready == 'true'
         run: npm ci
+
+      - name: Validate monetization environment
+        if: steps.secrets_check.outputs.ready == 'true'
+        run: npm run check:monetization
 
       - name: Build static files
         if: steps.secrets_check.outputs.ready == 'true'
