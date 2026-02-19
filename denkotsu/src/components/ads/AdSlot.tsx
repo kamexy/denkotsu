@@ -7,6 +7,7 @@ import { trackAdSlotInteraction, trackAdSlotRendered } from "@/lib/telemetry";
 interface AdSlotProps {
   slot: string;
   className?: string;
+  placement?: "session_complete" | "learn_page" | "stats_page" | "settings_page";
 }
 
 declare global {
@@ -15,7 +16,11 @@ declare global {
   }
 }
 
-export function AdSlot({ slot, className }: AdSlotProps) {
+export function AdSlot({
+  slot,
+  className,
+  placement = "session_complete",
+}: AdSlotProps) {
   const clientId = getAdsenseClientId();
   const pushed = useRef(false);
   const trackedRendered = useRef(false);
@@ -42,14 +47,16 @@ export function AdSlot({ slot, className }: AdSlotProps) {
     trackAdSlotRendered({
       slot: slot || "session_complete",
       mode,
+      placement,
     });
     trackedRendered.current = true;
-  }, [mode, shouldRenderPreview, shouldRenderRealAd, slot]);
+  }, [mode, placement, shouldRenderPreview, shouldRenderRealAd, slot]);
 
   const handleAdInteraction = () => {
     trackAdSlotInteraction({
       slot: slot || "session_complete",
       mode,
+      placement,
     });
   };
 

@@ -4,7 +4,12 @@ export type MonetizationEventName =
   | "ad_slot_interaction";
 
 interface MonetizationEventPayload {
-  placement: "settings_recommended_tools" | "session_complete";
+  placement:
+    | "settings_recommended_tools"
+    | "session_complete"
+    | "learn_page"
+    | "stats_page"
+    | "settings_page";
   mode?: "adsense" | "preview";
   toolId?: string;
   toolName?: string;
@@ -158,9 +163,10 @@ export function trackSponsoredToolClick(input: {
 export function trackAdSlotRendered(input: {
   slot: string;
   mode: "adsense" | "preview";
+  placement: "session_complete" | "learn_page" | "stats_page" | "settings_page";
 }): void {
   trackMonetizationEvent("ad_slot_rendered", {
-    placement: "session_complete",
+    placement: input.placement,
     slot: input.slot,
     mode: input.mode,
   });
@@ -169,9 +175,10 @@ export function trackAdSlotRendered(input: {
 export function trackAdSlotInteraction(input: {
   slot: string;
   mode: "adsense" | "preview";
+  placement: "session_complete" | "learn_page" | "stats_page" | "settings_page";
 }): void {
   trackMonetizationEvent("ad_slot_interaction", {
-    placement: "session_complete",
+    placement: input.placement,
     slot: input.slot,
     mode: input.mode,
   });

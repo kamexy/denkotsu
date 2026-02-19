@@ -3,14 +3,18 @@
 import { usePassPower } from "@/hooks/usePassPower";
 import { ProgressRing } from "@/components/common/ProgressRing";
 import { CategoryBar } from "@/components/stats/CategoryBar";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 import { ALL_CATEGORIES, type Category } from "@/types";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/db";
+import { getStatsAdSlot, isAdsenseEnabled } from "@/lib/ads";
 
 export default function StatsPage() {
   const { passPower, loading } = usePassPower();
   const [totalDays, setTotalDays] = useState(0);
+  const showStatsAd = isAdsenseEnabled();
+  const statsAdSlot = getStatsAdSlot();
 
   useEffect(() => {
     (async () => {
@@ -55,6 +59,14 @@ export default function StatsPage() {
                     ? "問題を解いてみましょう"
                     : "まだまだこれから"}
           </p>
+        )}
+
+        {showStatsAd && (
+          <AdSlot
+            slot={statsAdSlot}
+            placement="stats_page"
+            className="mb-4 w-full"
+          />
         )}
 
         {/* Category breakdown */}

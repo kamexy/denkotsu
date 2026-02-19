@@ -98,7 +98,13 @@ export function SessionComplete({
           またいつでもどうぞ
         </button>
       </div>
-      {showBannerAd && <AdSlot slot={adSlot} className="mt-3 w-full max-w-sm" />}
+      {showBannerAd && (
+        <AdSlot
+          slot={adSlot}
+          placement="session_complete"
+          className="mt-3 w-full max-w-sm"
+        />
+      )}
     </motion.div>
   );
 }

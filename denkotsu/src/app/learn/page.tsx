@@ -7,6 +7,8 @@ import type { Category } from "@/types";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/types";
 import { getAllKeyPoints, getKeyPointsByCategory } from "@/lib/key-points";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
+import { AdSlot } from "@/components/ads/AdSlot";
+import { getLearnAdSlot, isAdsenseEnabled } from "@/lib/ads";
 
 export default function LearnPage() {
   return (
@@ -62,6 +64,8 @@ function LearnPageContent() {
   }
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const showLearnAd = isAdsenseEnabled();
+  const learnAdSlot = getLearnAdSlot();
 
   const keyPoints = useMemo(
     () =>
@@ -111,6 +115,16 @@ function LearnPageContent() {
           ))}
         </div>
       </div>
+
+      {showLearnAd && (
+        <div className="px-4 pt-3">
+          <AdSlot
+            slot={learnAdSlot}
+            placement="learn_page"
+            className="w-full"
+          />
+        </div>
+      )}
 
       {/* Key point cards */}
       <div className="px-4 space-y-3 mt-1">

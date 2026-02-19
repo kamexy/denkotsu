@@ -17,6 +17,9 @@ const adsenseClientId = (env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? "").trim();
 const sessionCompleteAdSlot = (
   env.NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE ?? ""
 ).trim();
+const learnAdSlot = (env.NEXT_PUBLIC_ADSENSE_SLOT_LEARN ?? "").trim();
+const statsAdSlot = (env.NEXT_PUBLIC_ADSENSE_SLOT_STATS ?? "").trim();
+const settingsAdSlot = (env.NEXT_PUBLIC_ADSENSE_SLOT_SETTINGS ?? "").trim();
 const telemetryEndpoint = (
   env.NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT ?? ""
 ).trim();
@@ -70,6 +73,24 @@ if (adsenseEnabled) {
   if (!ADSENSE_SLOT_PATTERN.test(sessionCompleteAdSlot)) {
     errors.push(
       "NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE が未設定または不正です（数字のみ）。"
+    );
+  }
+
+  if (learnAdSlot.length > 0 && !ADSENSE_SLOT_PATTERN.test(learnAdSlot)) {
+    errors.push(
+      "NEXT_PUBLIC_ADSENSE_SLOT_LEARN が不正です（数字のみ）。"
+    );
+  }
+
+  if (statsAdSlot.length > 0 && !ADSENSE_SLOT_PATTERN.test(statsAdSlot)) {
+    errors.push(
+      "NEXT_PUBLIC_ADSENSE_SLOT_STATS が不正です（数字のみ）。"
+    );
+  }
+
+  if (settingsAdSlot.length > 0 && !ADSENSE_SLOT_PATTERN.test(settingsAdSlot)) {
+    errors.push(
+      "NEXT_PUBLIC_ADSENSE_SLOT_SETTINGS が不正です（数字のみ）。"
     );
   }
 

@@ -15,6 +15,8 @@ import {
   validateSyncId,
 } from "@/lib/cloud-sync";
 import { RecommendedToolsSection } from "@/components/monetization/RecommendedToolsSection";
+import { AdSlot } from "@/components/ads/AdSlot";
+import { getSettingsAdSlot, isAdsenseEnabled } from "@/lib/ads";
 import type { ThemePreference, UserSettings } from "@/types";
 
 type SyncWizardMode = "backup" | "restore";
@@ -39,6 +41,8 @@ export default function SettingsPage() {
   const [cancelNotice, setCancelNotice] = useState(false);
   const totalQuestions = getAllQuestions().length;
   const cloudSyncEnabled = isCloudSyncEnabled();
+  const showSettingsAd = isAdsenseEnabled();
+  const settingsAdSlot = getSettingsAdSlot();
   const normalizedSyncIdInput = syncIdInput.trim();
   const syncIdValidationError = normalizedSyncIdInput
     ? validateSyncId(normalizedSyncIdInput)
@@ -566,6 +570,14 @@ export default function SettingsPage() {
             </p>
           )}
         </div>
+
+        {showSettingsAd && (
+          <AdSlot
+            slot={settingsAdSlot}
+            placement="settings_page"
+            className="w-full"
+          />
+        )}
 
         <RecommendedToolsSection />
 

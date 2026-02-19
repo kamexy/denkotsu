@@ -112,6 +112,9 @@ git push origin main --follow-tags
 - `NEXT_PUBLIC_ADSENSE_ENABLED`（AdSenseを有効にする場合）
 - `NEXT_PUBLIC_ADSENSE_CLIENT_ID`（AdSenseを有効にする場合）
 - `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`（AdSenseを有効にする場合）
+- `NEXT_PUBLIC_ADSENSE_SLOT_LEARN`（要点画面で別スロットを使う場合）
+- `NEXT_PUBLIC_ADSENSE_SLOT_STATS`（成績画面で別スロットを使う場合）
+- `NEXT_PUBLIC_ADSENSE_SLOT_SETTINGS`（設定画面で別スロットを使う場合）
 - `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`（広告表示の閾値を変更する場合）
 - `NEXT_PUBLIC_ADS_PREVIEW`（広告プレビューを使う場合）
 
@@ -200,6 +203,12 @@ npx wrangler deploy
   - 例: `ca-pub-xxxxxxxxxxxxxxxx`
 - `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`
   - セッション完了画面の広告スロットID（数字のみ）
+- `NEXT_PUBLIC_ADSENSE_SLOT_LEARN`
+  - 要点画面の広告スロットID（数字のみ、未設定時は `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE` を利用）
+- `NEXT_PUBLIC_ADSENSE_SLOT_STATS`
+  - 成績画面の広告スロットID（数字のみ、未設定時は `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE` を利用）
+- `NEXT_PUBLIC_ADSENSE_SLOT_SETTINGS`
+  - 設定画面の広告スロットID（数字のみ、未設定時は `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE` を利用）
 - `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`
   - 広告表示を開始する最小回答数（デフォルト `10`）
 - `NEXT_PUBLIC_ADS_PREVIEW`
@@ -207,6 +216,13 @@ npx wrangler deploy
 - `public/ads.txt`
   - AdSense のパブリッシャーID行を配置
   - 例: `google.com, pub-xxxxxxxxxxxxxxxx, DIRECT, f08c47fec0942fa0`
+
+広告表示位置:
+
+- クイズのセッション完了画面
+- 要点画面（カテゴリタブ下）
+- 成績画面（サマリメッセージ下）
+- 設定画面（データセクション下）
 
 ### 収益化設定チェック
 
