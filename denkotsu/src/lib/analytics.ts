@@ -19,6 +19,6 @@ export function getGaWarnings(): string[] {
   if (hasValidGaMeasurementId) return [];
 
   return [
-    "NEXT_PUBLIC_GA_MEASUREMENT_ID が不正です（例: G-WD4GMKF6SR）。",
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID が不正です（例: G-XXXXXXXXXX）。",
   ];
 }

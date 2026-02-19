@@ -53,7 +53,7 @@ if (telemetryEndpoint.length > 0) {
 
 if (gaMeasurementId.length > 0 && !GA_MEASUREMENT_ID_PATTERN.test(gaMeasurementId)) {
   errors.push(
-    "NEXT_PUBLIC_GA_MEASUREMENT_ID の形式が不正です（例: G-WD4GMKF6SR）。"
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID の形式が不正です（例: G-XXXXXXXXXX）。"
   );
 }
 

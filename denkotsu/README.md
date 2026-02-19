@@ -177,7 +177,7 @@ npx wrangler deploy
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID`
   - GA4 の測定ID（任意）
   - 形式: `G-XXXXXXX`
-  - 例: `G-WD4GMKF6SR`
+  - 例: `G-XXXXXXXXXX`
   - 設定時は `gtag.js` を自動読込し、収益導線イベントを GA4 に送信
 
 ### AdSense（バナー広告）基盤
