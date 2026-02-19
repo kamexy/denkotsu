@@ -13,6 +13,9 @@ const adsenseClientId = (env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? "").trim();
 const sessionCompleteAdSlot = (
   env.NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE ?? ""
 ).trim();
+const telemetryEndpoint = (
+  env.NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT ?? ""
+).trim();
 const parsedMinAnswers = Number.parseInt(
   (env.NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS ?? "10").trim(),
   10
@@ -29,6 +32,21 @@ if (
   errors.push(
     "NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG の形式が不正です（想定: xxxxx-22）。"
   );
+}
+
+if (telemetryEndpoint.length > 0) {
+  try {
+    const parsed = new URL(telemetryEndpoint);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      errors.push(
+        "NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT は http(s) URL を指定してください。"
+      );
+    }
+  } catch {
+    errors.push(
+      "NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT の形式が不正です。"
+    );
+  }
 }
 
 if (adsenseEnabled) {

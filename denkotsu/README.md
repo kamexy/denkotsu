@@ -166,6 +166,13 @@ npx wrangler deploy
   - 形式は `xxxxx-22`（例: `kamexy-22`）
   - 未設定時は `kamexy-22` を使用します
   - 設定すると Amazon URL の `tag` パラメータを上書きします
+- `NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENABLED`
+  - `1`（デフォルト）: 収益導線クリック計測を有効化
+  - `0`: 収益導線クリック計測を無効化
+- `NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT`
+  - クリック計測イベントの送信先（任意、http(s) URL）
+  - 例: `https://example.com/collect`
+  - 未設定時は外部送信せず、既知の分析ツール（`gtag` / `plausible` / `sa_event`）があればそちらへ送信
 
 ### AdSense（バナー広告）基盤
 
@@ -194,6 +201,7 @@ npm run check:monetization
 
 - `NEXT_PUBLIC_ADSENSE_ENABLED=1` の場合は、AdSenseの `client_id` / `slot` の形式不備をエラーにします。
 - `NEXT_PUBLIC_MONETIZATION_ENABLED!=0` かつ `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG` 設定時は、`xxxxx-22` 形式を検証します。
+- `NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT` を設定する場合は、http(s) URL 形式を検証します。
 
 ## 運用ルール
 

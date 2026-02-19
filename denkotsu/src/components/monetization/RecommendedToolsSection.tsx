@@ -1,4 +1,5 @@
 import { getMonetizationWarnings, getRecommendedTools } from "@/lib/monetization";
+import { TrackedExternalLink } from "@/components/monetization/TrackedExternalLink";
 
 export function RecommendedToolsSection() {
   const warnings = getMonetizationWarnings();
@@ -22,14 +23,13 @@ export function RecommendedToolsSection() {
           >
             <p className="text-base font-semibold text-slate-800">{tool.name}</p>
             <p className="mt-1 text-sm text-slate-500">{tool.description}</p>
-            <a
+            <TrackedExternalLink
               href={tool.url}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
+              toolId={tool.id}
+              toolName={tool.name}
+              label={tool.label}
               className="mt-2 inline-flex items-center rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1.5 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-100"
-            >
-              {tool.label}
-            </a>
+            />
           </article>
         ))}
       </div>

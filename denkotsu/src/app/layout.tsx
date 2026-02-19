@@ -10,6 +10,7 @@ import {
   getAdsenseWarnings,
   isAdsenseScriptEnabled,
 } from "@/lib/ads";
+import { getMonetizationTelemetryWarnings } from "@/lib/telemetry";
 
 const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
 let syncApiOrigin = "";
@@ -24,9 +25,29 @@ if (syncApiBase) {
 const shouldLoadAdsenseScript = isAdsenseScriptEnabled();
 const adsenseClientId = getAdsenseClientId();
 const adsenseWarnings = getAdsenseWarnings();
+const telemetryWarnings = getMonetizationTelemetryWarnings();
 
 if (adsenseWarnings.length > 0) {
   console.warn(`[ads] ${adsenseWarnings.join(" / ")}`);
+}
+
+if (telemetryWarnings.length > 0) {
+  console.warn(`[telemetry] ${telemetryWarnings.join(" / ")}`);
+}
+
+const telemetryEndpoint = (
+  process.env.NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT ?? ""
+).trim();
+let telemetryOrigin = "";
+if (telemetryEndpoint) {
+  try {
+    const parsed = new URL(telemetryEndpoint);
+    if (parsed.protocol === "https:" || parsed.protocol === "http:") {
+      telemetryOrigin = parsed.origin;
+    }
+  } catch {
+    telemetryOrigin = "";
+  }
 }
 
 const scriptSrcTokens = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
@@ -34,6 +55,10 @@ const styleSrcTokens = ["'self'", "'unsafe-inline'"];
 const imgSrcTokens = ["'self'", "data:"];
 const connectSrcTokens = ["'self'", syncApiOrigin || "https://*.workers.dev"];
 const frameSrcTokens = ["'self'"];
+
+if (telemetryOrigin) {
+  connectSrcTokens.push(telemetryOrigin);
+}
 
 if (shouldLoadAdsenseScript) {
   scriptSrcTokens.push("https://pagead2.googlesyndication.com");
