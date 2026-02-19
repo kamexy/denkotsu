@@ -23,6 +23,7 @@ jobs:
       CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CF_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
       NEXT_PUBLIC_SYNC_API_BASE: ${{ secrets.NEXT_PUBLIC_SYNC_API_BASE }}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
 
     steps:
       - name: Checkout

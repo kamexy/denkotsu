@@ -104,6 +104,7 @@ git push origin main --follow-tags
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_PROJECT_NAME`
 - `NEXT_PUBLIC_SYNC_API_BASE`（クラウド同期機能を有効にする場合）
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID`（GA4計測を有効にする場合）
 
 Secrets が未設定の場合、`deploy` ジョブ内でデプロイ手順のみ自動スキップされます。
 
