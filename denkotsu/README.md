@@ -163,6 +163,7 @@ npx wrangler deploy
   - `0`: 非表示にする
 - `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG`
   - Amazonアソシエイトタグ（任意）
+  - 形式は `xxxxx-22`（例: `kamexy-22`）
   - 未設定時は `kamexy-22` を使用します
   - 設定すると Amazon URL の `tag` パラメータを上書きします
 
@@ -176,11 +177,23 @@ npx wrangler deploy
 - `NEXT_PUBLIC_ADSENSE_CLIENT_ID`
   - 例: `ca-pub-xxxxxxxxxxxxxxxx`
 - `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`
-  - セッション完了画面の広告スロットID
+  - セッション完了画面の広告スロットID（数字のみ）
 - `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`
   - 広告表示を開始する最小回答数（デフォルト `10`）
 - `NEXT_PUBLIC_ADS_PREVIEW`
   - `1` のとき、AdSense ID未設定でも広告プレースホルダーを表示（UI確認用）
+
+### 収益化設定チェック
+
+ローカル/CIで、収益化用の環境変数の形式を検証できます。
+
+```bash
+cd denkotsu
+npm run check:monetization
+```
+
+- `NEXT_PUBLIC_ADSENSE_ENABLED=1` の場合は、AdSenseの `client_id` / `slot` の形式不備をエラーにします。
+- `NEXT_PUBLIC_MONETIZATION_ENABLED!=0` かつ `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG` 設定時は、`xxxxx-22` 形式を検証します。
 
 ## 運用ルール
 

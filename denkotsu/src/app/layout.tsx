@@ -5,7 +5,11 @@ import { ServiceWorkerRegistrar } from "@/components/layout/ServiceWorkerRegistr
 import { BottomNav } from "@/components/layout/BottomNav";
 import { CloudSyncBootstrap } from "@/components/layout/CloudSyncBootstrap";
 import { ThemeBootstrap } from "@/components/layout/ThemeBootstrap";
-import { getAdsenseClientId, isAdsenseScriptEnabled } from "@/lib/ads";
+import {
+  getAdsenseClientId,
+  getAdsenseWarnings,
+  isAdsenseScriptEnabled,
+} from "@/lib/ads";
 
 const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
 let syncApiOrigin = "";
@@ -19,6 +23,11 @@ if (syncApiBase) {
 
 const shouldLoadAdsenseScript = isAdsenseScriptEnabled();
 const adsenseClientId = getAdsenseClientId();
+const adsenseWarnings = getAdsenseWarnings();
+
+if (adsenseWarnings.length > 0) {
+  console.warn(`[ads] ${adsenseWarnings.join(" / ")}`);
+}
 
 const scriptSrcTokens = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
 const styleSrcTokens = ["'self'", "'unsafe-inline'"];

@@ -9,6 +9,11 @@ const sessionCompleteAdSlot = (
   process.env.NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE ?? ""
 ).trim();
 
+const ADSENSE_CLIENT_ID_PATTERN = /^ca-pub-\d{16}$/;
+const ADSENSE_SLOT_PATTERN = /^\d{6,20}$/;
+const hasValidAdsenseClientId = ADSENSE_CLIENT_ID_PATTERN.test(adsenseClientId);
+const hasValidSessionCompleteSlot = ADSENSE_SLOT_PATTERN.test(sessionCompleteAdSlot);
+
 const adsPreviewMode =
   (process.env.NEXT_PUBLIC_ADS_PREVIEW ?? "").trim() === "1" ||
   process.env.NODE_ENV !== "production";
@@ -27,7 +32,7 @@ export function isAdsenseEnabled(): boolean {
 }
 
 export function isAdsenseScriptEnabled(): boolean {
-  return adsenseEnabled && adsenseClientId.length > 0;
+  return adsenseEnabled && hasValidAdsenseClientId;
 }
 
 export function getAdsenseClientId(): string {
@@ -35,7 +40,7 @@ export function getAdsenseClientId(): string {
 }
 
 export function getSessionCompleteAdSlot(): string {
-  return sessionCompleteAdSlot;
+  return hasValidSessionCompleteSlot ? sessionCompleteAdSlot : "";
 }
 
 export function isAdPreviewMode(): boolean {
@@ -48,3 +53,22 @@ export function shouldShowSessionCompleteAd(totalAnswered: number): boolean {
   return totalAnswered >= minSessionAnswersForAd;
 }
 
+export function getAdsenseWarnings(): string[] {
+  if (!adsenseEnabled) return [];
+
+  const warnings: string[] = [];
+
+  if (!hasValidAdsenseClientId) {
+    warnings.push(
+      "NEXT_PUBLIC_ADSENSE_CLIENT_ID が未設定または不正です（例: ca-pub-1234567890123456）。"
+    );
+  }
+
+  if (!hasValidSessionCompleteSlot) {
+    warnings.push(
+      "NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE が未設定または不正です（数字のみ）。"
+    );
+  }
+
+  return warnings;
+}

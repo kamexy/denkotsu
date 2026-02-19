@@ -1,6 +1,11 @@
-import { getRecommendedTools } from "@/lib/monetization";
+import { getMonetizationWarnings, getRecommendedTools } from "@/lib/monetization";
 
 export function RecommendedToolsSection() {
+  const warnings = getMonetizationWarnings();
+  if (warnings.length > 0) {
+    console.warn(`[monetization] ${warnings.join(" / ")}`);
+  }
+
   const tools = getRecommendedTools();
   if (tools.length === 0) return null;
 
@@ -34,4 +39,3 @@ export function RecommendedToolsSection() {
     </div>
   );
 }
-
