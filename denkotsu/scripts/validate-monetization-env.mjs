@@ -1,6 +1,7 @@
 const AMAZON_ASSOCIATE_TAG_PATTERN = /^[a-z0-9][a-z0-9-]{0,60}-22$/i;
 const ADSENSE_CLIENT_ID_PATTERN = /^ca-pub-\d{16}$/;
 const ADSENSE_SLOT_PATTERN = /^\d{6,20}$/;
+const GA_MEASUREMENT_ID_PATTERN = /^G-[A-Z0-9]{6,20}$/;
 
 const env = process.env;
 
@@ -16,6 +17,7 @@ const sessionCompleteAdSlot = (
 const telemetryEndpoint = (
   env.NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT ?? ""
 ).trim();
+const gaMeasurementId = (env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim();
 const parsedMinAnswers = Number.parseInt(
   (env.NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS ?? "10").trim(),
   10
@@ -47,6 +49,12 @@ if (telemetryEndpoint.length > 0) {
       "NEXT_PUBLIC_MONETIZATION_TELEMETRY_ENDPOINT の形式が不正です。"
     );
   }
+}
+
+if (gaMeasurementId.length > 0 && !GA_MEASUREMENT_ID_PATTERN.test(gaMeasurementId)) {
+  errors.push(
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID の形式が不正です（例: G-WD4GMKF6SR）。"
+  );
 }
 
 if (adsenseEnabled) {

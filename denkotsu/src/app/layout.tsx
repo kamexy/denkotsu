@@ -10,6 +10,7 @@ import {
   getAdsenseWarnings,
   isAdsenseScriptEnabled,
 } from "@/lib/ads";
+import { getGaMeasurementId, getGaWarnings, isGaEnabled } from "@/lib/analytics";
 import { getMonetizationTelemetryWarnings } from "@/lib/telemetry";
 
 const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
@@ -25,10 +26,17 @@ if (syncApiBase) {
 const shouldLoadAdsenseScript = isAdsenseScriptEnabled();
 const adsenseClientId = getAdsenseClientId();
 const adsenseWarnings = getAdsenseWarnings();
+const shouldLoadGaScript = isGaEnabled();
+const gaMeasurementId = getGaMeasurementId();
+const gaWarnings = getGaWarnings();
 const telemetryWarnings = getMonetizationTelemetryWarnings();
 
 if (adsenseWarnings.length > 0) {
   console.warn(`[ads] ${adsenseWarnings.join(" / ")}`);
+}
+
+if (gaWarnings.length > 0) {
+  console.warn(`[ga] ${gaWarnings.join(" / ")}`);
 }
 
 if (telemetryWarnings.length > 0) {
@@ -58,6 +66,16 @@ const frameSrcTokens = ["'self'"];
 
 if (telemetryOrigin) {
   connectSrcTokens.push(telemetryOrigin);
+}
+
+if (shouldLoadGaScript) {
+  scriptSrcTokens.push("https://www.googletagmanager.com");
+  imgSrcTokens.push("https://www.google-analytics.com");
+  connectSrcTokens.push(
+    "https://www.google-analytics.com",
+    "https://region1.google-analytics.com",
+    "https://www.googletagmanager.com"
+  );
 }
 
 if (shouldLoadAdsenseScript) {
@@ -156,6 +174,23 @@ export default function RootLayout({
           {children}
           <BottomNav />
         </div>
+        {shouldLoadGaScript && (
+          <>
+            <Script
+              id="ga4-script"
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script
+              id="ga4-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('js', new Date());gtag('config', '${gaMeasurementId}', { anonymize_ip: true });`,
+              }}
+            />
+          </>
+        )}
         {shouldLoadAdsenseScript && (
           <Script
             id="adsense-script"
