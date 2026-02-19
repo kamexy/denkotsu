@@ -11,15 +11,16 @@
   <!-- メーター表示部 -->
   <rect x="80" y="25" width="80" height="35" rx="4" fill="#fff" stroke="#888" stroke-width="1.5"/>
   <!-- メーター目盛り -->
-  <path d="M 95 55 A 40 40 0 0 1 145 55" fill="none" stroke="#ccc" stroke-width="1"/>
-  <line x1="100" y1="50" x2="130" y2="35" stroke="#e74c3c" stroke-width="1.5"/>
-  <text x="120" y="48" style="font-size:8px;text-anchor:middle;fill:#333;">MΩ</text>
+  <path d="M 92 54 A 28 28 0 0 1 148 54" fill="none" stroke="#ccc" stroke-width="1"/>
+  <line x1="120" y1="54" x2="136" y2="42" stroke="#e74c3c" stroke-width="1.5"/>
+  <circle cx="120" cy="54" r="2" fill="#e74c3c"/>
+  <text x="120" y="60" style="font-size:8px;text-anchor:middle;fill:#333;">MΩ</text>
   <!-- 切替ダイヤル -->
   <circle cx="120" cy="80" r="12" fill="#ddd" stroke="#888" stroke-width="1.5"/>
   <line x1="120" y1="80" x2="120" y2="70" stroke="#333" stroke-width="2"/>
-  <text x="102" y="76" style="font-size:6px;fill:#666;">125V</text>
-  <text x="138" y="76" style="font-size:6px;fill:#666;">250V</text>
-  <text x="120" y="95" style="font-size:6px;fill:#666;">500V</text>
+  <text x="95" y="79" style="font-size:7px;text-anchor:middle;fill:#666;">125V</text>
+  <text x="145" y="79" style="font-size:7px;text-anchor:middle;fill:#666;">250V</text>
+  <text x="120" y="102" style="font-size:7px;text-anchor:middle;fill:#666;">500V</text>
   <!-- リード線端子 -->
   <circle cx="85" cy="108" r="5" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>
   <circle cx="120" cy="108" r="5" fill="#2563eb" stroke="#1a4eb8" stroke-width="1.5"/>

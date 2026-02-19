@@ -14,7 +14,7 @@
   <line x1="35" y1="90" x2="45" y2="90" stroke="#1a1a1a" stroke-width="2"/>
   <text x="20" y="75" class="small">+</text>
   <text x="20" y="98" class="small">−</text>
-  <text x="20" y="110" class="label">V</text>
+  <text x="20" y="118" class="label">V</text>
   <!-- 上部配線（分岐点まで） -->
   <line x1="40" y1="50" x2="100" y2="50" class="wire"/>
   <!-- 分岐点 -->

@@ -14,7 +14,7 @@
   <text x="127" y="43" style="font-size:6px;text-anchor:middle;fill:#666;">OPEN</text>
   <!-- 電線（クランプに通している） -->
   <line x1="100" y1="15" x2="100" y2="55" stroke="#e74c3c" stroke-width="6" stroke-linecap="round"/>
-  <text x="100" y="10" style="font-size:8px;text-anchor:middle;fill:#e74c3c;">電線</text>
+  <text x="100" y="8" style="font-size:8px;text-anchor:middle;fill:#e74c3c;">電線</text>
   <!-- 本体 -->
   <rect x="70" y="60" width="60" height="80" rx="5" fill="#f5f5f5" stroke="#555" stroke-width="2"/>
   <!-- 表示部 -->
@@ -23,8 +23,8 @@
   <!-- ダイヤル -->
   <circle cx="100" cy="108" r="10" fill="#ddd" stroke="#888" stroke-width="1.5"/>
   <line x1="100" y1="108" x2="100" y2="100" stroke="#333" stroke-width="2"/>
-  <text x="90" y="107" style="font-size:5px;fill:#666;">A</text>
-  <text x="111" y="107" style="font-size:5px;fill:#666;">V</text>
+  <text x="88" y="113" style="font-size:7px;text-anchor:middle;fill:#666;">A</text>
+  <text x="112" y="113" style="font-size:7px;text-anchor:middle;fill:#666;">V</text>
   <!-- 端子 -->
   <circle cx="85" cy="133" r="3" fill="#e74c3c"/>
   <circle cx="115" cy="133" r="3" fill="#333"/>
