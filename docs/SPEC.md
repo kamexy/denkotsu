@@ -166,7 +166,7 @@
 - PWAでホーム画面にインストール
 - オフライン対応（電波なしでも学習可能）
 - 起動後、前回の続きから即座に問題表示
-- ログインは後回し（ゲスト利用→後からアカウント連携）
+- ログイン不要（初回起動から全機能にアクセス可能）
 
 ### 2. 「罪悪感ゼロ」
 
@@ -262,15 +262,14 @@
 - ⚠️ 端末を変えるとデータが引き継げない（Phase 2で解決）
 - ⚠️ ブラウザのデータ削除で学習履歴が消える（Phase 2で解決）
 
-#### Phase 2: クラウド同期追加 — 月額0円（無料枠内）
+#### Phase 2: クラウド同期・定着強化 — 月額0円（無料枠内）
 
-ユーザーが増えてきたら、端末間同期とアカウント機能を追加。
+ユーザーが増えてきたら、端末間同期（同期コード方式）と復習最適化を追加。
 
 | 要素 | 技術 | 無料枠 |
 |---|---|---|
-| 認証 | **Cloudflare Zero Trust** or **Supabase Auth** | 50,000 MAU無料 |
 | データ同期 | **Cloudflare D1** (SQLite at Edge) | 読取5M/日、書込100K/日 無料 |
-| OR | **Supabase** (PostgreSQL) | 500MB DB、50K MAU 無料 |
+| 同期API | **Cloudflare Workers** | 100K req/日 無料 |
 | 画像ストレージ | **Cloudflare R2** | 10GB無料、転送料0円 |
 | **合計** | | **0円**（無料枠内） |
 
@@ -285,11 +284,11 @@
 ```
 ブラウザ (IndexedDB)  ←→  Cloudflare D1 (クラウド)
        ↑                        ↑
-  常にこちらが主     ログイン時のみ同期
+  常にこちらが主      同期コードで手動同期
   （オフライン最優先）
 ```
 - ローカルIndexedDBが常にマスター（オフラインファースト）
-- ログインしているユーザーのみ、操作時にバックグラウンド同期
+- 設定画面の「クラウド同期（β）」から、明示操作で push / pull を実行
 - コンフリクト解決: タイムスタンプベースのLast-Write-Wins
 
 #### Phase 3: 広告収益最適化 — 月額0〜1,500円
@@ -374,7 +373,7 @@ created_at: TIMESTAMP
 ### ユーザー学習履歴 (user_progress)
 ```sql
 id: UUID
-user_id: UUID
+profile_id: TEXT       -- 端末内識別子（"local"）または同期コード由来ID
 question_id: UUID
 is_correct: BOOLEAN
 answered_at: TIMESTAMP
@@ -384,7 +383,7 @@ time_spent_ms: INT      -- 回答にかかった時間
 ### 忘却曲線データ (spaced_repetition)
 ```sql
 id: UUID
-user_id: UUID
+profile_id: TEXT       -- 端末内識別子（"local"）または同期コード由来ID
 question_id: UUID
 ease_factor: FLOAT      -- 難易度係数
 interval_days: FLOAT    -- 次回出題までの間隔
@@ -395,7 +394,7 @@ repetition_count: INT   -- 復習回数
 ### コレクション (user_collections)
 ```sql
 id: UUID
-user_id: UUID
+profile_id: TEXT       -- 端末内識別子（"local"）または同期コード由来ID
 item_id: UUID
 obtained_at: TIMESTAMP
 ```
@@ -598,11 +597,9 @@ questions テーブル:
 
 ### Phase 2: エンゲージメント強化 — [詳細仕様書](phase2-engagement.md)
 
-認証・同期・コレクション・実績。リテンション向上の仕組み。
+同期・コレクション・実績・復習最適化。リテンション向上の仕組み。
 
-- [ ] Google/Apple ログイン (Cloudflare Workers + OAuth 2.0)
-- [ ] ゲスト→ログインのデータマージ処理
-- [ ] クラウド同期 (Cloudflare D1, push/pull API)
+- [ ] クラウド同期 (同期コード方式, Cloudflare D1 + Workers)
 - [ ] SM-2 忘却曲線アルゴリズム
 - [ ] コレクション機能 (50アイテム, ドロップ演出)
 - [ ] 実績システム (15実績, 解除判定ロジック)
