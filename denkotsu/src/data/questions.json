@@ -1720,5 +1720,253 @@
     ],
     "correctIndex": 1,
     "explanation": "二重丸（◎）が引掛シーリング。単純な丸（○）は照明器具。"
+  },
+  {
+    "id": "q127",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "4路スイッチは、3路スイッチ2個の間に入れて3か所以上から照明を操作できる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "4路スイッチは3路スイッチ2個の間に入れて使い、3か所以上からON/OFF操作を可能にする。"
+  },
+  {
+    "id": "q128",
+    "category": "laws",
+    "questionType": "true_false",
+    "question": "D種接地工事の接地抵抗値は、原則100Ω以下である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "D種接地工事の接地抵抗値は原則100Ω以下。条件により500Ω以下が認められる場合もある。"
+  },
+  {
+    "id": "q129",
+    "category": "construction_method",
+    "questionType": "true_false",
+    "question": "VVFケーブルは、直接コンクリートに埋設してよい。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "VVFケーブルのコンクリートへの直接埋設は不可。合成樹脂管などに収めて施設する。"
+  },
+  {
+    "id": "q130",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "100V回路の絶縁抵抗測定では、125Vの絶縁抵抗計を使用する。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "100V回路では125Vレンジの絶縁抵抗計を使う。200V回路は250Vレンジ。"
+  },
+  {
+    "id": "q131",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "接地抵抗測定では、補助極は1本だけあればよい。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "接地抵抗測定では接地極に加えて補助極Pと補助極Cの2本が必要。"
+  },
+  {
+    "id": "q132",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「3路スイッチ」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "●に「3」が3路スイッチ。2か所から照明をON/OFFする回路で使う。"
+  },
+  {
+    "id": "q133",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「タイマーSW」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      }
+    ],
+    "correctIndex": 3,
+    "explanation": "「ET」表記がタイマーSWを示す。時間制御でON/OFFできるスイッチ。"
+  },
+  {
+    "id": "q134",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「接地極付コンセント」の位置をタップしてください。",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般",
+      "接地極付",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.5
+      },
+      {
+        "x": 34.7,
+        "y": 16.5
+      },
+      {
+        "x": 9.7,
+        "y": 57.5
+      },
+      {
+        "x": 44.4,
+        "y": 57.5
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "「E」表記付きが接地極付コンセント。200V回路や水回り機器で使う。"
+  },
+  {
+    "id": "q135",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「20Aコンセント」の位置をタップしてください。",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般",
+      "接地極付",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.5
+      },
+      {
+        "x": 34.7,
+        "y": 16.5
+      },
+      {
+        "x": 9.7,
+        "y": 57.5
+      },
+      {
+        "x": 44.4,
+        "y": 57.5
+      }
+    ],
+    "correctIndex": 2,
+    "explanation": "20Aコンセントは「20A」表記で示される。定格電流の確認が重要。"
+  },
+  {
+    "id": "q136",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「シーリングライト」の位置をタップしてください。",
+    "image": "/images/symbols/light-ceiling.svg",
+    "options": [
+      "シーリングライト",
+      "引掛シーリング"
+    ],
+    "hotspots": [
+      {
+        "x": 22.9,
+        "y": 41.7
+      },
+      {
+        "x": 72.9,
+        "y": 41.7
+      }
+    ],
+    "correctIndex": 0,
+    "explanation": "単純な丸（○）がシーリングライト。二重丸（◎）は引掛シーリング。"
+  },
+  {
+    "id": "q137",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「単極スイッチ」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      }
+    ],
+    "correctIndex": 0,
+    "explanation": "単極スイッチは最も基本的なON/OFF用スイッチ。図記号は●で表す。"
   }
 ]
