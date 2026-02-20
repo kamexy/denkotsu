@@ -1,8 +1,10 @@
 import Dexie, { type Table } from "dexie";
 import type {
+  AchievementUnlock,
   AnswerRecord,
   SpacedRepetition,
   ThemePreference,
+  UserCollection,
   UserSettings,
 } from "@/types";
 
@@ -18,6 +20,8 @@ export class DenkotsuDB extends Dexie {
   answers!: Table<AnswerRecord>;
   spacedRepetition!: Table<SpacedRepetition>;
   settings!: Table<UserSettings>;
+  collections!: Table<UserCollection, string>;
+  achievementUnlocks!: Table<AchievementUnlock, string>;
 
   constructor() {
     super("denkotsu");
@@ -25,6 +29,13 @@ export class DenkotsuDB extends Dexie {
       answers: "++id, questionId, answeredAt",
       spacedRepetition: "questionId",
       settings: "id",
+    });
+    this.version(2).stores({
+      answers: "++id, questionId, answeredAt",
+      spacedRepetition: "questionId",
+      settings: "id",
+      collections: "itemId, obtainedAt",
+      achievementUnlocks: "achievementId, unlockedAt",
     });
   }
 }
@@ -100,4 +111,6 @@ export async function updateSettings(
 export async function resetAllData(): Promise<void> {
   await db.answers.clear();
   await db.spacedRepetition.clear();
+  await db.collections.clear();
+  await db.achievementUnlocks.clear();
 }

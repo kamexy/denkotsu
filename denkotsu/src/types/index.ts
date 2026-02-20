@@ -109,6 +109,48 @@ export interface KeyPoint {
   image?: string;
 }
 
+/** 図鑑アイテムのレアリティ */
+export type CollectionRarity = "normal" | "rare" | "legendary";
+
+/** 図鑑アイテムの分類 */
+export type CollectionKind =
+  | "器具"
+  | "材料"
+  | "工具"
+  | "測定"
+  | "工法"
+  | "保安";
+
+/** 図鑑アイテム定義 */
+export interface CollectionItem {
+  id: string;
+  name: string;
+  description: string;
+  rarity: CollectionRarity;
+  kind: CollectionKind;
+  emoji: string;
+}
+
+/** 取得済み図鑑アイテム */
+export interface UserCollection {
+  itemId: string;
+  obtainedAt: number;
+}
+
+/** 実績定義 */
+export interface AchievementDefinition {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+/** 解除済み実績 */
+export interface AchievementUnlock {
+  achievementId: string;
+  unlockedAt: number;
+}
+
 /** ユーザー設定 */
 export interface UserSettings {
   id: string;
@@ -133,4 +175,6 @@ export interface SyncSnapshot {
   answers: Omit<AnswerRecord, "id">[];
   spacedRepetition: SpacedRepetition[];
   settings: SyncSettingsSnapshot;
+  collections?: UserCollection[];
+  achievementUnlocks?: AchievementUnlock[];
 }

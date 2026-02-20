@@ -16,6 +16,8 @@ export default function Home() {
     selectedIndex,
     isCorrect,
     passPower,
+    droppedItem,
+    unlockedAchievements,
     session,
     loadNext,
     answer,
@@ -107,6 +109,8 @@ export default function Home() {
                   isCorrect={isCorrect}
                   onNext={loadNext}
                   onEnd={endSession}
+                  droppedItem={droppedItem}
+                  unlockedAchievements={unlockedAchievements}
                 />
               )}
             </>

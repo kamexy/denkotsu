@@ -7,6 +7,7 @@ const tabs = [
   { href: "/", label: "クイズ", icon: "quiz" },
   { href: "/learn", label: "要点", icon: "learn" },
   { href: "/stats", label: "成績", icon: "stats" },
+  { href: "/collection", label: "図鑑", icon: "collection" },
   { href: "/settings", label: "設定", icon: "settings" },
 ] as const;
 
@@ -82,6 +83,18 @@ function TabIcon({
           stroke="currentColor"
           strokeWidth="1.9"
           strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+  if (name === "collection") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+        <path
+          d="M12 3.2l2.4 4.9 5.4.8-3.9 3.8.9 5.3L12 15.5 7.2 18l.9-5.3L4.2 8.9l5.4-.8L12 3.2z"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
         />
       </svg>
     );

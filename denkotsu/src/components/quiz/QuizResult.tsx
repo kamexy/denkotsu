@@ -2,9 +2,10 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import type { Question } from "@/types";
+import type { AchievementDefinition, CollectionItem, Question } from "@/types";
 import { CATEGORY_LABELS } from "@/types";
 import { getKeyPointsByCategory } from "@/lib/key-points";
+import { COLLECTION_RARITY_LABELS } from "@/lib/collection";
 import { motion } from "framer-motion";
 
 interface QuizResultProps {
@@ -12,6 +13,8 @@ interface QuizResultProps {
   isCorrect: boolean;
   onNext: () => void;
   onEnd: () => void;
+  droppedItem?: CollectionItem | null;
+  unlockedAchievements?: AchievementDefinition[];
 }
 
 export function QuizResult({
@@ -19,6 +22,8 @@ export function QuizResult({
   isCorrect,
   onNext,
   onEnd,
+  droppedItem,
+  unlockedAchievements = [],
 }: QuizResultProps) {
   const relatedPoints = useMemo(
     () => getKeyPointsByCategory(question.category).slice(0, 2),
@@ -32,6 +37,56 @@ export function QuizResult({
       className="px-4 mt-4"
     >
       {/* Explanation */}
+      {droppedItem && (
+        <div className="panel p-4 mb-3 bg-[var(--ok-soft)]/70 border-emerald-200">
+          <p className="text-base font-semibold text-emerald-800 mb-1">
+            🎉 NEW 図鑑アイテム
+          </p>
+          <p className="text-base text-slate-800 font-semibold">
+            {droppedItem.emoji} {droppedItem.name}
+            <span className="ml-2 text-sm font-medium text-emerald-700">
+              {COLLECTION_RARITY_LABELS[droppedItem.rarity]}
+            </span>
+          </p>
+          <p className="text-sm text-slate-600 mt-1">{droppedItem.description}</p>
+          <Link
+            href="/collection"
+            className="inline-block text-sm text-teal-700 font-semibold mt-2 hover:text-teal-800"
+          >
+            図鑑で確認する →
+          </Link>
+        </div>
+      )}
+
+      {unlockedAchievements.length > 0 && (
+        <div className="panel p-4 mb-3 bg-[var(--primary-soft)]/65 border-teal-200">
+          <p className="text-sm text-teal-800 font-semibold mb-2 tracking-wide">
+            🏆 実績を解除しました
+          </p>
+          <div className="space-y-2">
+            {unlockedAchievements.map((achievement) => (
+              <div
+                key={achievement.id}
+                className="rounded-lg border border-teal-100 bg-white/85 px-3 py-2"
+              >
+                <p className="text-base font-semibold text-slate-800">
+                  {achievement.icon} {achievement.title}
+                </p>
+                <p className="text-sm text-slate-600 mt-0.5">
+                  {achievement.description}
+                </p>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/collection"
+            className="inline-block text-sm text-teal-700 font-semibold mt-2 hover:text-teal-800"
+          >
+            実績一覧を見る →
+          </Link>
+        </div>
+      )}
+
       <div
         className={`panel p-4 ${
           isCorrect ? "bg-[var(--primary-soft)]/80" : "bg-[var(--accent-soft)]/80"

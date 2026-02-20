@@ -199,7 +199,23 @@ function sanitizeSnapshot(input: SyncSnapshot): SyncSnapshot {
         : Date.now(),
   };
 
-  return { answers, spacedRepetition, settings };
+  const collections = Array.isArray(input.collections)
+    ? input.collections.filter((collection) =>
+      collection &&
+      typeof collection.itemId === "string" &&
+      typeof collection.obtainedAt === "number"
+    )
+    : [];
+
+  const achievementUnlocks = Array.isArray(input.achievementUnlocks)
+    ? input.achievementUnlocks.filter((unlock) =>
+      unlock &&
+      typeof unlock.achievementId === "string" &&
+      typeof unlock.unlockedAt === "number"
+    )
+    : [];
+
+  return { answers, spacedRepetition, settings, collections, achievementUnlocks };
 }
 
 export function isCloudSyncEnabled(): boolean {
@@ -207,18 +223,27 @@ export function isCloudSyncEnabled(): boolean {
 }
 
 export async function getLocalLatestTimestamp(): Promise<number> {
-  const [latestAnswer, settings] = await Promise.all([
+  const [latestAnswer, latestCollection, latestAchievement, settings] = await Promise.all([
     db.answers.orderBy("answeredAt").last(),
+    db.collections.orderBy("obtainedAt").last(),
+    db.achievementUnlocks.orderBy("unlockedAt").last(),
     getSettings(),
   ]);
-  return Math.max(latestAnswer?.answeredAt ?? 0, settings.updatedAt ?? 0);
+  return Math.max(
+    latestAnswer?.answeredAt ?? 0,
+    latestCollection?.obtainedAt ?? 0,
+    latestAchievement?.unlockedAt ?? 0,
+    settings.updatedAt ?? 0
+  );
 }
 
 export async function buildLocalSnapshot(): Promise<SyncSnapshot> {
-  const [answers, spacedRepetition, settings] = await Promise.all([
+  const [answers, spacedRepetition, settings, collections, achievementUnlocks] = await Promise.all([
     db.answers.toArray(),
     db.spacedRepetition.toArray(),
     getSettings(),
+    db.collections.toArray(),
+    db.achievementUnlocks.toArray(),
   ]);
 
   return {
@@ -230,6 +255,8 @@ export async function buildLocalSnapshot(): Promise<SyncSnapshot> {
     })),
     spacedRepetition,
     settings: toSyncSettingsSnapshot(settings),
+    collections,
+    achievementUnlocks,
   };
 }
 
@@ -296,27 +323,47 @@ export async function applyRemoteSnapshot(
   const normalized = sanitizeSnapshot(snapshot);
   const now = Date.now();
 
-  await db.transaction("rw", db.answers, db.spacedRepetition, db.settings, async () => {
-    await db.answers.clear();
-    if (normalized.answers.length > 0) {
-      await db.answers.bulkAdd(normalized.answers);
-    }
+  await db.transaction(
+    "rw",
+    [
+      db.answers,
+      db.spacedRepetition,
+      db.settings,
+      db.collections,
+      db.achievementUnlocks,
+    ],
+    async () => {
+      await db.answers.clear();
+      if (normalized.answers.length > 0) {
+        await db.answers.bulkAdd(normalized.answers);
+      }
 
-    await db.spacedRepetition.clear();
-    if (normalized.spacedRepetition.length > 0) {
-      await db.spacedRepetition.bulkPut(normalized.spacedRepetition);
-    }
+      await db.spacedRepetition.clear();
+      if (normalized.spacedRepetition.length > 0) {
+        await db.spacedRepetition.bulkPut(normalized.spacedRepetition);
+      }
 
-    await db.settings.put({
-      id: "default",
-      soundEnabled: normalized.settings.soundEnabled,
-      vibrationEnabled: normalized.settings.vibrationEnabled,
-      themePreference: normalized.settings.themePreference,
-      syncId,
-      lastSyncedAt: serverUpdatedAt,
-      updatedAt: normalized.settings.updatedAt || now,
-    });
-  });
+      await db.collections.clear();
+      if ((normalized.collections?.length ?? 0) > 0) {
+        await db.collections.bulkPut(normalized.collections ?? []);
+      }
+
+      await db.achievementUnlocks.clear();
+      if ((normalized.achievementUnlocks?.length ?? 0) > 0) {
+        await db.achievementUnlocks.bulkPut(normalized.achievementUnlocks ?? []);
+      }
+
+      await db.settings.put({
+        id: "default",
+        soundEnabled: normalized.settings.soundEnabled,
+        vibrationEnabled: normalized.settings.vibrationEnabled,
+        themePreference: normalized.settings.themePreference,
+        syncId,
+        lastSyncedAt: serverUpdatedAt,
+        updatedAt: normalized.settings.updatedAt || now,
+      });
+    }
+  );
 }
 
 let backgroundPushTimer: ReturnType<typeof setTimeout> | null = null;

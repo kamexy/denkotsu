@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import type { Question, SessionStats } from "@/types";
+import type { AchievementDefinition, CollectionItem, Question, SessionStats } from "@/types";
 import { selectNextQuestion, recordAnswer } from "@/lib/quiz-engine";
 import { calculatePassPower } from "@/lib/pass-power";
+import { tryDropCollectionItem } from "@/lib/collection";
+import { unlockAchievements } from "@/lib/achievements";
 import { triggerBackgroundSyncPush } from "@/lib/cloud-sync";
 
 export type QuizState = "loading" | "question" | "feedback" | "complete" | "error";
@@ -14,6 +16,10 @@ export function useQuiz() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [passPower, setPassPower] = useState(0);
+  const [droppedItem, setDroppedItem] = useState<CollectionItem | null>(null);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<
+    AchievementDefinition[]
+  >([]);
   const [session, setSession] = useState<SessionStats>(() => ({
     totalAnswered: 0,
     correctCount: 0,
@@ -30,6 +36,8 @@ export function useQuiz() {
       setCurrentQuestion(question);
       setSelectedIndex(null);
       setIsCorrect(null);
+      setDroppedItem(null);
+      setUnlockedAchievements([]);
       setPassPower(pp.overall);
       setSession((s) => {
         if (s.totalAnswered === 0) {
@@ -55,14 +63,22 @@ export function useQuiz() {
 
       setSelectedIndex(index);
       setIsCorrect(correct);
+      setDroppedItem(null);
+      setUnlockedAchievements([]);
 
       try {
         await recordAnswer(currentQuestion.id, correct, timeSpent);
-        triggerBackgroundSyncPush();
+        const drop = await tryDropCollectionItem(correct);
         const pp = await calculatePassPower();
+        const unlocked = await unlockAchievements(pp);
         setPassPower(pp.overall);
+        setDroppedItem(drop);
+        setUnlockedAchievements(unlocked);
+        triggerBackgroundSyncPush();
       } catch {
         // DB書き込み失敗でもフィードバック表示は継続
+        setDroppedItem(null);
+        setUnlockedAchievements([]);
       }
 
       setSession((s) => ({
@@ -96,6 +112,8 @@ export function useQuiz() {
     selectedIndex,
     isCorrect,
     passPower,
+    droppedItem,
+    unlockedAchievements,
     session,
     loadNext,
     answer,
