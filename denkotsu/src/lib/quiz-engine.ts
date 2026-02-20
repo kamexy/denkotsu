@@ -1,92 +1,297 @@
 import { db } from "./db";
 import { getAllQuestions } from "./questions";
-import type { Question } from "@/types";
+import type { Category, Question, SpacedRepetition } from "@/types";
+
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+const RECENT_CATEGORY_WINDOW = 10;
+const RECENT_QUESTION_WINDOW = 5;
+const MAX_SAME_CATEGORY_IN_WINDOW = 3;
+const DEFAULT_EASE_FACTOR = 2.5;
+const MIN_EASE_FACTOR = 1.3;
+
+function createDefaultSpacedState(
+  questionId: string,
+  now: number
+): SpacedRepetition {
+  return {
+    questionId,
+    easeFactor: DEFAULT_EASE_FACTOR,
+    intervalDays: 0,
+    nextReviewAt: now,
+    repetitionCount: 0,
+    lastAnsweredAt: now,
+  };
+}
+
+function calculateQuality(isCorrect: boolean, timeSpentMs: number): number {
+  if (!isCorrect) return 1;
+
+  if (timeSpentMs <= 5000) return 5;
+  if (timeSpentMs <= 15000) return 4;
+  return 3;
+}
+
+function updateSpacedRepetition(
+  current: SpacedRepetition,
+  quality: number,
+  now: number
+): SpacedRepetition {
+  let { easeFactor, intervalDays, repetitionCount } = current;
+
+  if (quality >= 3) {
+    if (repetitionCount === 0) {
+      intervalDays = 1;
+    } else if (repetitionCount === 1) {
+      intervalDays = 3;
+    } else {
+      intervalDays = Math.max(1, Math.round(intervalDays * easeFactor));
+    }
+    repetitionCount += 1;
+  } else {
+    repetitionCount = 0;
+    intervalDays = 0;
+  }
+
+  const penalty = 5 - quality;
+  easeFactor = Math.max(
+    MIN_EASE_FACTOR,
+    easeFactor + (0.1 - penalty * (0.08 + penalty * 0.02))
+  );
+
+  return {
+    ...current,
+    easeFactor,
+    intervalDays,
+    repetitionCount,
+    nextReviewAt: now + intervalDays * ONE_DAY_MS,
+    lastAnsweredAt: now,
+  };
+}
+
+function getRecentCategoryCounts(
+  answers: Array<{ questionId: string; answeredAt: number }>,
+  questionById: Map<string, Question>
+): Map<Category, number> {
+  const recentAnswers = [...answers]
+    .sort((a, b) => b.answeredAt - a.answeredAt)
+    .slice(0, RECENT_CATEGORY_WINDOW);
+
+  const counts = new Map<Category, number>();
+  for (const answer of recentAnswers) {
+    const question = questionById.get(answer.questionId);
+    if (!question) continue;
+    counts.set(question.category, (counts.get(question.category) ?? 0) + 1);
+  }
+  return counts;
+}
+
+function getRecentQuestionIds(
+  answers: Array<{ questionId: string; answeredAt: number }>
+): Set<string> {
+  return new Set(
+    [...answers]
+      .sort((a, b) => b.answeredAt - a.answeredAt)
+      .slice(0, RECENT_QUESTION_WINDOW)
+      .map((answer) => answer.questionId)
+  );
+}
+
+function applyQuestionFilters(
+  questions: Question[],
+  recentQuestionIds: Set<string>,
+  recentCategoryCounts: Map<Category, number>
+): Question[] {
+  const nonRecent =
+    questions.filter((question) => !recentQuestionIds.has(question.id)) ||
+    questions;
+  const basePool = nonRecent.length > 0 ? nonRecent : questions;
+
+  const balanced = basePool.filter(
+    (question) =>
+      (recentCategoryCounts.get(question.category) ?? 0) <
+      MAX_SAME_CATEGORY_IN_WINDOW
+  );
+  return balanced.length > 0 ? balanced : basePool;
+}
+
+function pickRandom<T>(items: T[]): T {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function pickFromPrioritized(
+  questions: Question[],
+  recentQuestionIds: Set<string>,
+  recentCategoryCounts: Map<Category, number>,
+  topK: number
+): Question | null {
+  if (questions.length === 0) return null;
+  const filtered = applyQuestionFilters(
+    questions,
+    recentQuestionIds,
+    recentCategoryCounts
+  );
+  const top = filtered.slice(0, Math.min(topK, filtered.length));
+  return pickRandom(top);
+}
+
+function calculateCategoryWeakness(
+  allQuestions: Question[],
+  allAnswers: Array<{ questionId: string; isCorrect: boolean; answeredAt: number }>
+): Map<Category, number> {
+  const weaknessByCategory = new Map<Category, number>();
+  const categories = new Set(allQuestions.map((question) => question.category));
+
+  for (const category of categories) {
+    const categoryQuestionIds = new Set(
+      allQuestions
+        .filter((question) => question.category === category)
+        .map((question) => question.id)
+    );
+    const totalQuestions = categoryQuestionIds.size;
+    if (totalQuestions === 0) {
+      weaknessByCategory.set(category, 1);
+      continue;
+    }
+
+    const latestByQuestion = new Map<string, (typeof allAnswers)[number]>();
+    const categoryAnswers = allAnswers
+      .filter((answer) => categoryQuestionIds.has(answer.questionId))
+      .sort((a, b) => b.answeredAt - a.answeredAt);
+
+    for (const answer of categoryAnswers) {
+      if (!latestByQuestion.has(answer.questionId)) {
+        latestByQuestion.set(answer.questionId, answer);
+      }
+    }
+
+    const latestAnswers = Array.from(latestByQuestion.values());
+    const answeredCount = latestAnswers.length;
+    const correctCount = latestAnswers.filter((answer) => answer.isCorrect).length;
+    const accuracy = answeredCount > 0 ? correctCount / answeredCount : 0;
+    const coverage = answeredCount / totalQuestions;
+    const estimatedStrength = accuracy * coverage;
+    const weakness = Math.max(0.1, 1 - estimatedStrength);
+
+    weaknessByCategory.set(category, weakness);
+  }
+
+  return weaknessByCategory;
+}
+
+function pickWeightedByCategoryWeakness(
+  questions: Question[],
+  weaknessByCategory: Map<Category, number>
+): Question {
+  let totalWeight = 0;
+  const weighted = questions.map((question) => {
+    const weight = weaknessByCategory.get(question.category) ?? 1;
+    totalWeight += weight;
+    return { question, weight };
+  });
+
+  if (totalWeight <= 0) return pickRandom(questions);
+
+  let cursor = Math.random() * totalWeight;
+  for (const item of weighted) {
+    cursor -= item.weight;
+    if (cursor <= 0) return item.question;
+  }
+
+  return weighted[weighted.length - 1].question;
+}
 
 /**
  * 次に出題する問題を選択する
  *
  * 優先度:
- * 1. まだ一度も解いていない問題（分野バランスを考慮）
- * 2. 過去に間違えた問題（間違えた回数が多い順）
- * 3. 最後に解いてから時間が経った問題
+ * 1. nextReviewAt を過ぎた復習問題（期限超過が長い順）
+ * 2. 未回答問題（弱点分野を優先）
+ * 3. 定着が弱い問題（intervalDays が短い順）
  */
 export async function selectNextQuestion(): Promise<Question> {
   const allQuestions = getAllQuestions();
-  const allAnswers = await db.answers.toArray();
+  const [allAnswers, spacedRecords] = await Promise.all([
+    db.answers.toArray(),
+    db.spacedRepetition.toArray(),
+  ]);
+  const now = Date.now();
 
-  // 直近10問の分野を取得（同じ分野の連続を防ぐ）
-  const recentAnswers = allAnswers
-    .sort((a, b) => b.answeredAt - a.answeredAt)
-    .slice(0, 10);
-  const recentCategoryCounts = new Map<string, number>();
-  for (const ans of recentAnswers) {
-    const q = allQuestions.find((q) => q.id === ans.questionId);
-    if (q) {
-      recentCategoryCounts.set(
-        q.category,
-        (recentCategoryCounts.get(q.category) || 0) + 1
-      );
-    }
-  }
+  const questionById = new Map(allQuestions.map((question) => [question.id, question]));
+  const recentCategoryCounts = getRecentCategoryCounts(allAnswers, questionById);
+  const recentQuestionIds = getRecentQuestionIds(allAnswers);
+  const answeredIds = new Set(allAnswers.map((answer) => answer.questionId));
+  const spacedById = new Map(spacedRecords.map((record) => [record.questionId, record]));
 
-  // 回答済みの問題IDセット
-  const answeredIds = new Set(allAnswers.map((a) => a.questionId));
-
-  // Step 1: 未回答の問題
-  const unanswered = allQuestions.filter((q) => !answeredIds.has(q.id));
-  if (unanswered.length > 0) {
-    // 直近10問で3回以上出た分野を除外（可能なら）
-    const filtered = unanswered.filter(
-      (q) => (recentCategoryCounts.get(q.category) || 0) < 3
-    );
-    const pool = filtered.length > 0 ? filtered : unanswered;
-    return pool[Math.floor(Math.random() * pool.length)];
-  }
-
-  // Step 2: 間違えた問題
-  const incorrectCounts = new Map<string, number>();
-  const lastAnswerTime = new Map<string, number>();
-  for (const ans of allAnswers) {
-    if (!ans.isCorrect) {
-      incorrectCounts.set(
-        ans.questionId,
-        (incorrectCounts.get(ans.questionId) || 0) + 1
-      );
-    }
-    const prev = lastAnswerTime.get(ans.questionId) || 0;
-    if (ans.answeredAt > prev) {
-      lastAnswerTime.set(ans.questionId, ans.answeredAt);
-    }
-  }
-
-  // 間違えた問題を間違い回数の降順でソート
-  const incorrectQuestions = allQuestions
-    .filter((q) => (incorrectCounts.get(q.id) || 0) > 0)
+  // Step 1: 期限超過の復習問題を優先
+  const dueQuestions = allQuestions
+    .filter((question) => {
+      const spaced = spacedById.get(question.id);
+      return spaced ? spaced.nextReviewAt <= now : false;
+    })
     .sort((a, b) => {
-      const countDiff =
-        (incorrectCounts.get(b.id) || 0) - (incorrectCounts.get(a.id) || 0);
-      if (countDiff !== 0) return countDiff;
-      // 同じ間違い回数なら、最後に解いてから時間が経った順
-      return (
-        (lastAnswerTime.get(a.id) || 0) - (lastAnswerTime.get(b.id) || 0)
-      );
+      const aSpaced = spacedById.get(a.id);
+      const bSpaced = spacedById.get(b.id);
+      const aOverdue = aSpaced ? now - aSpaced.nextReviewAt : 0;
+      const bOverdue = bSpaced ? now - bSpaced.nextReviewAt : 0;
+      if (bOverdue !== aOverdue) return bOverdue - aOverdue;
+
+      const aInterval = aSpaced?.intervalDays ?? 0;
+      const bInterval = bSpaced?.intervalDays ?? 0;
+      return aInterval - bInterval;
     });
 
-  if (incorrectQuestions.length > 0) {
-    // 上位5問からランダム
-    const top = incorrectQuestions.slice(0, 5);
-    return top[Math.floor(Math.random() * top.length)];
+  const dueCandidate = pickFromPrioritized(
+    dueQuestions,
+    recentQuestionIds,
+    recentCategoryCounts,
+    6
+  );
+  if (dueCandidate) return dueCandidate;
+
+  // Step 2: 未回答問題（弱点分野優先）
+  const unansweredQuestions = allQuestions.filter(
+    (question) => !answeredIds.has(question.id)
+  );
+  if (unansweredQuestions.length > 0) {
+    const filteredUnanswered = applyQuestionFilters(
+      unansweredQuestions,
+      recentQuestionIds,
+      recentCategoryCounts
+    );
+    const weaknessByCategory = calculateCategoryWeakness(allQuestions, allAnswers);
+    return pickWeightedByCategoryWeakness(filteredUnanswered, weaknessByCategory);
   }
 
-  // Step 3: すべて正解済み → 最後に解いてから最も時間が経った問題
-  const sorted = [...allQuestions].sort(
-    (a, b) =>
-      (lastAnswerTime.get(a.id) || 0) - (lastAnswerTime.get(b.id) || 0)
-  );
+  // Step 3: 定着が弱い問題を優先
+  const lastAnsweredById = new Map<string, number>();
+  for (const answer of allAnswers) {
+    const prev = lastAnsweredById.get(answer.questionId) ?? 0;
+    if (answer.answeredAt > prev) {
+      lastAnsweredById.set(answer.questionId, answer.answeredAt);
+    }
+  }
 
-  // 上位10問からランダム
-  const top = sorted.slice(0, 10);
-  return top[Math.floor(Math.random() * top.length)];
+  const weakestQuestions = [...allQuestions].sort((a, b) => {
+    const aSpaced = spacedById.get(a.id);
+    const bSpaced = spacedById.get(b.id);
+    const aInterval = aSpaced?.intervalDays ?? 0;
+    const bInterval = bSpaced?.intervalDays ?? 0;
+    if (aInterval !== bInterval) return aInterval - bInterval;
+
+    const aLast = aSpaced?.lastAnsweredAt ?? lastAnsweredById.get(a.id) ?? 0;
+    const bLast = bSpaced?.lastAnsweredAt ?? lastAnsweredById.get(b.id) ?? 0;
+    return aLast - bLast;
+  });
+
+  const weakestCandidate = pickFromPrioritized(
+    weakestQuestions,
+    recentQuestionIds,
+    recentCategoryCounts,
+    10
+  );
+  if (weakestCandidate) return weakestCandidate;
+
+  return pickRandom(allQuestions);
 }
 
 /**
@@ -97,10 +302,22 @@ export async function recordAnswer(
   isCorrect: boolean,
   timeSpentMs: number
 ): Promise<void> {
-  await db.answers.add({
-    questionId,
-    isCorrect,
-    answeredAt: Date.now(),
-    timeSpentMs,
+  const answeredAt = Date.now();
+  const normalizedTimeSpent =
+    Number.isFinite(timeSpentMs) && timeSpentMs > 0 ? Math.round(timeSpentMs) : 0;
+
+  await db.transaction("rw", db.answers, db.spacedRepetition, async () => {
+    await db.answers.add({
+      questionId,
+      isCorrect,
+      answeredAt,
+      timeSpentMs: normalizedTimeSpent,
+    });
+
+    const current = await db.spacedRepetition.get(questionId);
+    const base = current ?? createDefaultSpacedState(questionId, answeredAt);
+    const quality = calculateQuality(isCorrect, normalizedTimeSpent);
+    const next = updateSpacedRepetition(base, quality, answeredAt);
+    await db.spacedRepetition.put(next);
   });
 }
