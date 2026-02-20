@@ -21,6 +21,7 @@ const CATEGORIES = [
   "equipment_material",
   "inspection",
 ];
+const QUESTION_TYPES = ["multiple_choice", "true_false", "image_tap"];
 
 const errors = [];
 const warnings = [];
@@ -88,14 +89,56 @@ function validateQuestions(questions) {
       categoryCounts[question.category] += 1;
     }
 
-    if (!Array.isArray(question.options) || question.options.length !== 4) {
-      addError(`Question ${question.id} must have exactly 4 options.`);
+    const questionType =
+      question.questionType == null ? "multiple_choice" : question.questionType;
+    if (!QUESTION_TYPES.includes(questionType)) {
+      addError(
+        `Question ${question.id} has invalid questionType: ${question.questionType}`
+      );
+    }
+
+    if (!Array.isArray(question.options) || question.options.length < 2) {
+      addError(`Question ${question.id} must have at least 2 options.`);
+    } else if (questionType === "multiple_choice" && question.options.length !== 4) {
+      addError(`Question ${question.id} (multiple_choice) must have exactly 4 options.`);
+    } else if (questionType === "true_false" && question.options.length !== 2) {
+      addError(`Question ${question.id} (true_false) must have exactly 2 options.`);
+    }
+
+    if (questionType === "image_tap") {
+      if (!question.image) {
+        addError(`Question ${question.id} (image_tap) requires image.`);
+      }
+      if (!Array.isArray(question.hotspots)) {
+        addError(`Question ${question.id} (image_tap) requires hotspots.`);
+      } else {
+        if (question.hotspots.length !== question.options.length) {
+          addError(
+            `Question ${question.id} (image_tap) hotspots length must match options length.`
+          );
+        }
+        question.hotspots.forEach((hotspot, index) => {
+          const validPoint =
+            hotspot &&
+            typeof hotspot.x === "number" &&
+            typeof hotspot.y === "number" &&
+            hotspot.x >= 0 &&
+            hotspot.x <= 100 &&
+            hotspot.y >= 0 &&
+            hotspot.y <= 100;
+          if (!validPoint) {
+            addError(
+              `Question ${question.id} (image_tap) hotspot[${index}] must have x/y in 0-100.`
+            );
+          }
+        });
+      }
     }
 
     if (
       !Number.isInteger(question.correctIndex) ||
       question.correctIndex < 0 ||
-      question.correctIndex > 3
+      question.correctIndex >= question.options.length
     ) {
       addError(`Question ${question.id} has invalid correctIndex.`);
     }
@@ -131,6 +174,7 @@ function validateQuestions(questions) {
         const normalizedCorrect = normalizeText(correct);
 
         if (
+          questionType !== "image_tap" &&
           normalizedCorrect.length >= 3 &&
           haystack.includes(normalizedCorrect)
         ) {
@@ -140,6 +184,7 @@ function validateQuestions(questions) {
         }
 
         for (let i = 0; i < (question.options?.length ?? 0); i += 1) {
+          if (questionType === "image_tap") continue;
           if (i === question.correctIndex) continue;
           const normalizedOption = normalizeText(question.options[i]);
           if (

@@ -10,7 +10,12 @@ import { triggerBackgroundSyncPush } from "@/lib/cloud-sync";
 
 export type QuizState = "loading" | "question" | "feedback" | "complete" | "error";
 
-export function useQuiz() {
+type UseQuizOptions = {
+  fixedQuestionType?: NonNullable<Question["questionType"]>;
+};
+
+export function useQuiz(options: UseQuizOptions = {}) {
+  const { fixedQuestionType } = options;
   const [state, setState] = useState<QuizState>("loading");
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -31,7 +36,7 @@ export function useQuiz() {
   const loadNext = useCallback(async () => {
     setState("loading");
     try {
-      const question = await selectNextQuestion();
+      const question = await selectNextQuestion({ fixedQuestionType });
       const pp = await calculatePassPower();
       setCurrentQuestion(question);
       setSelectedIndex(null);
@@ -50,7 +55,7 @@ export function useQuiz() {
     } catch {
       setState("error");
     }
-  }, []);
+  }, [fixedQuestionType]);
 
   const answer = useCallback(
     async (index: number) => {

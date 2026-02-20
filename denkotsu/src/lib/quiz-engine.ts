@@ -8,6 +8,25 @@ const RECENT_QUESTION_WINDOW = 5;
 const MAX_SAME_CATEGORY_IN_WINDOW = 3;
 const DEFAULT_EASE_FACTOR = 2.5;
 const MIN_EASE_FACTOR = 1.3;
+type QuestionType = NonNullable<Question["questionType"]>;
+
+export type SelectNextQuestionOptions = {
+  fixedQuestionType?: QuestionType;
+};
+
+function normalizeQuestionType(question: Question): QuestionType {
+  return question.questionType ?? "multiple_choice";
+}
+
+function filterByQuestionType(
+  questions: Question[],
+  questionType?: QuestionType
+): Question[] {
+  if (!questionType) return questions;
+  return questions.filter(
+    (question) => normalizeQuestionType(question) === questionType
+  );
+}
 
 function createDefaultSpacedState(
   questionId: string,
@@ -208,22 +227,32 @@ function pickWeightedByCategoryWeakness(
  * 2. 未回答問題（弱点分野を優先）
  * 3. 定着が弱い問題（intervalDays が短い順）
  */
-export async function selectNextQuestion(): Promise<Question> {
+export async function selectNextQuestion(
+  options: SelectNextQuestionOptions = {}
+): Promise<Question> {
   const allQuestions = getAllQuestions();
+  const filteredQuestions = filterByQuestionType(
+    allQuestions,
+    options.fixedQuestionType
+  );
+  const questionPool =
+    filteredQuestions.length > 0 ? filteredQuestions : allQuestions;
   const [allAnswers, spacedRecords] = await Promise.all([
     db.answers.toArray(),
     db.spacedRepetition.toArray(),
   ]);
   const now = Date.now();
 
-  const questionById = new Map(allQuestions.map((question) => [question.id, question]));
+  const questionById = new Map(
+    questionPool.map((question) => [question.id, question])
+  );
   const recentCategoryCounts = getRecentCategoryCounts(allAnswers, questionById);
   const recentQuestionIds = getRecentQuestionIds(allAnswers);
   const answeredIds = new Set(allAnswers.map((answer) => answer.questionId));
   const spacedById = new Map(spacedRecords.map((record) => [record.questionId, record]));
 
   // Step 1: 期限超過の復習問題を優先
-  const dueQuestions = allQuestions
+  const dueQuestions = questionPool
     .filter((question) => {
       const spaced = spacedById.get(question.id);
       return spaced ? spaced.nextReviewAt <= now : false;
@@ -249,7 +278,7 @@ export async function selectNextQuestion(): Promise<Question> {
   if (dueCandidate) return dueCandidate;
 
   // Step 2: 未回答問題（弱点分野優先）
-  const unansweredQuestions = allQuestions.filter(
+  const unansweredQuestions = questionPool.filter(
     (question) => !answeredIds.has(question.id)
   );
   if (unansweredQuestions.length > 0) {
@@ -258,7 +287,7 @@ export async function selectNextQuestion(): Promise<Question> {
       recentQuestionIds,
       recentCategoryCounts
     );
-    const weaknessByCategory = calculateCategoryWeakness(allQuestions, allAnswers);
+    const weaknessByCategory = calculateCategoryWeakness(questionPool, allAnswers);
     return pickWeightedByCategoryWeakness(filteredUnanswered, weaknessByCategory);
   }
 
@@ -271,7 +300,7 @@ export async function selectNextQuestion(): Promise<Question> {
     }
   }
 
-  const weakestQuestions = [...allQuestions].sort((a, b) => {
+  const weakestQuestions = [...questionPool].sort((a, b) => {
     const aSpaced = spacedById.get(a.id);
     const bSpaced = spacedById.get(b.id);
     const aInterval = aSpaced?.intervalDays ?? 0;
@@ -291,7 +320,7 @@ export async function selectNextQuestion(): Promise<Question> {
   );
   if (weakestCandidate) return weakestCandidate;
 
-  return pickRandom(allQuestions);
+  return pickRandom(questionPool);
 }
 
 /**

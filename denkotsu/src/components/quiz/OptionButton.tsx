@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 interface OptionButtonProps {
   index: number;
   text: string;
+  markerLabel?: string;
   selected: boolean;
   isCorrect: boolean | null;
   correctIndex: number;
@@ -17,6 +18,7 @@ const labels = ["①", "②", "③", "④"];
 export function OptionButton({
   index,
   text,
+  markerLabel,
   selected,
   isCorrect,
   correctIndex,
@@ -24,6 +26,7 @@ export function OptionButton({
   onSelect,
 }: OptionButtonProps) {
   const isThisCorrect = index === correctIndex;
+  const label = markerLabel ?? labels[index] ?? `${index + 1}`;
 
   let className =
     "w-full px-4 py-3.5 rounded-2xl border text-left transition-all duration-200 flex items-center gap-3 min-h-[56px]";
@@ -56,7 +59,7 @@ export function OptionButton({
             : "bg-teal-100 text-teal-800"
         }`}
       >
-        {labels[index]}
+        {label}
       </span>
       <span className="text-[16px] leading-snug font-medium">{text}</span>
       {showResult && isThisCorrect && (

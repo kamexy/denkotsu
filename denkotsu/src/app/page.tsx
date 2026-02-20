@@ -1,15 +1,30 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuiz } from "@/hooks/useQuiz";
 import { QuizCard } from "@/components/quiz/QuizCard";
 import { QuizResult } from "@/components/quiz/QuizResult";
 import { SessionComplete } from "@/components/quiz/SessionComplete";
+import type { Question } from "@/types";
 
-import { useMemo } from "react";
 import { getAllQuestions } from "@/lib/questions";
 
+const DEBUG_QUESTION_TYPES: Array<NonNullable<Question["questionType"]>> = [
+  "multiple_choice",
+  "true_false",
+  "image_tap",
+];
+
 export default function Home() {
+  const [fixedQuestionType] = useState<
+    NonNullable<Question["questionType"]> | undefined
+  >(() => {
+    if (typeof window === "undefined") return undefined;
+    const raw = new URLSearchParams(window.location.search).get("debugQuestionType");
+    if (!raw) return undefined;
+    return DEBUG_QUESTION_TYPES.find((type) => type === raw);
+  });
+
   const {
     state,
     currentQuestion,
@@ -23,7 +38,7 @@ export default function Home() {
     answer,
     endSession,
     resetSession,
-  } = useQuiz();
+  } = useQuiz({ fixedQuestionType });
 
   const initialized = useRef(false);
   useEffect(() => {

@@ -51,10 +51,15 @@ export const ALL_CATEGORIES: Category[] = [
 export interface Question {
   id: string;
   category: Category;
+  questionType?: "multiple_choice" | "true_false" | "image_tap";
   question: string;
   image?: string;
-  options: [string, string, string, string];
+  options: string[];
   correctIndex: number;
+  hotspots?: Array<{
+    x: number; // percentage (0-100)
+    y: number; // percentage (0-100)
+  }>;
   explanation: string;
   examYear?: number;
   examSession?: "upper" | "lower";
