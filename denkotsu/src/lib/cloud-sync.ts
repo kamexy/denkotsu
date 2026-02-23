@@ -1,5 +1,5 @@
 import { db, getSettings, updateSettings } from "@/lib/db";
-import type { SyncSnapshot, ThemePreference, UserSettings } from "@/types";
+import type { QuizMode, SyncSnapshot, ThemePreference, UserSettings } from "@/types";
 
 const SYNC_ID_MIN_LENGTH = 12;
 const SYNC_ID_MAX_LENGTH = 64;
@@ -23,6 +23,9 @@ const WEAK_SYNC_ID_TOKENS = new Set([
   "denkotsu",
 ]);
 const STARTUP_SYNC_GUARD_KEY = "denkotsu:startup-sync-done";
+const DEFAULT_QUIZ_MODE: QuizMode = "balanced";
+const DEFAULT_REPEAT_DELAY_QUESTIONS = 2;
+const DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW = 3;
 
 type PullResponse =
   | {
@@ -149,6 +152,9 @@ function toSyncSettingsSnapshot(settings: UserSettings): SyncSnapshot["settings"
     soundEnabled: settings.soundEnabled,
     vibrationEnabled: settings.vibrationEnabled,
     themePreference: settings.themePreference,
+    quizMode: settings.quizMode,
+    repeatDelayQuestions: settings.repeatDelayQuestions,
+    maxSameCategoryInWindow: settings.maxSameCategoryInWindow,
     updatedAt: settings.updatedAt ?? Date.now(),
   };
 }
@@ -157,6 +163,29 @@ function normalizeThemePreference(value: unknown): ThemePreference {
   return value === "light" || value === "dark" || value === "system"
     ? value
     : "system";
+}
+
+function normalizeQuizMode(value: unknown): QuizMode {
+  return value === "mistake_focus" || value === "weak_category" || value === "balanced"
+    ? value
+    : DEFAULT_QUIZ_MODE;
+}
+
+function normalizeBoundedInt(
+  value: unknown,
+  fallback: number,
+  min: number,
+  max: number
+): number {
+  const parsed =
+    typeof value === "number"
+      ? value
+      : Number.parseInt(String(value ?? ""), 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  const normalized = Math.round(parsed);
+  if (normalized < min) return min;
+  if (normalized > max) return max;
+  return normalized;
 }
 
 function sanitizeSnapshot(input: SyncSnapshot): SyncSnapshot {
@@ -193,6 +222,19 @@ function sanitizeSnapshot(input: SyncSnapshot): SyncSnapshot {
     soundEnabled: Boolean(input.settings?.soundEnabled),
     vibrationEnabled: Boolean(input.settings?.vibrationEnabled),
     themePreference: normalizeThemePreference(input.settings?.themePreference),
+    quizMode: normalizeQuizMode(input.settings?.quizMode),
+    repeatDelayQuestions: normalizeBoundedInt(
+      input.settings?.repeatDelayQuestions,
+      DEFAULT_REPEAT_DELAY_QUESTIONS,
+      0,
+      10
+    ),
+    maxSameCategoryInWindow: normalizeBoundedInt(
+      input.settings?.maxSameCategoryInWindow,
+      DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW,
+      1,
+      6
+    ),
     updatedAt:
       typeof input.settings?.updatedAt === "number"
         ? input.settings.updatedAt
@@ -358,6 +400,9 @@ export async function applyRemoteSnapshot(
         soundEnabled: normalized.settings.soundEnabled,
         vibrationEnabled: normalized.settings.vibrationEnabled,
         themePreference: normalized.settings.themePreference,
+        quizMode: normalized.settings.quizMode,
+        repeatDelayQuestions: normalized.settings.repeatDelayQuestions,
+        maxSameCategoryInWindow: normalized.settings.maxSameCategoryInWindow,
         syncId,
         lastSyncedAt: serverUpdatedAt,
         updatedAt: normalized.settings.updatedAt || now,

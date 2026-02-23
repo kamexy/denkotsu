@@ -7,6 +7,7 @@ interface MonetizationEventPayload {
   placement:
     | "settings_recommended_tools"
     | "session_complete"
+    | "quiz_feedback"
     | "learn_page"
     | "stats_page"
     | "settings_page";
@@ -15,6 +16,8 @@ interface MonetizationEventPayload {
   toolName?: string;
   slot?: string;
   destination?: string;
+  sessionAnswered?: number;
+  questionType?: "multiple_choice" | "true_false" | "image_tap";
 }
 
 interface MonetizationEventRecord {
@@ -163,24 +166,42 @@ export function trackSponsoredToolClick(input: {
 export function trackAdSlotRendered(input: {
   slot: string;
   mode: "adsense" | "preview";
-  placement: "session_complete" | "learn_page" | "stats_page" | "settings_page";
+  placement:
+    | "session_complete"
+    | "quiz_feedback"
+    | "learn_page"
+    | "stats_page"
+    | "settings_page";
+  sessionAnswered?: number;
+  questionType?: "multiple_choice" | "true_false" | "image_tap";
 }): void {
   trackMonetizationEvent("ad_slot_rendered", {
     placement: input.placement,
     slot: input.slot,
     mode: input.mode,
+    sessionAnswered: input.sessionAnswered,
+    questionType: input.questionType,
   });
 }
 
 export function trackAdSlotInteraction(input: {
   slot: string;
   mode: "adsense" | "preview";
-  placement: "session_complete" | "learn_page" | "stats_page" | "settings_page";
+  placement:
+    | "session_complete"
+    | "quiz_feedback"
+    | "learn_page"
+    | "stats_page"
+    | "settings_page";
+  sessionAnswered?: number;
+  questionType?: "multiple_choice" | "true_false" | "image_tap";
 }): void {
   trackMonetizationEvent("ad_slot_interaction", {
     placement: input.placement,
     slot: input.slot,
     mode: input.mode,
+    sessionAnswered: input.sessionAnswered,
+    questionType: input.questionType,
   });
 }
 

@@ -1,8 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import type { SessionStats } from "@/types";
+import { db } from "@/lib/db";
+import { getAllQuestions } from "@/lib/questions";
+import {
+  CATEGORY_LABELS,
+  type Category,
+  type QuizMode,
+  type SessionStats,
+} from "@/types";
 import { AdSlot } from "@/components/ads/AdSlot";
 import {
   getSessionCompleteAdSlot,
@@ -13,6 +21,7 @@ interface SessionCompleteProps {
   session: SessionStats;
   passPower: number;
   onRestart: () => void;
+  onRestartWithMode?: (mode: QuizMode) => void | Promise<void>;
 }
 
 const messages = [
@@ -27,10 +36,15 @@ export function SessionComplete({
   session,
   passPower,
   onRestart,
+  onRestartWithMode,
 }: SessionCompleteProps) {
   const [message] = useState(
     () => messages[Math.floor(Math.random() * messages.length)]
   );
+  const [reviewSuggestion, setReviewSuggestion] = useState<{
+    mode: QuizMode;
+    message: string;
+  } | null>(null);
   const correctRate =
     session.totalAnswered > 0
       ? Math.round((session.correctCount / session.totalAnswered) * 100)
@@ -38,6 +52,79 @@ export function SessionComplete({
   const diff = passPower - session.previousPassPower;
   const showBannerAd = shouldShowSessionCompleteAd(session.totalAnswered);
   const adSlot = getSessionCompleteAdSlot();
+  const questionsById = useMemo(
+    () => new Map(getAllQuestions().map((question) => [question.id, question])),
+    []
+  );
+
+  useEffect(() => {
+    let canceled = false;
+
+    const loadSuggestion = async () => {
+      if (session.totalAnswered <= 0) {
+        if (!canceled) {
+          setReviewSuggestion(null);
+        }
+        return;
+      }
+
+      try {
+        const sessionAnswers = await db.answers
+          .where("answeredAt")
+          .aboveOrEqual(session.startedAt)
+          .toArray();
+        if (canceled) return;
+
+        const wrongCounts = new Map<Category, number>();
+        for (const answer of sessionAnswers) {
+          if (answer.isCorrect) continue;
+          const question = questionsById.get(answer.questionId);
+          if (!question) continue;
+          wrongCounts.set(
+            question.category,
+            (wrongCounts.get(question.category) ?? 0) + 1
+          );
+        }
+
+        if (wrongCounts.size === 0) {
+          setReviewSuggestion({
+            mode: "weak_category",
+            message:
+              "正解率が安定しています。次は「弱点カテゴリ特訓」で取りこぼしを潰すのがおすすめです。",
+          });
+          return;
+        }
+
+        const [weakestCategory, wrongCount] = [...wrongCounts.entries()].sort(
+          (a, b) => b[1] - a[1]
+        )[0];
+        setReviewSuggestion({
+          mode: "mistake_focus",
+          message: `${CATEGORY_LABELS[weakestCategory]}で${wrongCount}問ミス。次は「ミスだけ復習」で定着させましょう。`,
+        });
+      } catch {
+        if (!canceled) {
+          setReviewSuggestion({
+            mode: "mistake_focus",
+            message: "次は「ミスだけ復習」で再挑戦すると定着しやすくなります。",
+          });
+        }
+      }
+    };
+
+    void loadSuggestion();
+    return () => {
+      canceled = true;
+    };
+  }, [questionsById, session.startedAt, session.totalAnswered]);
+
+  const handleRestartBySuggestion = () => {
+    if (reviewSuggestion && onRestartWithMode) {
+      void onRestartWithMode(reviewSuggestion.mode);
+      return;
+    }
+    onRestart();
+  };
 
   return (
     <motion.div
@@ -90,6 +177,34 @@ export function SessionComplete({
           </div>
         </div>
 
+        {reviewSuggestion && (
+          <div className="rounded-xl border border-teal-200 bg-[var(--primary-soft)]/65 p-4 mb-5 text-left">
+            <p className="text-sm font-semibold tracking-wide text-teal-800 mb-2">
+              次のおすすめ
+            </p>
+            <p className="text-base text-slate-700 leading-relaxed">
+              {reviewSuggestion.message}
+            </p>
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+              <button
+                onClick={handleRestartBySuggestion}
+                className="flex-1 py-2.5 rounded-lg bg-teal-700 text-white font-semibold text-sm hover:bg-teal-800 transition-colors"
+                type="button"
+              >
+                {reviewSuggestion.mode === "mistake_focus"
+                  ? "ミスだけ復習で再開"
+                  : "弱点カテゴリ特訓で再開"}
+              </button>
+              <Link
+                href="/settings"
+                className="flex-1 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-sm font-semibold text-center hover:bg-slate-50 transition-colors"
+              >
+                設定を開く
+              </Link>
+            </div>
+          </div>
+        )}
+
         <button
           onClick={onRestart}
           className="w-full py-3.5 rounded-xl bg-teal-700 text-white font-semibold text-base hover:bg-teal-800 transition-colors"
@@ -103,6 +218,7 @@ export function SessionComplete({
           slot={adSlot}
           placement="session_complete"
           className="mt-3 w-full max-w-sm"
+          context={{ sessionAnswered: session.totalAnswered }}
         />
       )}
     </motion.div>

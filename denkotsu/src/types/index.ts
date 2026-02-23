@@ -102,6 +102,7 @@ export interface SessionStats {
 
 /** テーマ設定 */
 export type ThemePreference = "system" | "light" | "dark";
+export type QuizMode = "balanced" | "mistake_focus" | "weak_category";
 
 /** 要点カード */
 export interface KeyPoint {
@@ -162,6 +163,9 @@ export interface UserSettings {
   soundEnabled: boolean;
   vibrationEnabled: boolean;
   themePreference: ThemePreference;
+  quizMode: QuizMode;
+  repeatDelayQuestions: number;
+  maxSameCategoryInWindow: number;
   syncId?: string;
   lastSyncedAt?: number;
   updatedAt: number;
@@ -172,6 +176,9 @@ export interface SyncSettingsSnapshot {
   soundEnabled: boolean;
   vibrationEnabled: boolean;
   themePreference: ThemePreference;
+  quizMode: QuizMode;
+  repeatDelayQuestions: number;
+  maxSameCategoryInWindow: number;
   updatedAt: number;
 }
 

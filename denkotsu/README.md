@@ -112,10 +112,13 @@ git push origin main --follow-tags
 - `NEXT_PUBLIC_ADSENSE_ENABLED`（AdSenseを有効にする場合）
 - `NEXT_PUBLIC_ADSENSE_CLIENT_ID`（AdSenseを有効にする場合）
 - `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`（AdSenseを有効にする場合）
+- `NEXT_PUBLIC_ADSENSE_SLOT_QUIZ_FEEDBACK`（解説直下で別スロットを使う場合）
 - `NEXT_PUBLIC_ADSENSE_SLOT_LEARN`（要点画面で別スロットを使う場合）
 - `NEXT_PUBLIC_ADSENSE_SLOT_STATS`（成績画面で別スロットを使う場合）
 - `NEXT_PUBLIC_ADSENSE_SLOT_SETTINGS`（設定画面で別スロットを使う場合）
 - `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`（広告表示の閾値を変更する場合）
+- `NEXT_PUBLIC_ADS_MIN_FEEDBACK_ANSWERS`（解説直下広告の最小表示回答数を変更する場合）
+- `NEXT_PUBLIC_ADS_FEEDBACK_INTERVAL`（解説直下広告の表示間隔を変更する場合）
 - `NEXT_PUBLIC_ADS_PREVIEW`（広告プレビューを使う場合）
 
 Secrets が未設定の場合、`deploy` ジョブ内でデプロイ手順のみ自動スキップされます。
@@ -203,6 +206,8 @@ npx wrangler deploy
   - 例: `ca-pub-xxxxxxxxxxxxxxxx`
 - `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE`
   - セッション完了画面の広告スロットID（数字のみ）
+- `NEXT_PUBLIC_ADSENSE_SLOT_QUIZ_FEEDBACK`
+  - 解説直下の広告スロットID（数字のみ、未設定時は `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE` を利用）
 - `NEXT_PUBLIC_ADSENSE_SLOT_LEARN`
   - 要点画面の広告スロットID（数字のみ、未設定時は `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE` を利用）
 - `NEXT_PUBLIC_ADSENSE_SLOT_STATS`
@@ -211,6 +216,10 @@ npx wrangler deploy
   - 設定画面の広告スロットID（数字のみ、未設定時は `NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE` を利用）
 - `NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS`
   - 広告表示を開始する最小回答数（デフォルト `10`）
+- `NEXT_PUBLIC_ADS_MIN_FEEDBACK_ANSWERS`
+  - 解説直下広告の表示を開始する最小回答数（デフォルト `3`）
+- `NEXT_PUBLIC_ADS_FEEDBACK_INTERVAL`
+  - 解説直下広告の表示間隔（`4` なら 4問ごと、デフォルト `4`）
 - `NEXT_PUBLIC_ADS_PREVIEW`
   - `1` のとき、AdSense ID未設定でも広告プレースホルダーを表示（UI確認用）
 - `public/ads.txt`
@@ -220,6 +229,7 @@ npx wrangler deploy
 広告表示位置:
 
 - クイズのセッション完了画面
+- クイズの解説直下（一定間隔）
 - 要点画面（カテゴリタブ下）
 - 成績画面（サマリメッセージ下）
 - 設定画面（データセクション下）

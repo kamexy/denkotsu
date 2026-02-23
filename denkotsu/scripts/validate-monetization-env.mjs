@@ -17,6 +17,9 @@ const adsenseClientId = (env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? "").trim();
 const sessionCompleteAdSlot = (
   env.NEXT_PUBLIC_ADSENSE_SLOT_SESSION_COMPLETE ?? ""
 ).trim();
+const quizFeedbackAdSlot = (
+  env.NEXT_PUBLIC_ADSENSE_SLOT_QUIZ_FEEDBACK ?? ""
+).trim();
 const learnAdSlot = (env.NEXT_PUBLIC_ADSENSE_SLOT_LEARN ?? "").trim();
 const statsAdSlot = (env.NEXT_PUBLIC_ADSENSE_SLOT_STATS ?? "").trim();
 const settingsAdSlot = (env.NEXT_PUBLIC_ADSENSE_SLOT_SETTINGS ?? "").trim();
@@ -26,6 +29,14 @@ const telemetryEndpoint = (
 const gaMeasurementId = (env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim();
 const parsedMinAnswers = Number.parseInt(
   (env.NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS ?? "10").trim(),
+  10
+);
+const parsedMinFeedbackAnswers = Number.parseInt(
+  (env.NEXT_PUBLIC_ADS_MIN_FEEDBACK_ANSWERS ?? "3").trim(),
+  10
+);
+const parsedFeedbackInterval = Number.parseInt(
+  (env.NEXT_PUBLIC_ADS_FEEDBACK_INTERVAL ?? "4").trim(),
   10
 );
 
@@ -82,6 +93,12 @@ if (adsenseEnabled) {
     );
   }
 
+  if (quizFeedbackAdSlot.length > 0 && !ADSENSE_SLOT_PATTERN.test(quizFeedbackAdSlot)) {
+    errors.push(
+      "NEXT_PUBLIC_ADSENSE_SLOT_QUIZ_FEEDBACK が不正です（数字のみ）。"
+    );
+  }
+
   if (statsAdSlot.length > 0 && !ADSENSE_SLOT_PATTERN.test(statsAdSlot)) {
     errors.push(
       "NEXT_PUBLIC_ADSENSE_SLOT_STATS が不正です（数字のみ）。"
@@ -97,6 +114,18 @@ if (adsenseEnabled) {
   if (!(Number.isFinite(parsedMinAnswers) && parsedMinAnswers > 0)) {
     errors.push(
       "NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS は 1 以上の整数で指定してください。"
+    );
+  }
+
+  if (!(Number.isFinite(parsedMinFeedbackAnswers) && parsedMinFeedbackAnswers > 0)) {
+    errors.push(
+      "NEXT_PUBLIC_ADS_MIN_FEEDBACK_ANSWERS は 1 以上の整数で指定してください。"
+    );
+  }
+
+  if (!(Number.isFinite(parsedFeedbackInterval) && parsedFeedbackInterval > 0)) {
+    errors.push(
+      "NEXT_PUBLIC_ADS_FEEDBACK_INTERVAL は 1 以上の整数で指定してください。"
     );
   }
 
@@ -126,7 +155,10 @@ if (adsenseEnabled) {
 } else if (
   adsenseClientId.length > 0 ||
   sessionCompleteAdSlot.length > 0 ||
-  env.NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS
+  quizFeedbackAdSlot.length > 0 ||
+  env.NEXT_PUBLIC_ADS_MIN_SESSION_ANSWERS ||
+  env.NEXT_PUBLIC_ADS_MIN_FEEDBACK_ANSWERS ||
+  env.NEXT_PUBLIC_ADS_FEEDBACK_INTERVAL
 ) {
   warnings.push(
     "AdSense 関連の値は設定されていますが、NEXT_PUBLIC_ADSENSE_ENABLED=1 ではないため広告表示は無効です。"

@@ -38,6 +38,7 @@ export default function Home() {
     answer,
     endSession,
     resetSession,
+    restartWithMode,
   } = useQuiz({ fixedQuestionType });
 
   const initialized = useRef(false);
@@ -61,6 +62,7 @@ export default function Home() {
           session={session}
           passPower={passPower}
           onRestart={resetSession}
+          onRestartWithMode={restartWithMode}
         />
       </>
     );
@@ -126,6 +128,7 @@ export default function Home() {
                   onEnd={endSession}
                   droppedItem={droppedItem}
                   unlockedAchievements={unlockedAchievements}
+                  totalAnswered={session.totalAnswered}
                 />
               )}
             </>

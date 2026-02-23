@@ -17,7 +17,7 @@ import {
 import { RecommendedToolsSection } from "@/components/monetization/RecommendedToolsSection";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { getSettingsAdSlot, isAdsenseEnabled } from "@/lib/ads";
-import type { ThemePreference, UserSettings } from "@/types";
+import type { QuizMode, ThemePreference, UserSettings } from "@/types";
 
 type SyncWizardMode = "backup" | "restore";
 const THEME_OPTIONS: ReadonlyArray<{ value: ThemePreference; label: string }> = [
@@ -25,6 +25,29 @@ const THEME_OPTIONS: ReadonlyArray<{ value: ThemePreference; label: string }> = 
   { value: "light", label: "ライト" },
   { value: "dark", label: "ダーク" },
 ];
+const QUIZ_MODE_OPTIONS: ReadonlyArray<{
+  value: QuizMode;
+  label: string;
+  description: string;
+}> = [
+  {
+    value: "balanced",
+    label: "標準",
+    description: "未回答・復習・弱点をバランス良く出題",
+  },
+  {
+    value: "mistake_focus",
+    label: "ミスだけ復習",
+    description: "直近で間違えた問題を優先して出題",
+  },
+  {
+    value: "weak_category",
+    label: "弱点カテゴリ特訓",
+    description: "弱点分野に絞って集中的に出題",
+  },
+];
+const REPEAT_DELAY_OPTIONS = [0, 1, 2, 3, 5];
+const SAME_CATEGORY_LIMIT_OPTIONS = [1, 2, 3, 4];
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0";
 const APP_BUILD = (process.env.NEXT_PUBLIC_APP_BUILD ?? "").trim();
 const APP_VERSION_LABEL = APP_BUILD ? `${APP_VERSION}+${APP_BUILD}` : APP_VERSION;
@@ -53,6 +76,9 @@ export default function SettingsPage() {
   const hasValidInputSyncId = normalizedSyncIdInput.length > 0 && !syncIdValidationError;
   const isWizardStep1Done = hasValidInputSyncId && isSyncIdSaved;
   const themePreference = settings?.themePreference ?? "system";
+  const quizMode = settings?.quizMode ?? "balanced";
+  const repeatDelayQuestions = settings?.repeatDelayQuestions ?? 2;
+  const maxSameCategoryInWindow = settings?.maxSameCategoryInWindow ?? 3;
 
   useEffect(() => {
     getSettings().then(setSettings);
@@ -85,6 +111,61 @@ export default function SettingsPage() {
     } catch {
       applyThemePreference(previous);
       setSettings((prev) => (prev ? { ...prev, themePreference: previous } : prev));
+    }
+  };
+
+  const handleQuizModeChange = async (next: QuizMode) => {
+    if (!settings) return;
+    const previous = settings.quizMode;
+    if (previous === next) return;
+
+    setSettings((prev) => (prev ? { ...prev, quizMode: next } : prev));
+    try {
+      await updateSettings({ quizMode: next });
+      const latest = await getSettings();
+      setSettings(latest);
+    } catch {
+      setSettings((prev) => (prev ? { ...prev, quizMode: previous } : prev));
+    }
+  };
+
+  const handleRepeatDelayChange = async (value: number) => {
+    if (!settings) return;
+    const normalized = Number.isFinite(value) ? Math.max(0, Math.min(10, Math.round(value))) : 2;
+    if (settings.repeatDelayQuestions === normalized) return;
+
+    setSettings((prev) =>
+      prev ? { ...prev, repeatDelayQuestions: normalized } : prev
+    );
+    try {
+      await updateSettings({ repeatDelayQuestions: normalized });
+      const latest = await getSettings();
+      setSettings(latest);
+    } catch {
+      setSettings((prev) =>
+        prev ? { ...prev, repeatDelayQuestions: settings.repeatDelayQuestions } : prev
+      );
+    }
+  };
+
+  const handleSameCategoryLimitChange = async (value: number) => {
+    if (!settings) return;
+    const normalized = Number.isFinite(value) ? Math.max(1, Math.min(6, Math.round(value))) : 3;
+    if (settings.maxSameCategoryInWindow === normalized) return;
+
+    setSettings((prev) =>
+      prev ? { ...prev, maxSameCategoryInWindow: normalized } : prev
+    );
+    try {
+      await updateSettings({ maxSameCategoryInWindow: normalized });
+      const latest = await getSettings();
+      setSettings(latest);
+    } catch {
+      setSettings((prev) =>
+        prev
+          ? { ...prev, maxSameCategoryInWindow: settings.maxSameCategoryInWindow }
+          : prev
+      );
     }
   };
 
@@ -323,6 +404,85 @@ export default function SettingsPage() {
             </div>
             <p className="mt-2 text-sm text-slate-500">
               デフォルトは「システム」で、端末の設定に連動します。
+            </p>
+          </div>
+
+          <div className="pt-3 pb-1 border-t border-slate-100 space-y-3">
+            <p className="text-sm text-slate-500">出題モード</p>
+            <div className="grid grid-cols-1 gap-2">
+              {QUIZ_MODE_OPTIONS.map((option) => {
+                const active = quizMode === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      void handleQuizModeChange(option.value);
+                    }}
+                    aria-pressed={active}
+                    disabled={!settings}
+                    className={`px-3 py-2.5 rounded-lg border text-left transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${
+                      active
+                        ? "border-teal-600 bg-teal-700 text-white"
+                        : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    <span className="block text-base font-semibold leading-tight">
+                      {option.label}
+                    </span>
+                    <span
+                      className={`block mt-0.5 text-sm leading-tight ${
+                        active ? "text-teal-50/95" : "text-slate-500"
+                      }`}
+                    >
+                      {option.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <label className="block space-y-1">
+                <span className="text-sm text-slate-500">同じ問題の再出題まで</span>
+                <select
+                  value={repeatDelayQuestions}
+                  onChange={(e) => {
+                    void handleRepeatDelayChange(Number.parseInt(e.target.value, 10));
+                  }}
+                  disabled={!settings}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                >
+                  {REPEAT_DELAY_OPTIONS.map((value) => (
+                    <option key={value} value={value}>
+                      {value === 0 ? "すぐ再出題可" : `${value}問あける`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="block space-y-1">
+                <span className="text-sm text-slate-500">同カテゴリの連続上限</span>
+                <select
+                  value={maxSameCategoryInWindow}
+                  onChange={(e) => {
+                    void handleSameCategoryLimitChange(
+                      Number.parseInt(e.target.value, 10)
+                    );
+                  }}
+                  disabled={!settings}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                >
+                  {SAME_CATEGORY_LIMIT_OPTIONS.map((value) => (
+                    <option key={value} value={value}>
+                      {value}回まで
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <p className="text-sm text-slate-500">
+              出題モードは次の問題から反映されます。
             </p>
           </div>
         </div>

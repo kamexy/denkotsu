@@ -1,12 +1,19 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import type { AchievementDefinition, CollectionItem, Question, SessionStats } from "@/types";
+import type {
+  AchievementDefinition,
+  CollectionItem,
+  Question,
+  QuizMode,
+  SessionStats,
+} from "@/types";
 import { selectNextQuestion, recordAnswer } from "@/lib/quiz-engine";
 import { calculatePassPower } from "@/lib/pass-power";
 import { tryDropCollectionItem } from "@/lib/collection";
 import { unlockAchievements } from "@/lib/achievements";
 import { triggerBackgroundSyncPush } from "@/lib/cloud-sync";
+import { getSettings, updateSettings } from "@/lib/db";
 
 export type QuizState = "loading" | "question" | "feedback" | "complete" | "error";
 
@@ -36,7 +43,13 @@ export function useQuiz(options: UseQuizOptions = {}) {
   const loadNext = useCallback(async () => {
     setState("loading");
     try {
-      const question = await selectNextQuestion({ fixedQuestionType });
+      const currentSettings = await getSettings();
+      const question = await selectNextQuestion({
+        fixedQuestionType,
+        mode: currentSettings.quizMode,
+        repeatDelayQuestions: currentSettings.repeatDelayQuestions,
+        maxSameCategoryInWindow: currentSettings.maxSameCategoryInWindow,
+      });
       const pp = await calculatePassPower();
       setCurrentQuestion(question);
       setSelectedIndex(null);
@@ -111,6 +124,25 @@ export function useQuiz(options: UseQuizOptions = {}) {
     loadNext();
   }, [loadNext, passPower]);
 
+  const restartWithMode = useCallback(
+    async (mode: QuizMode) => {
+      try {
+        await updateSettings({ quizMode: mode });
+      } catch {
+        // 設定更新が失敗しても再開は継続
+      }
+
+      setSession({
+        totalAnswered: 0,
+        correctCount: 0,
+        startedAt: Date.now(),
+        previousPassPower: passPower,
+      });
+      await loadNext();
+    },
+    [loadNext, passPower]
+  );
+
   return {
     state,
     currentQuestion,
@@ -124,5 +156,6 @@ export function useQuiz(options: UseQuizOptions = {}) {
     answer,
     endSession,
     resetSession,
+    restartWithMode,
   };
 }

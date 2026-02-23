@@ -1,17 +1,21 @@
 import { db } from "./db";
 import { getAllQuestions } from "./questions";
-import type { Category, Question, SpacedRepetition } from "@/types";
+import type { Category, Question, QuizMode, SpacedRepetition } from "@/types";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const RECENT_CATEGORY_WINDOW = 10;
 const RECENT_QUESTION_WINDOW = 5;
-const MAX_SAME_CATEGORY_IN_WINDOW = 3;
+const DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW = 3;
+const DEFAULT_REPEAT_DELAY_QUESTIONS = 2;
 const DEFAULT_EASE_FACTOR = 2.5;
 const MIN_EASE_FACTOR = 1.3;
 type QuestionType = NonNullable<Question["questionType"]>;
 
 export type SelectNextQuestionOptions = {
   fixedQuestionType?: QuestionType;
+  mode?: QuizMode;
+  repeatDelayQuestions?: number;
+  maxSameCategoryInWindow?: number;
 };
 
 function normalizeQuestionType(question: Question): QuestionType {
@@ -26,6 +30,31 @@ function filterByQuestionType(
   return questions.filter(
     (question) => normalizeQuestionType(question) === questionType
   );
+}
+
+function normalizeQuizMode(value: QuizMode | undefined): QuizMode {
+  if (value === "mistake_focus" || value === "weak_category") return value;
+  return "balanced";
+}
+
+function normalizeRepeatDelayQuestions(value: number | undefined): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return DEFAULT_REPEAT_DELAY_QUESTIONS;
+  }
+  const rounded = Math.round(value);
+  if (rounded < 0) return 0;
+  if (rounded > 10) return 10;
+  return rounded;
+}
+
+function normalizeMaxSameCategoryInWindow(value: number | undefined): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW;
+  }
+  const rounded = Math.round(value);
+  if (rounded < 1) return 1;
+  if (rounded > 6) return 6;
+  return rounded;
 }
 
 function createDefaultSpacedState(
@@ -89,11 +118,12 @@ function updateSpacedRepetition(
 
 function getRecentCategoryCounts(
   answers: Array<{ questionId: string; answeredAt: number }>,
-  questionById: Map<string, Question>
+  questionById: Map<string, Question>,
+  categoryWindow: number
 ): Map<Category, number> {
   const recentAnswers = [...answers]
     .sort((a, b) => b.answeredAt - a.answeredAt)
-    .slice(0, RECENT_CATEGORY_WINDOW);
+    .slice(0, Math.max(0, categoryWindow));
 
   const counts = new Map<Category, number>();
   for (const answer of recentAnswers) {
@@ -105,42 +135,22 @@ function getRecentCategoryCounts(
 }
 
 function getRecentQuestionIds(
-  answers: Array<{ questionId: string; answeredAt: number }>
+  answers: Array<{ questionId: string; answeredAt: number }>,
+  questionWindow: number
 ): Set<string> {
   return new Set(
     [...answers]
       .sort((a, b) => b.answeredAt - a.answeredAt)
-      .slice(0, RECENT_QUESTION_WINDOW)
+      .slice(0, Math.max(0, questionWindow))
       .map((answer) => answer.questionId)
   );
-}
-
-function getMostRecentQuestionId(
-  answers: Array<{ questionId: string; answeredAt: number }>
-): string | null {
-  if (answers.length === 0) return null;
-  let latest = answers[0];
-  for (const answer of answers) {
-    if (answer.answeredAt > latest.answeredAt) {
-      latest = answer;
-    }
-  }
-  return latest.questionId;
-}
-
-function excludeQuestionWhenPossible(
-  questions: Question[],
-  questionId: string | null
-): Question[] {
-  if (!questionId) return questions;
-  const filtered = questions.filter((question) => question.id !== questionId);
-  return filtered.length > 0 ? filtered : questions;
 }
 
 function applyQuestionFilters(
   questions: Question[],
   recentQuestionIds: Set<string>,
-  recentCategoryCounts: Map<Category, number>
+  recentCategoryCounts: Map<Category, number>,
+  maxSameCategoryInWindow: number
 ): Question[] {
   const nonRecent =
     questions.filter((question) => !recentQuestionIds.has(question.id)) ||
@@ -150,7 +160,7 @@ function applyQuestionFilters(
   const balanced = basePool.filter(
     (question) =>
       (recentCategoryCounts.get(question.category) ?? 0) <
-      MAX_SAME_CATEGORY_IN_WINDOW
+      maxSameCategoryInWindow
   );
   return balanced.length > 0 ? balanced : basePool;
 }
@@ -163,13 +173,15 @@ function pickFromPrioritized(
   questions: Question[],
   recentQuestionIds: Set<string>,
   recentCategoryCounts: Map<Category, number>,
+  maxSameCategoryInWindow: number,
   topK: number
 ): Question | null {
   if (questions.length === 0) return null;
   const filtered = applyQuestionFilters(
     questions,
     recentQuestionIds,
-    recentCategoryCounts
+    recentCategoryCounts,
+    maxSameCategoryInWindow
   );
   const top = filtered.slice(0, Math.min(topK, filtered.length));
   return pickRandom(top);
@@ -241,6 +253,36 @@ function pickWeightedByCategoryWeakness(
   return weighted[weighted.length - 1].question;
 }
 
+function getLatestAnswerByQuestion(
+  answers: Array<{ questionId: string; isCorrect: boolean; answeredAt: number }>
+): Map<string, { questionId: string; isCorrect: boolean; answeredAt: number }> {
+  const latestById = new Map<
+    string,
+    { questionId: string; isCorrect: boolean; answeredAt: number }
+  >();
+
+  for (const answer of answers) {
+    const prev = latestById.get(answer.questionId);
+    if (!prev || answer.answeredAt > prev.answeredAt) {
+      latestById.set(answer.questionId, answer);
+    }
+  }
+
+  return latestById;
+}
+
+function pickWeakestCategory(weaknessByCategory: Map<Category, number>): Category | null {
+  let selected: Category | null = null;
+  let maxWeakness = -1;
+  for (const [category, weakness] of weaknessByCategory.entries()) {
+    if (weakness > maxWeakness) {
+      maxWeakness = weakness;
+      selected = category;
+    }
+  }
+  return selected;
+}
+
 /**
  * 次に出題する問題を選択する
  *
@@ -252,6 +294,14 @@ function pickWeightedByCategoryWeakness(
 export async function selectNextQuestion(
   options: SelectNextQuestionOptions = {}
 ): Promise<Question> {
+  const mode = normalizeQuizMode(options.mode);
+  const repeatDelayQuestions = normalizeRepeatDelayQuestions(
+    options.repeatDelayQuestions
+  );
+  const maxSameCategoryInWindow = normalizeMaxSameCategoryInWindow(
+    options.maxSameCategoryInWindow
+  );
+
   const allQuestions = getAllQuestions();
   const filteredQuestions = filterByQuestionType(
     allQuestions,
@@ -264,19 +314,53 @@ export async function selectNextQuestion(
     db.spacedRepetition.toArray(),
   ]);
   const now = Date.now();
+  const latestAnswerByQuestion = getLatestAnswerByQuestion(allAnswers);
+
+  let modeQuestionPool = questionPool;
+  if (mode === "mistake_focus") {
+    const mistakePool = questionPool.filter((question) => {
+      const latest = latestAnswerByQuestion.get(question.id);
+      return latest ? !latest.isCorrect : false;
+    });
+    if (mistakePool.length > 0) {
+      modeQuestionPool = mistakePool;
+    }
+  } else if (mode === "weak_category") {
+    const weaknessByCategory = calculateCategoryWeakness(questionPool, allAnswers);
+    const weakestCategory = pickWeakestCategory(weaknessByCategory);
+    if (weakestCategory) {
+      const weakCategoryPool = questionPool.filter(
+        (question) => question.category === weakestCategory
+      );
+      if (weakCategoryPool.length > 0) {
+        modeQuestionPool = weakCategoryPool;
+      }
+    }
+  }
 
   const questionById = new Map(
-    questionPool.map((question) => [question.id, question])
+    modeQuestionPool.map((question) => [question.id, question])
   );
-  const recentCategoryCounts = getRecentCategoryCounts(allAnswers, questionById);
-  const recentQuestionIds = getRecentQuestionIds(allAnswers);
-  const mostRecentQuestionId = getMostRecentQuestionId(allAnswers);
+  const recentCategoryCounts = getRecentCategoryCounts(
+    allAnswers,
+    questionById,
+    RECENT_CATEGORY_WINDOW
+  );
+  const recentQuestionIds = getRecentQuestionIds(allAnswers, RECENT_QUESTION_WINDOW);
+  const repeatDelayQuestionIds = getRecentQuestionIds(
+    allAnswers,
+    repeatDelayQuestions
+  );
+  const nonDelayedQuestionPool = modeQuestionPool.filter(
+    (question) => !repeatDelayQuestionIds.has(question.id)
+  );
+  const selectionPool =
+    nonDelayedQuestionPool.length > 0 ? nonDelayedQuestionPool : modeQuestionPool;
   const answeredIds = new Set(allAnswers.map((answer) => answer.questionId));
   const spacedById = new Map(spacedRecords.map((record) => [record.questionId, record]));
 
   // Step 1: 期限超過の復習問題を優先
-  const dueQuestions = excludeQuestionWhenPossible(
-    questionPool
+  const dueQuestions = selectionPool
     .filter((question) => {
       const spaced = spacedById.get(question.id);
       return spaced ? spaced.nextReviewAt <= now : false;
@@ -291,29 +375,29 @@ export async function selectNextQuestion(
       const aInterval = aSpaced?.intervalDays ?? 0;
       const bInterval = bSpaced?.intervalDays ?? 0;
       return aInterval - bInterval;
-    }),
-    mostRecentQuestionId
-  );
+    });
 
   const dueCandidate = pickFromPrioritized(
     dueQuestions,
     recentQuestionIds,
     recentCategoryCounts,
+    maxSameCategoryInWindow,
     6
   );
   if (dueCandidate) return dueCandidate;
 
   // Step 2: 未回答問題（弱点分野優先）
-  const unansweredQuestions = questionPool.filter(
+  const unansweredQuestions = selectionPool.filter(
     (question) => !answeredIds.has(question.id)
   );
   if (unansweredQuestions.length > 0) {
     const filteredUnanswered = applyQuestionFilters(
       unansweredQuestions,
       recentQuestionIds,
-      recentCategoryCounts
+      recentCategoryCounts,
+      maxSameCategoryInWindow
     );
-    const weaknessByCategory = calculateCategoryWeakness(questionPool, allAnswers);
+    const weaknessByCategory = calculateCategoryWeakness(modeQuestionPool, allAnswers);
     return pickWeightedByCategoryWeakness(filteredUnanswered, weaknessByCategory);
   }
 
@@ -326,8 +410,7 @@ export async function selectNextQuestion(
     }
   }
 
-  const weakestQuestions = excludeQuestionWhenPossible(
-    [...questionPool].sort((a, b) => {
+  const weakestQuestions = [...selectionPool].sort((a, b) => {
       const aSpaced = spacedById.get(a.id);
       const bSpaced = spacedById.get(b.id);
       const aInterval = aSpaced?.intervalDays ?? 0;
@@ -337,19 +420,18 @@ export async function selectNextQuestion(
       const aLast = aSpaced?.lastAnsweredAt ?? lastAnsweredById.get(a.id) ?? 0;
       const bLast = bSpaced?.lastAnsweredAt ?? lastAnsweredById.get(b.id) ?? 0;
       return aLast - bLast;
-    }),
-    mostRecentQuestionId
-  );
+    });
 
   const weakestCandidate = pickFromPrioritized(
     weakestQuestions,
     recentQuestionIds,
     recentCategoryCounts,
+    maxSameCategoryInWindow,
     10
   );
   if (weakestCandidate) return weakestCandidate;
 
-  return pickRandom(excludeQuestionWhenPossible(questionPool, mostRecentQuestionId));
+  return pickRandom(selectionPool);
 }
 
 /**

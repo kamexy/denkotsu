@@ -66,6 +66,16 @@ function validateQuestions(questions) {
 
   const seenIds = new Set();
   const categoryCounts = Object.fromEntries(CATEGORIES.map((cat) => [cat, 0]));
+  const questionTypeCounts = Object.fromEntries(
+    QUESTION_TYPES.map((type) => [type, 0])
+  );
+  const categoryTypeCounts = Object.fromEntries(
+    CATEGORIES.map((category) => [
+      category,
+      Object.fromEntries(QUESTION_TYPES.map((type) => [type, 0])),
+    ])
+  );
+  const normalizedQuestionTextMap = new Map();
   const svgCache = new Map();
 
   for (const question of questions) {
@@ -83,7 +93,8 @@ function validateQuestions(questions) {
     }
     seenIds.add(question.id);
 
-    if (!CATEGORIES.includes(question.category)) {
+    const isValidCategory = CATEGORIES.includes(question.category);
+    if (!isValidCategory) {
       addError(`Invalid category at ${question.id}: ${question.category}`);
     } else {
       categoryCounts[question.category] += 1;
@@ -95,6 +106,11 @@ function validateQuestions(questions) {
       addError(
         `Question ${question.id} has invalid questionType: ${question.questionType}`
       );
+    } else {
+      questionTypeCounts[questionType] += 1;
+      if (isValidCategory) {
+        categoryTypeCounts[question.category][questionType] += 1;
+      }
     }
 
     if (!Array.isArray(question.options) || question.options.length < 2) {
@@ -132,6 +148,29 @@ function validateQuestions(questions) {
             );
           }
         });
+
+        for (let i = 0; i < question.hotspots.length; i += 1) {
+          for (let j = i + 1; j < question.hotspots.length; j += 1) {
+            const pointA = question.hotspots[i];
+            const pointB = question.hotspots[j];
+            if (
+              !pointA ||
+              !pointB ||
+              typeof pointA.x !== "number" ||
+              typeof pointA.y !== "number" ||
+              typeof pointB.x !== "number" ||
+              typeof pointB.y !== "number"
+            ) {
+              continue;
+            }
+            const distance = Math.hypot(pointA.x - pointB.x, pointA.y - pointB.y);
+            if (distance < 8) {
+              addWarning(
+                `Question ${question.id} (image_tap) hotspots ${i + 1} and ${j + 1} are too close (${distance.toFixed(1)}).`
+              );
+            }
+          }
+        }
       }
     }
 
@@ -145,6 +184,13 @@ function validateQuestions(questions) {
 
     if (typeof question.question !== "string" || question.question.length === 0) {
       addError(`Question ${question.id} has an empty question text.`);
+    } else {
+      const normalizedQuestion = normalizeText(question.question);
+      if (normalizedQuestion.length >= 8) {
+        const ids = normalizedQuestionTextMap.get(normalizedQuestion) ?? [];
+        ids.push(question.id);
+        normalizedQuestionTextMap.set(normalizedQuestion, ids);
+      }
     }
 
     if (
@@ -152,6 +198,24 @@ function validateQuestions(questions) {
       question.explanation.length === 0
     ) {
       addError(`Question ${question.id} has an empty explanation.`);
+    } else if (normalizeText(question.explanation).length < 18) {
+      addWarning(
+        `Explanation may be too short at ${question.id} (内容が短く学習価値が低い可能性).`
+      );
+    }
+
+    if (Array.isArray(question.options) && question.options.length > 1) {
+      const normalizedOptions = question.options
+        .map((option) => normalizeText(option))
+        .filter((option) => option.length > 0);
+      if (normalizedOptions.length > 1) {
+        const uniqueOptions = new Set(normalizedOptions);
+        if (uniqueOptions.size !== normalizedOptions.length) {
+          addWarning(
+            `Potential duplicate options at ${question.id} (表記揺れ含む重複選択肢の可能性).`
+          );
+        }
+      }
     }
 
     if (question.image) {
@@ -203,6 +267,37 @@ function validateQuestions(questions) {
   for (const [category, count] of Object.entries(categoryCounts)) {
     if (count < 15) {
       addError(`Category ${category} has too few questions: ${count} (< 15)`);
+    }
+  }
+
+  const totalQuestions = questions.length;
+  const trueFalseRate =
+    totalQuestions > 0 ? questionTypeCounts.true_false / totalQuestions : 0;
+  if (trueFalseRate > 0.45) {
+    addWarning(
+      `true_false の割合が高めです (${(trueFalseRate * 100).toFixed(1)}%). 難易度単調化の可能性があります。`
+    );
+  }
+  if (trueFalseRate < 0.08) {
+    addWarning(
+      `true_false の割合が低めです (${(trueFalseRate * 100).toFixed(1)}%). 出題バリエーション不足の可能性があります。`
+    );
+  }
+
+  for (const category of CATEGORIES) {
+    const total = categoryCounts[category];
+    if (total <= 0) continue;
+    const categoryTrueFalseRate = categoryTypeCounts[category].true_false / total;
+    if (categoryTrueFalseRate > 0.6) {
+      addWarning(
+        `Category ${category} で true_false の割合が高いです (${(categoryTrueFalseRate * 100).toFixed(1)}%).`
+      );
+    }
+  }
+
+  for (const ids of normalizedQuestionTextMap.values()) {
+    if (ids.length >= 2) {
+      addWarning(`Potential duplicated question wording: ${ids.join(", ")}`);
     }
   }
 }

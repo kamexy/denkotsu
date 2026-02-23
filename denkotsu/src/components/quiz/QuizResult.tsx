@@ -7,12 +7,15 @@ import { CATEGORY_LABELS } from "@/types";
 import { getKeyPointsByCategory } from "@/lib/key-points";
 import { COLLECTION_RARITY_LABELS } from "@/lib/collection";
 import { motion } from "framer-motion";
+import { AdSlot } from "@/components/ads/AdSlot";
+import { getQuizFeedbackAdSlot, shouldShowQuizFeedbackAd } from "@/lib/ads";
 
 interface QuizResultProps {
   question: Question;
   isCorrect: boolean;
   onNext: () => void;
   onEnd: () => void;
+  totalAnswered: number;
   droppedItem?: CollectionItem | null;
   unlockedAchievements?: AchievementDefinition[];
 }
@@ -22,6 +25,7 @@ export function QuizResult({
   isCorrect,
   onNext,
   onEnd,
+  totalAnswered,
   droppedItem,
   unlockedAchievements = [],
 }: QuizResultProps) {
@@ -29,6 +33,8 @@ export function QuizResult({
     () => getKeyPointsByCategory(question.category).slice(0, 2),
     [question.category]
   );
+  const showFeedbackAd = shouldShowQuizFeedbackAd(totalAnswered);
+  const feedbackAdSlot = getQuizFeedbackAdSlot();
 
   return (
     <motion.div
@@ -103,6 +109,18 @@ export function QuizResult({
           {question.explanation}
         </p>
       </div>
+
+      {showFeedbackAd && (
+        <AdSlot
+          slot={feedbackAdSlot}
+          placement="quiz_feedback"
+          className="w-full mt-3"
+          context={{
+            sessionAnswered: totalAnswered,
+            questionType: question.questionType ?? "multiple_choice",
+          }}
+        />
+      )}
 
       {/* Related key points */}
       {relatedPoints.length > 0 && (
