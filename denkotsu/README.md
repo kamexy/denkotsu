@@ -30,6 +30,12 @@ npm run lint
 # 問題データ・画像整合チェック
 npm run check:data
 
+# CI用（既存警告ベースラインとの差分を厳格チェック）
+npm run check:data:ci
+
+# ベースライン更新（警告を整理した後に実行）
+npm run check:data:update-baseline
+
 # ビルド（安定重視: webpack）
 npm run build
 
@@ -61,7 +67,8 @@ denkotsu/
 │   ├── manifest.json
 │   └── sw.js
 ├── scripts/
-│   └── validate-content.mjs # データ整合チェック
+│   ├── validate-content.mjs                  # データ整合チェック
+│   └── validate-content-warning-baseline.json # CI警告ベースライン
 └── docs/dev-log/            # 開発ログ
 ```
 

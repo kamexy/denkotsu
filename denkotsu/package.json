@@ -1,6 +1,6 @@
 {
   "name": "denkotsu",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,8 @@
     "lint": "eslint",
     "check:data": "node scripts/validate-content.mjs",
     "check:monetization": "node scripts/validate-monetization-env.mjs",
-    "check:data:ci": "node scripts/validate-content.mjs --fail-on-warn",
+    "check:data:ci": "node scripts/validate-content.mjs --fail-on-warn --baseline scripts/validate-content-warning-baseline.json",
+    "check:data:update-baseline": "node scripts/validate-content.mjs --write-baseline scripts/validate-content-warning-baseline.json",
     "check": "npm run lint && npm run check:data && npm run check:monetization && npm run build",
     "release:patch": "npm version patch -m \"chore(release): v%s\"",
     "release:minor": "npm version minor -m \"chore(release): v%s\"",

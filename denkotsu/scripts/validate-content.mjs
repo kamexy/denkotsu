@@ -12,6 +12,7 @@ const projectRoot = path.resolve(__dirname, "..");
 const QUESTIONS_PATH = path.join(projectRoot, "src/data/questions.json");
 const KEY_POINTS_PATH = path.join(projectRoot, "src/data/key-points.json");
 const PUBLIC_DIR = path.join(projectRoot, "public");
+const args = process.argv.slice(2);
 
 const CATEGORIES = [
   "electrical_theory",
@@ -25,7 +26,9 @@ const QUESTION_TYPES = ["multiple_choice", "true_false", "image_tap"];
 
 const errors = [];
 const warnings = [];
-const failOnWarn = process.argv.includes("--fail-on-warn");
+const failOnWarn = args.includes("--fail-on-warn");
+const baselinePath = getOptionValue("--baseline");
+const writeBaselinePath = getOptionValue("--write-baseline");
 
 function addError(message) {
   errors.push(message);
@@ -33,6 +36,21 @@ function addError(message) {
 
 function addWarning(message) {
   warnings.push(message);
+}
+
+function getOptionValue(optionName) {
+  const index = args.indexOf(optionName);
+  if (index === -1) {
+    return null;
+  }
+
+  const value = args[index + 1];
+  if (!value || value.startsWith("--")) {
+    console.error(`[validate-content] ${optionName} の値が不足しています。`);
+    process.exit(1);
+  }
+
+  return path.resolve(projectRoot, value);
 }
 
 function readJson(filePath) {
@@ -339,12 +357,57 @@ function validateKeyPoints(keyPoints) {
 }
 
 function printReport() {
+  let baselineWarnings = [];
+  if (baselinePath) {
+    if (!fs.existsSync(baselinePath)) {
+      console.error(`[validate-content] baseline not found: ${baselinePath}`);
+      process.exit(1);
+    }
+
+    try {
+      const parsed = readJson(baselinePath);
+      if (Array.isArray(parsed)) {
+        baselineWarnings = parsed;
+      } else if (Array.isArray(parsed?.warnings)) {
+        baselineWarnings = parsed.warnings;
+      } else {
+        throw new Error("baseline format must be array or { warnings: string[] }");
+      }
+    } catch (error) {
+      console.error(
+        `[validate-content] baseline parse error: ${error instanceof Error ? error.message : String(error)}`
+      );
+      process.exit(1);
+    }
+  }
+
+  if (writeBaselinePath) {
+    const payload = { warnings: [...warnings].sort() };
+    fs.writeFileSync(writeBaselinePath, `${JSON.stringify(payload, null, 2)}\n`);
+    console.log(`[validate-content] baseline written: ${writeBaselinePath}`);
+  }
+
+  const baselineSet = new Set(baselineWarnings);
+  const newWarnings =
+    baselineSet.size > 0
+      ? warnings.filter((warning) => !baselineSet.has(warning))
+      : [...warnings];
+
   if (warnings.length > 0) {
-    console.warn(`\n[validate-content] warnings: ${warnings.length}`);
-    for (const message of warnings) {
+    if (baselineSet.size > 0) {
+      const matchedCount = warnings.length - newWarnings.length;
+      console.warn(
+        `\n[validate-content] warnings: ${warnings.length} (baseline matched: ${matchedCount}, new: ${newWarnings.length})`
+      );
+    } else {
+      console.warn(`\n[validate-content] warnings: ${warnings.length}`);
+    }
+
+    for (const message of newWarnings) {
       console.warn(`- ${message}`);
     }
-    if (failOnWarn) {
+
+    if (failOnWarn && newWarnings.length > 0) {
       console.error("[validate-content] warnings are treated as errors in strict mode.");
       process.exit(1);
     }
