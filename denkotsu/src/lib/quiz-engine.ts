@@ -115,6 +115,28 @@ function getRecentQuestionIds(
   );
 }
 
+function getMostRecentQuestionId(
+  answers: Array<{ questionId: string; answeredAt: number }>
+): string | null {
+  if (answers.length === 0) return null;
+  let latest = answers[0];
+  for (const answer of answers) {
+    if (answer.answeredAt > latest.answeredAt) {
+      latest = answer;
+    }
+  }
+  return latest.questionId;
+}
+
+function excludeQuestionWhenPossible(
+  questions: Question[],
+  questionId: string | null
+): Question[] {
+  if (!questionId) return questions;
+  const filtered = questions.filter((question) => question.id !== questionId);
+  return filtered.length > 0 ? filtered : questions;
+}
+
 function applyQuestionFilters(
   questions: Question[],
   recentQuestionIds: Set<string>,
@@ -248,11 +270,13 @@ export async function selectNextQuestion(
   );
   const recentCategoryCounts = getRecentCategoryCounts(allAnswers, questionById);
   const recentQuestionIds = getRecentQuestionIds(allAnswers);
+  const mostRecentQuestionId = getMostRecentQuestionId(allAnswers);
   const answeredIds = new Set(allAnswers.map((answer) => answer.questionId));
   const spacedById = new Map(spacedRecords.map((record) => [record.questionId, record]));
 
   // Step 1: 期限超過の復習問題を優先
-  const dueQuestions = questionPool
+  const dueQuestions = excludeQuestionWhenPossible(
+    questionPool
     .filter((question) => {
       const spaced = spacedById.get(question.id);
       return spaced ? spaced.nextReviewAt <= now : false;
@@ -267,7 +291,9 @@ export async function selectNextQuestion(
       const aInterval = aSpaced?.intervalDays ?? 0;
       const bInterval = bSpaced?.intervalDays ?? 0;
       return aInterval - bInterval;
-    });
+    }),
+    mostRecentQuestionId
+  );
 
   const dueCandidate = pickFromPrioritized(
     dueQuestions,
@@ -300,17 +326,20 @@ export async function selectNextQuestion(
     }
   }
 
-  const weakestQuestions = [...questionPool].sort((a, b) => {
-    const aSpaced = spacedById.get(a.id);
-    const bSpaced = spacedById.get(b.id);
-    const aInterval = aSpaced?.intervalDays ?? 0;
-    const bInterval = bSpaced?.intervalDays ?? 0;
-    if (aInterval !== bInterval) return aInterval - bInterval;
+  const weakestQuestions = excludeQuestionWhenPossible(
+    [...questionPool].sort((a, b) => {
+      const aSpaced = spacedById.get(a.id);
+      const bSpaced = spacedById.get(b.id);
+      const aInterval = aSpaced?.intervalDays ?? 0;
+      const bInterval = bSpaced?.intervalDays ?? 0;
+      if (aInterval !== bInterval) return aInterval - bInterval;
 
-    const aLast = aSpaced?.lastAnsweredAt ?? lastAnsweredById.get(a.id) ?? 0;
-    const bLast = bSpaced?.lastAnsweredAt ?? lastAnsweredById.get(b.id) ?? 0;
-    return aLast - bLast;
-  });
+      const aLast = aSpaced?.lastAnsweredAt ?? lastAnsweredById.get(a.id) ?? 0;
+      const bLast = bSpaced?.lastAnsweredAt ?? lastAnsweredById.get(b.id) ?? 0;
+      return aLast - bLast;
+    }),
+    mostRecentQuestionId
+  );
 
   const weakestCandidate = pickFromPrioritized(
     weakestQuestions,
@@ -320,7 +349,7 @@ export async function selectNextQuestion(
   );
   if (weakestCandidate) return weakestCandidate;
 
-  return pickRandom(questionPool);
+  return pickRandom(excludeQuestionWhenPossible(questionPool, mostRecentQuestionId));
 }
 
 /**
