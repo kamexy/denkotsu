@@ -1968,5 +1968,1155 @@
     ],
     "correctIndex": 0,
     "explanation": "単極スイッチは最も基本的なON/OFF用スイッチ。図記号は●で表す。"
+  },
+  {
+    "id": "q138",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "4路スイッチは、3路スイッチ2個の間に入れて使う。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "4路スイッチは3路スイッチ2個の間に入れて、3か所以上操作の回路を構成する。"
+  },
+  {
+    "id": "q139",
+    "category": "laws",
+    "questionType": "true_false",
+    "question": "D種接地工事の接地抵抗値は、原則100Ω以下である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "D種接地工事の接地抵抗値は原則100Ω以下。"
+  },
+  {
+    "id": "q140",
+    "category": "construction_method",
+    "questionType": "true_false",
+    "question": "VVFケーブルはコンクリートへ直接埋設できる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "VVFケーブルをコンクリートへ直接埋設することはできない。"
+  },
+  {
+    "id": "q141",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "100V回路の絶縁抵抗測定では125Vの絶縁抵抗計を使う。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "100V回路では125Vの絶縁抵抗計を使用する。"
+  },
+  {
+    "id": "q142",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "接地抵抗測定は補助極1本で実施できる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "接地抵抗測定には補助極PとCの2本が必要。"
+  },
+  {
+    "id": "q143",
+    "category": "laws",
+    "questionType": "true_false",
+    "question": "低圧は交流600V以下、直流750V以下である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "低圧の区分は交流600V以下、直流750V以下。"
+  },
+  {
+    "id": "q144",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "3路スイッチは3か所から照明を操作するための器具である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "3路スイッチは2か所操作。3か所以上は4路スイッチを併用する。"
+  },
+  {
+    "id": "q145",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "配線図で「20A」とあれば20A定格コンセントを示す。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "コンセント横の20A表記は定格20Aを示す。"
+  },
+  {
+    "id": "q146",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "配線図で「WP」は防水コンセントを表す。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "WPはWaterproof（防水）を示す。"
+  },
+  {
+    "id": "q147",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "配線図で「ET」はタイマーSWを表す。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "ET表記はタイマーSW。"
+  },
+  {
+    "id": "q148",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "位置表示灯スイッチ（H）はON時に表示灯が点灯する。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "HはOFF時点灯。"
+  },
+  {
+    "id": "q149",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "確認表示灯スイッチ（L）はON時に表示灯が点灯する。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "LはON時点灯。"
+  },
+  {
+    "id": "q150",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "絶縁抵抗の単位はMΩで表す。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "絶縁抵抗はMΩ（メグオーム）で表す。"
+  },
+  {
+    "id": "q151",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "漏電遮断器のテストボタン確認は月1回程度が推奨される。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "漏電遮断器は月1回程度テストボタンで確認する。"
+  },
+  {
+    "id": "q152",
+    "category": "equipment_material",
+    "questionType": "true_false",
+    "question": "漏電遮断器は過電流のみを検出する装置である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "漏電遮断器は地絡電流（漏電）を検出して遮断する。"
+  },
+  {
+    "id": "q153",
+    "category": "electrical_theory",
+    "questionType": "true_false",
+    "question": "200Vで500Wの負荷の抵抗は80Ωである。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "R=V^2/P=200^2/500=80Ω。"
+  },
+  {
+    "id": "q154",
+    "category": "electrical_theory",
+    "questionType": "true_false",
+    "question": "2Ωと3Ωの直列合成抵抗は5Ωである。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "直列合成抵抗は加算で5Ω。"
+  },
+  {
+    "id": "q155",
+    "category": "electrical_theory",
+    "questionType": "true_false",
+    "question": "4Ωと4Ωの並列合成抵抗は8Ωである。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "4Ωと4Ωの並列合成抵抗は2Ω。"
+  },
+  {
+    "id": "q156",
+    "category": "electrical_theory",
+    "questionType": "true_false",
+    "question": "100Vで1kWの負荷電流は10Aである。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "I=P/V=1000/100=10A。"
+  },
+  {
+    "id": "q157",
+    "category": "electrical_theory",
+    "questionType": "true_false",
+    "question": "0.5kWを5時間使うと電力量は2.5kWhである。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "電力量=電力×時間=0.5×5=2.5kWh。"
+  },
+  {
+    "id": "q158",
+    "category": "laws",
+    "questionType": "true_false",
+    "question": "D種接地工事の接地抵抗値は常に500Ω以下でよい。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "原則は100Ω以下。500Ω以下は条件付き。"
+  },
+  {
+    "id": "q159",
+    "category": "laws",
+    "questionType": "true_false",
+    "question": "一般住宅の屋内配線では単相100V/200Vが使われる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "一般住宅では単相100V/200Vが使用される。"
+  },
+  {
+    "id": "q160",
+    "category": "construction_method",
+    "questionType": "true_false",
+    "question": "VVF 3Cの心線色は黒・白・赤である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "VVF 3Cは黒・白・赤の3心。"
+  },
+  {
+    "id": "q161",
+    "category": "wiring_diagram",
+    "questionType": "true_false",
+    "question": "3路スイッチ回路の渡り線は2本必要である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "3路スイッチの渡り線は2本。"
+  },
+  {
+    "id": "q162",
+    "category": "laws",
+    "questionType": "true_false",
+    "question": "漏電遮断器を設置すれば、どんな条件でも接地工事を省略できる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "接地工事の省略は条件付きであり、常に省略できるわけではない。"
+  },
+  {
+    "id": "q163",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "低圧検電器は電圧値を正確に数値表示できる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 1,
+    "explanation": "低圧検電器は充電の有無確認が主目的。"
+  },
+  {
+    "id": "q164",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "クランプメータは回路を切らずに電流測定できる。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "クランプで導体を挟むことで回路を切らずに電流測定できる。"
+  },
+  {
+    "id": "q165",
+    "category": "inspection",
+    "questionType": "true_false",
+    "question": "接地抵抗測定では接地極・P極・C極を約10m間隔で一直線に配置する。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "接地抵抗測定の基本配置は約10m間隔で一直線。"
+  },
+  {
+    "id": "q166",
+    "category": "construction_method",
+    "questionType": "true_false",
+    "question": "1.6mm単線を3本接続するとき、リングスリーブの圧着マークは「小」である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "1.6mm単線3本は小スリーブ・小マーク。"
+  },
+  {
+    "id": "q167",
+    "category": "construction_method",
+    "questionType": "true_false",
+    "question": "リングスリーブ用圧着工具の柄の色は黄色が一般的である。",
+    "options": [
+      "○（正しい）",
+      "×（誤り）"
+    ],
+    "correctIndex": 0,
+    "explanation": "第二種で使うリングスリーブ用圧着工具は黄色の柄が一般的。"
+  },
+  {
+    "id": "q168",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「位置表示灯(H)」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 4,
+    "explanation": "位置表示灯はH表記。OFF時に表示灯が点灯する。"
+  },
+  {
+    "id": "q169",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「確認表示灯(L)」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 5,
+    "explanation": "確認表示灯はL表記。ON時に表示灯が点灯する。"
+  },
+  {
+    "id": "q170",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「自動点滅器(A)」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 6,
+    "explanation": "自動点滅器はA表記。外光に応じて自動で点灯・消灯する。"
+  },
+  {
+    "id": "q171",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「3路スイッチ」の位置をタップしてください。（7択）",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "3路スイッチは●3で表す。"
+  },
+  {
+    "id": "q172",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「4路スイッチ」の位置をタップしてください。（7択）",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 2,
+    "explanation": "4路スイッチは●4で表す。"
+  },
+  {
+    "id": "q173",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「タイマーSW」の位置をタップしてください。（7択）",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 3,
+    "explanation": "タイマーSWはET表記。"
+  },
+  {
+    "id": "q174",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「単極スイッチ」の位置をタップしてください。（7択）",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW",
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      },
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 0,
+    "explanation": "単極スイッチは最も基本的なON/OFFスイッチ。"
+  },
+  {
+    "id": "q175",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「一般コンセント」の位置をタップしてください。",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般コンセント",
+      "接地極付コンセント",
+      "接地端子付コンセント",
+      "接地極付接地端子付コンセント",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.3
+      },
+      {
+        "x": 34.7,
+        "y": 16.3
+      },
+      {
+        "x": 62.5,
+        "y": 16.3
+      },
+      {
+        "x": 87.5,
+        "y": 16.3
+      },
+      {
+        "x": 12.5,
+        "y": 57.3
+      },
+      {
+        "x": 44.4,
+        "y": 57.3
+      }
+    ],
+    "correctIndex": 0,
+    "explanation": "一般コンセントは二重線（=）で表す。"
+  },
+  {
+    "id": "q176",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「接地極付コンセント」の位置をタップしてください。（6択）",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般コンセント",
+      "接地極付コンセント",
+      "接地端子付コンセント",
+      "接地極付接地端子付コンセント",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.3
+      },
+      {
+        "x": 34.7,
+        "y": 16.3
+      },
+      {
+        "x": 62.5,
+        "y": 16.3
+      },
+      {
+        "x": 87.5,
+        "y": 16.3
+      },
+      {
+        "x": 12.5,
+        "y": 57.3
+      },
+      {
+        "x": 44.4,
+        "y": 57.3
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "接地極付は=E表記。"
+  },
+  {
+    "id": "q177",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「接地端子付コンセント」の位置をタップしてください。",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般コンセント",
+      "接地極付コンセント",
+      "接地端子付コンセント",
+      "接地極付接地端子付コンセント",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.3
+      },
+      {
+        "x": 34.7,
+        "y": 16.3
+      },
+      {
+        "x": 62.5,
+        "y": 16.3
+      },
+      {
+        "x": 87.5,
+        "y": 16.3
+      },
+      {
+        "x": 12.5,
+        "y": 57.3
+      },
+      {
+        "x": 44.4,
+        "y": 57.3
+      }
+    ],
+    "correctIndex": 2,
+    "explanation": "接地端子付は=ET表記。"
+  },
+  {
+    "id": "q178",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「接地極付接地端子付コンセント」の位置をタップしてください。",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般コンセント",
+      "接地極付コンセント",
+      "接地端子付コンセント",
+      "接地極付接地端子付コンセント",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.3
+      },
+      {
+        "x": 34.7,
+        "y": 16.3
+      },
+      {
+        "x": 62.5,
+        "y": 16.3
+      },
+      {
+        "x": 87.5,
+        "y": 16.3
+      },
+      {
+        "x": 12.5,
+        "y": 57.3
+      },
+      {
+        "x": 44.4,
+        "y": 57.3
+      }
+    ],
+    "correctIndex": 3,
+    "explanation": "接地極付接地端子付はEET表記。"
+  },
+  {
+    "id": "q179",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「20Aコンセント」の位置をタップしてください。（6択）",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般コンセント",
+      "接地極付コンセント",
+      "接地端子付コンセント",
+      "接地極付接地端子付コンセント",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.3
+      },
+      {
+        "x": 34.7,
+        "y": 16.3
+      },
+      {
+        "x": 62.5,
+        "y": 16.3
+      },
+      {
+        "x": 87.5,
+        "y": 16.3
+      },
+      {
+        "x": 12.5,
+        "y": 57.3
+      },
+      {
+        "x": 44.4,
+        "y": 57.3
+      }
+    ],
+    "correctIndex": 4,
+    "explanation": "20Aコンセントは20A表記。"
+  },
+  {
+    "id": "q180",
+    "category": "equipment_material",
+    "questionType": "image_tap",
+    "question": "画像内で「防水コンセント」の位置をタップしてください。（6択）",
+    "image": "/images/symbols/outlet-all.svg",
+    "options": [
+      "一般コンセント",
+      "接地極付コンセント",
+      "接地端子付コンセント",
+      "接地極付接地端子付コンセント",
+      "20Aコンセント",
+      "防水コンセント"
+    ],
+    "hotspots": [
+      {
+        "x": 9.7,
+        "y": 16.3
+      },
+      {
+        "x": 34.7,
+        "y": 16.3
+      },
+      {
+        "x": 62.5,
+        "y": 16.3
+      },
+      {
+        "x": 87.5,
+        "y": 16.3
+      },
+      {
+        "x": 12.5,
+        "y": 57.3
+      },
+      {
+        "x": 44.4,
+        "y": 57.3
+      }
+    ],
+    "correctIndex": 5,
+    "explanation": "防水コンセントはWP表記。"
+  },
+  {
+    "id": "q181",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「シーリングライト」の位置をタップしてください。（再確認）",
+    "image": "/images/symbols/light-ceiling.svg",
+    "options": [
+      "シーリングライト",
+      "引掛シーリング"
+    ],
+    "hotspots": [
+      {
+        "x": 22.9,
+        "y": 41.7
+      },
+      {
+        "x": 72.9,
+        "y": 41.7
+      }
+    ],
+    "correctIndex": 0,
+    "explanation": "単純な丸（○）がシーリングライト。"
+  },
+  {
+    "id": "q182",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「引掛シーリング」の位置をタップしてください。（再確認）",
+    "image": "/images/symbols/light-ceiling.svg",
+    "options": [
+      "シーリングライト",
+      "引掛シーリング"
+    ],
+    "hotspots": [
+      {
+        "x": 22.9,
+        "y": 41.7
+      },
+      {
+        "x": 72.9,
+        "y": 41.7
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "二重丸（◎）が引掛シーリング。"
+  },
+  {
+    "id": "q183",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「H（位置表示灯）」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 0,
+    "explanation": "Hは位置表示灯。OFF時点灯。"
+  },
+  {
+    "id": "q184",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「L（確認表示灯）」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "Lは確認表示灯。ON時点灯。"
+  },
+  {
+    "id": "q185",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「A（自動点滅器）」の位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "位置表示灯(H)",
+      "確認表示灯(L)",
+      "自動点滅器(A)"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 60
+      },
+      {
+        "x": 38.9,
+        "y": 60
+      },
+      {
+        "x": 68.1,
+        "y": 60
+      }
+    ],
+    "correctIndex": 2,
+    "explanation": "Aは自動点滅器。"
+  },
+  {
+    "id": "q186",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「●3」の図記号位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      }
+    ],
+    "correctIndex": 1,
+    "explanation": "●3は3路スイッチ。"
+  },
+  {
+    "id": "q187",
+    "category": "wiring_diagram",
+    "questionType": "image_tap",
+    "question": "画像内で「●ET」の図記号位置をタップしてください。",
+    "image": "/images/symbols/switch-all.svg",
+    "options": [
+      "単極スイッチ",
+      "3路スイッチ",
+      "4路スイッチ",
+      "タイマーSW"
+    ],
+    "hotspots": [
+      {
+        "x": 11.1,
+        "y": 17.5
+      },
+      {
+        "x": 33.3,
+        "y": 17.5
+      },
+      {
+        "x": 58.3,
+        "y": 17.5
+      },
+      {
+        "x": 84.7,
+        "y": 17.5
+      }
+    ],
+    "correctIndex": 3,
+    "explanation": "●ETはタイマーSW。"
   }
 ]
