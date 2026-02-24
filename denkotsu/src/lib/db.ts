@@ -13,10 +13,16 @@ const DEFAULT_THEME_PREFERENCE: ThemePreference = "system";
 const DEFAULT_QUIZ_MODE: QuizMode = "balanced";
 const DEFAULT_REPEAT_DELAY_QUESTIONS = 2;
 const DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW = 3;
+const DEFAULT_DAILY_GOAL_QUESTIONS = 20;
+const DEFAULT_WEEKLY_GOAL_STUDY_DAYS = 5;
 const MIN_REPEAT_DELAY_QUESTIONS = 0;
 const MAX_REPEAT_DELAY_QUESTIONS = 10;
 const MIN_SAME_CATEGORY_LIMIT = 1;
 const MAX_SAME_CATEGORY_LIMIT = 6;
+const MIN_DAILY_GOAL_QUESTIONS = 5;
+const MAX_DAILY_GOAL_QUESTIONS = 100;
+const MIN_WEEKLY_GOAL_STUDY_DAYS = 1;
+const MAX_WEEKLY_GOAL_STUDY_DAYS = 7;
 
 function normalizeThemePreference(value: unknown): ThemePreference {
   return value === "light" || value === "dark" || value === "system"
@@ -96,6 +102,18 @@ export async function getSettings(): Promise<UserSettings> {
         MIN_SAME_CATEGORY_LIMIT,
         MAX_SAME_CATEGORY_LIMIT
       ),
+      dailyGoalQuestions: normalizeIntInRange(
+        s.dailyGoalQuestions,
+        DEFAULT_DAILY_GOAL_QUESTIONS,
+        MIN_DAILY_GOAL_QUESTIONS,
+        MAX_DAILY_GOAL_QUESTIONS
+      ),
+      weeklyGoalStudyDays: normalizeIntInRange(
+        s.weeklyGoalStudyDays,
+        DEFAULT_WEEKLY_GOAL_STUDY_DAYS,
+        MIN_WEEKLY_GOAL_STUDY_DAYS,
+        MAX_WEEKLY_GOAL_STUDY_DAYS
+      ),
       syncId: s.syncId,
       lastSyncedAt: s.lastSyncedAt,
       updatedAt: s.updatedAt ?? now,
@@ -108,6 +126,8 @@ export async function getSettings(): Promise<UserSettings> {
       s.quizMode !== normalized.quizMode ||
       s.repeatDelayQuestions !== normalized.repeatDelayQuestions ||
       s.maxSameCategoryInWindow !== normalized.maxSameCategoryInWindow ||
+      s.dailyGoalQuestions !== normalized.dailyGoalQuestions ||
+      s.weeklyGoalStudyDays !== normalized.weeklyGoalStudyDays ||
       s.syncId !== normalized.syncId ||
       s.lastSyncedAt !== normalized.lastSyncedAt ||
       s.updatedAt !== normalized.updatedAt;
@@ -127,6 +147,8 @@ export async function getSettings(): Promise<UserSettings> {
     quizMode: DEFAULT_QUIZ_MODE,
     repeatDelayQuestions: DEFAULT_REPEAT_DELAY_QUESTIONS,
     maxSameCategoryInWindow: DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW,
+    dailyGoalQuestions: DEFAULT_DAILY_GOAL_QUESTIONS,
+    weeklyGoalStudyDays: DEFAULT_WEEKLY_GOAL_STUDY_DAYS,
     updatedAt: now,
   };
   await db.settings.put(defaults);

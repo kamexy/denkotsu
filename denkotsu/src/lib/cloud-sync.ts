@@ -26,6 +26,8 @@ const STARTUP_SYNC_GUARD_KEY = "denkotsu:startup-sync-done";
 const DEFAULT_QUIZ_MODE: QuizMode = "balanced";
 const DEFAULT_REPEAT_DELAY_QUESTIONS = 2;
 const DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW = 3;
+const DEFAULT_DAILY_GOAL_QUESTIONS = 20;
+const DEFAULT_WEEKLY_GOAL_STUDY_DAYS = 5;
 
 type PullResponse =
   | {
@@ -155,6 +157,8 @@ function toSyncSettingsSnapshot(settings: UserSettings): SyncSnapshot["settings"
     quizMode: settings.quizMode,
     repeatDelayQuestions: settings.repeatDelayQuestions,
     maxSameCategoryInWindow: settings.maxSameCategoryInWindow,
+    dailyGoalQuestions: settings.dailyGoalQuestions,
+    weeklyGoalStudyDays: settings.weeklyGoalStudyDays,
     updatedAt: settings.updatedAt ?? Date.now(),
   };
 }
@@ -234,6 +238,18 @@ function sanitizeSnapshot(input: SyncSnapshot): SyncSnapshot {
       DEFAULT_MAX_SAME_CATEGORY_IN_WINDOW,
       1,
       6
+    ),
+    dailyGoalQuestions: normalizeBoundedInt(
+      input.settings?.dailyGoalQuestions,
+      DEFAULT_DAILY_GOAL_QUESTIONS,
+      5,
+      100
+    ),
+    weeklyGoalStudyDays: normalizeBoundedInt(
+      input.settings?.weeklyGoalStudyDays,
+      DEFAULT_WEEKLY_GOAL_STUDY_DAYS,
+      1,
+      7
     ),
     updatedAt:
       typeof input.settings?.updatedAt === "number"
@@ -403,6 +419,8 @@ export async function applyRemoteSnapshot(
         quizMode: normalized.settings.quizMode,
         repeatDelayQuestions: normalized.settings.repeatDelayQuestions,
         maxSameCategoryInWindow: normalized.settings.maxSameCategoryInWindow,
+        dailyGoalQuestions: normalized.settings.dailyGoalQuestions,
+        weeklyGoalStudyDays: normalized.settings.weeklyGoalStudyDays,
         syncId,
         lastSyncedAt: serverUpdatedAt,
         updatedAt: normalized.settings.updatedAt || now,

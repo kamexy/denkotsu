@@ -48,6 +48,8 @@ const QUIZ_MODE_OPTIONS: ReadonlyArray<{
 ];
 const REPEAT_DELAY_OPTIONS = [0, 1, 2, 3, 5];
 const SAME_CATEGORY_LIMIT_OPTIONS = [1, 2, 3, 4];
+const DAILY_GOAL_OPTIONS = [5, 10, 15, 20, 30, 50];
+const WEEKLY_GOAL_STUDY_DAYS_OPTIONS = [3, 4, 5, 6, 7];
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0";
 const APP_BUILD = (process.env.NEXT_PUBLIC_APP_BUILD ?? "").trim();
 const APP_VERSION_LABEL = APP_BUILD ? `${APP_VERSION}+${APP_BUILD}` : APP_VERSION;
@@ -79,6 +81,8 @@ export default function SettingsPage() {
   const quizMode = settings?.quizMode ?? "balanced";
   const repeatDelayQuestions = settings?.repeatDelayQuestions ?? 2;
   const maxSameCategoryInWindow = settings?.maxSameCategoryInWindow ?? 3;
+  const dailyGoalQuestions = settings?.dailyGoalQuestions ?? 20;
+  const weeklyGoalStudyDays = settings?.weeklyGoalStudyDays ?? 5;
 
   useEffect(() => {
     getSettings().then(setSettings);
@@ -164,6 +168,46 @@ export default function SettingsPage() {
       setSettings((prev) =>
         prev
           ? { ...prev, maxSameCategoryInWindow: settings.maxSameCategoryInWindow }
+          : prev
+      );
+    }
+  };
+
+  const handleDailyGoalQuestionsChange = async (value: number) => {
+    if (!settings) return;
+    const normalized = Number.isFinite(value) ? Math.max(5, Math.min(100, Math.round(value))) : 20;
+    if (settings.dailyGoalQuestions === normalized) return;
+
+    setSettings((prev) =>
+      prev ? { ...prev, dailyGoalQuestions: normalized } : prev
+    );
+    try {
+      await updateSettings({ dailyGoalQuestions: normalized });
+      const latest = await getSettings();
+      setSettings(latest);
+    } catch {
+      setSettings((prev) =>
+        prev ? { ...prev, dailyGoalQuestions: settings.dailyGoalQuestions } : prev
+      );
+    }
+  };
+
+  const handleWeeklyGoalStudyDaysChange = async (value: number) => {
+    if (!settings) return;
+    const normalized = Number.isFinite(value) ? Math.max(1, Math.min(7, Math.round(value))) : 5;
+    if (settings.weeklyGoalStudyDays === normalized) return;
+
+    setSettings((prev) =>
+      prev ? { ...prev, weeklyGoalStudyDays: normalized } : prev
+    );
+    try {
+      await updateSettings({ weeklyGoalStudyDays: normalized });
+      const latest = await getSettings();
+      setSettings(latest);
+    } catch {
+      setSettings((prev) =>
+        prev
+          ? { ...prev, weeklyGoalStudyDays: settings.weeklyGoalStudyDays }
           : prev
       );
     }
@@ -483,6 +527,54 @@ export default function SettingsPage() {
             </div>
             <p className="text-sm text-slate-500">
               出題モードは次の問題から反映されます。
+            </p>
+          </div>
+
+          <div className="pt-3 pb-1 border-t border-slate-100 space-y-3">
+            <p className="text-sm text-slate-500">学習目標</p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <label className="block space-y-1">
+                <span className="text-sm text-slate-500">1日の目標問題数</span>
+                <select
+                  value={dailyGoalQuestions}
+                  onChange={(e) => {
+                    void handleDailyGoalQuestionsChange(
+                      Number.parseInt(e.target.value, 10)
+                    );
+                  }}
+                  disabled={!settings}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                >
+                  {DAILY_GOAL_OPTIONS.map((value) => (
+                    <option key={value} value={value}>
+                      {value}問/日
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="block space-y-1">
+                <span className="text-sm text-slate-500">1週間の目標学習日数</span>
+                <select
+                  value={weeklyGoalStudyDays}
+                  onChange={(e) => {
+                    void handleWeeklyGoalStudyDaysChange(
+                      Number.parseInt(e.target.value, 10)
+                    );
+                  }}
+                  disabled={!settings}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 disabled:bg-slate-100"
+                >
+                  {WEEKLY_GOAL_STUDY_DAYS_OPTIONS.map((value) => (
+                    <option key={value} value={value}>
+                      {value}日/週
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <p className="text-sm text-slate-500">
+              成績画面に日次・週次の進捗が表示されます。
             </p>
           </div>
         </div>

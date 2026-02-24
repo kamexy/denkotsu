@@ -166,6 +166,8 @@ export interface UserSettings {
   quizMode: QuizMode;
   repeatDelayQuestions: number;
   maxSameCategoryInWindow: number;
+  dailyGoalQuestions: number;
+  weeklyGoalStudyDays: number;
   syncId?: string;
   lastSyncedAt?: number;
   updatedAt: number;
@@ -179,6 +181,8 @@ export interface SyncSettingsSnapshot {
   quizMode: QuizMode;
   repeatDelayQuestions: number;
   maxSameCategoryInWindow: number;
+  dailyGoalQuestions: number;
+  weeklyGoalStudyDays: number;
   updatedAt: number;
 }
 

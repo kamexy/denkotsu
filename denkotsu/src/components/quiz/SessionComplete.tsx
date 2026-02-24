@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { db } from "@/lib/db";
+import { db, getSettings } from "@/lib/db";
 import { getAllQuestions } from "@/lib/questions";
+import { calculateStudyInsights } from "@/lib/study-insights";
 import {
   CATEGORY_LABELS,
   type Category,
@@ -45,6 +46,7 @@ export function SessionComplete({
     mode: QuizMode;
     message: string;
   } | null>(null);
+  const [dailyGoalSuggestion, setDailyGoalSuggestion] = useState<string | null>(null);
   const correctRate =
     session.totalAnswered > 0
       ? Math.round((session.correctCount / session.totalAnswered) * 100)
@@ -69,10 +71,14 @@ export function SessionComplete({
       }
 
       try {
-        const sessionAnswers = await db.answers
+        const [sessionAnswers, allAnswers, settings] = await Promise.all([
+          db.answers
           .where("answeredAt")
           .aboveOrEqual(session.startedAt)
-          .toArray();
+          .toArray(),
+          db.answers.toArray(),
+          getSettings(),
+        ]);
         if (canceled) return;
 
         const wrongCounts = new Map<Category, number>();
@@ -92,22 +98,34 @@ export function SessionComplete({
             message:
               "正解率が安定しています。次は「弱点カテゴリ特訓」で取りこぼしを潰すのがおすすめです。",
           });
-          return;
+        } else {
+          const [weakestCategory, wrongCount] = [...wrongCounts.entries()].sort(
+            (a, b) => b[1] - a[1]
+          )[0];
+          setReviewSuggestion({
+            mode: "mistake_focus",
+            message: `${CATEGORY_LABELS[weakestCategory]}で${wrongCount}問ミス。次は「ミスだけ復習」で定着させましょう。`,
+          });
         }
 
-        const [weakestCategory, wrongCount] = [...wrongCounts.entries()].sort(
-          (a, b) => b[1] - a[1]
-        )[0];
-        setReviewSuggestion({
-          mode: "mistake_focus",
-          message: `${CATEGORY_LABELS[weakestCategory]}で${wrongCount}問ミス。次は「ミスだけ復習」で定着させましょう。`,
-        });
+        const insights = calculateStudyInsights(
+          allAnswers,
+          settings.dailyGoalQuestions,
+          settings.weeklyGoalStudyDays
+        );
+        const remaining = insights.dailyGoal.remainingQuestions;
+        if (remaining <= 0) {
+          setDailyGoalSuggestion("今日の目標は達成済みです。余裕があれば弱点復習を1セット進めましょう。");
+        } else {
+          setDailyGoalSuggestion(`今日の目標まであと${remaining}問です。短時間で1セット進めるのがおすすめです。`);
+        }
       } catch {
         if (!canceled) {
           setReviewSuggestion({
             mode: "mistake_focus",
             message: "次は「ミスだけ復習」で再挑戦すると定着しやすくなります。",
           });
+          setDailyGoalSuggestion(null);
         }
       }
     };
@@ -202,6 +220,17 @@ export function SessionComplete({
                 設定を開く
               </Link>
             </div>
+          </div>
+        )}
+
+        {dailyGoalSuggestion && (
+          <div className="rounded-xl border border-slate-200 bg-white/85 p-4 mb-5 text-left">
+            <p className="text-sm font-semibold tracking-wide text-slate-600 mb-2">
+              継続のヒント
+            </p>
+            <p className="text-base text-slate-700 leading-relaxed">
+              {dailyGoalSuggestion}
+            </p>
           </div>
         )}
 
