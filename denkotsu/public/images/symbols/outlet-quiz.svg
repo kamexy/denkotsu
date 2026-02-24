@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" width="360" height="200">
+  <title>コンセント図記号</title>
+  <desc>画像タップ問題用のコンセント図記号</desc>
+  <style>
+    text { font-family: sans-serif; }
+    .sym { font-size: 16px; fill: #1a1a1a; font-weight: bold; }
+  </style>
+  <line x1="15" y1="28" x2="55" y2="28" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line x1="15" y1="37" x2="55" y2="37" stroke="#1a1a1a" stroke-width="2.5"/>
+
+  <line x1="100" y1="28" x2="140" y2="28" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line x1="100" y1="37" x2="140" y2="37" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="153" y="37" class="sym">E</text>
+
+  <line x1="195" y1="28" x2="235" y2="28" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line x1="195" y1="37" x2="235" y2="37" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="248" y="37" class="sym" font-size="14">ET</text>
+
+  <line x1="290" y1="28" x2="330" y2="28" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line x1="290" y1="37" x2="330" y2="37" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="340" y="37" class="sym" font-size="13">EET</text>
+
+  <line x1="15" y1="110" x2="55" y2="110" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line x1="15" y1="119" x2="55" y2="119" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="62" y="119" class="sym" font-size="14">20A</text>
+
+  <line x1="130" y1="110" x2="170" y2="110" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line x1="130" y1="119" x2="170" y2="119" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="182" y="119" class="sym" font-size="14">WP</text>
+</svg>

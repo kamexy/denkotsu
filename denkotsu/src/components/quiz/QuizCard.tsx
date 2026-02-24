@@ -159,7 +159,7 @@ function ImageTapQuestion({
               }
             } else {
               className +=
-                " h-14 w-14 rounded-full border border-teal-500/45 bg-transparent text-teal-700 hover:border-teal-500/80 hover:bg-teal-500/10 active:scale-[0.98] active:bg-teal-500/15";
+                " h-14 w-14 rounded-full border border-teal-500/45 bg-transparent text-teal-700 hover:border-teal-500/80 hover:bg-teal-500/10 active:scale-[0.98] active:bg-teal-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-teal-500 focus-visible:outline-offset-1";
             }
 
             return (
@@ -175,14 +175,12 @@ function ImageTapQuestion({
                 {showResult ? (
                   index + 1
                 ) : (
-                  <>
-                    <span
-                      aria-hidden
-                      className="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-teal-500 bg-white/95 px-1 text-[11px] font-semibold text-teal-700 shadow-sm"
-                    >
-                      {index + 1}
-                    </span>
-                  </>
+                  <span
+                    aria-hidden
+                    className="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-teal-500 bg-white/95 px-1 text-[11px] font-semibold text-teal-700 shadow-sm"
+                  >
+                    {index + 1}
+                  </span>
                 )}
               </button>
             );

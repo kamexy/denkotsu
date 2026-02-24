@@ -255,14 +255,16 @@ function validateQuestions(questions) {
         const correct = question.options?.[question.correctIndex];
         const normalizedCorrect = normalizeText(correct);
 
-        if (
-          questionType !== "image_tap" &&
-          normalizedCorrect.length >= 3 &&
-          haystack.includes(normalizedCorrect)
-        ) {
+        if (normalizedCorrect.length >= 3 && haystack.includes(normalizedCorrect)) {
+          if (questionType === "image_tap") {
+            addError(
+              `Image-tap spoiler in ${question.id}: correct option appears in SVG text (${question.image})`
+            );
+          } else {
           addError(
             `Potential spoiler in ${question.id}: correct option appears in SVG text (${question.image})`
           );
+          }
         }
 
         for (let i = 0; i < (question.options?.length ?? 0); i += 1) {

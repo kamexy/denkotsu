@@ -1637,7 +1637,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「4路スイッチ」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -1670,7 +1670,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「防水コンセント」の位置をタップしてください。",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般",
       "接地極付",
@@ -1786,7 +1786,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「3路スイッチ」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -1819,7 +1819,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「タイマーSW」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -1852,7 +1852,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「接地極付コンセント」の位置をタップしてください。",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般",
       "接地極付",
@@ -1885,7 +1885,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「20Aコンセント」の位置をタップしてください。",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般",
       "接地極付",
@@ -1941,7 +1941,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「単極スイッチ」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2334,7 +2334,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「位置表示灯(H)」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2382,7 +2382,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「確認表示灯(L)」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2430,7 +2430,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「自動点滅器(A)」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2478,7 +2478,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「3路スイッチ」の位置をタップしてください。（7択）",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2526,7 +2526,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「4路スイッチ」の位置をタップしてください。（7択）",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2574,7 +2574,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「タイマーSW」の位置をタップしてください。（7択）",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2622,7 +2622,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「単極スイッチ」の位置をタップしてください。（7択）",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -2670,7 +2670,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「一般コンセント」の位置をタップしてください。",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般コンセント",
       "接地極付コンセント",
@@ -2713,7 +2713,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「接地極付コンセント」の位置をタップしてください。（6択）",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般コンセント",
       "接地極付コンセント",
@@ -2756,7 +2756,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「接地端子付コンセント」の位置をタップしてください。",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般コンセント",
       "接地極付コンセント",
@@ -2799,7 +2799,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「接地極付接地端子付コンセント」の位置をタップしてください。",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般コンセント",
       "接地極付コンセント",
@@ -2842,7 +2842,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「20Aコンセント」の位置をタップしてください。（6択）",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般コンセント",
       "接地極付コンセント",
@@ -2885,7 +2885,7 @@
     "category": "equipment_material",
     "questionType": "image_tap",
     "question": "画像内で「防水コンセント」の位置をタップしてください。（6択）",
-    "image": "/images/symbols/outlet-all.svg",
+    "image": "/images/symbols/outlet-quiz.svg",
     "options": [
       "一般コンセント",
       "接地極付コンセント",
@@ -2974,7 +2974,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「H（位置表示灯）」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "位置表示灯(H)",
       "確認表示灯(L)",
@@ -3002,7 +3002,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「L（確認表示灯）」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "位置表示灯(H)",
       "確認表示灯(L)",
@@ -3030,7 +3030,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「A（自動点滅器）」の位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "位置表示灯(H)",
       "確認表示灯(L)",
@@ -3058,7 +3058,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「●3」の図記号位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
@@ -3091,7 +3091,7 @@
     "category": "wiring_diagram",
     "questionType": "image_tap",
     "question": "画像内で「●ET」の図記号位置をタップしてください。",
-    "image": "/images/symbols/switch-all.svg",
+    "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
       "3路スイッチ",
