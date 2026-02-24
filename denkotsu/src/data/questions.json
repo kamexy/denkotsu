@@ -2333,7 +2333,7 @@
     "id": "q168",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「位置表示灯(H)」の位置をタップしてください。",
+    "question": "画像内で「位置表示灯（OFF時に点灯）」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
@@ -2381,7 +2381,7 @@
     "id": "q169",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「確認表示灯(L)」の位置をタップしてください。",
+    "question": "画像内で「確認表示灯（ON時に点灯）」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
@@ -2429,7 +2429,7 @@
     "id": "q170",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「自動点滅器(A)」の位置をタップしてください。",
+    "question": "画像内で「自動点滅器（暗くなると点灯）」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
@@ -2973,7 +2973,7 @@
     "id": "q183",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「H（位置表示灯）」の位置をタップしてください。",
+    "question": "画像内で「消灯中に光るパイロットランプ付きスイッチ」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "位置表示灯(H)",
@@ -3001,7 +3001,7 @@
     "id": "q184",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「L（確認表示灯）」の位置をタップしてください。",
+    "question": "画像内で「点灯中に光る確認ランプ付きスイッチ」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "位置表示灯(H)",
@@ -3029,7 +3029,7 @@
     "id": "q185",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「A（自動点滅器）」の位置をタップしてください。",
+    "question": "画像内で「周囲の明るさで自動制御するスイッチ」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "位置表示灯(H)",
@@ -3057,7 +3057,7 @@
     "id": "q186",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「●3」の図記号位置をタップしてください。",
+    "question": "画像内で「三路回路で使う切替スイッチ」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",
@@ -3090,7 +3090,7 @@
     "id": "q187",
     "category": "wiring_diagram",
     "questionType": "image_tap",
-    "question": "画像内で「●ET」の図記号位置をタップしてください。",
+    "question": "画像内で「設定時刻でON/OFFするスイッチ」の位置をタップしてください。",
     "image": "/images/symbols/switch-quiz.svg",
     "options": [
       "単極スイッチ",

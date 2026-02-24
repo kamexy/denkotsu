@@ -203,6 +203,17 @@ function validateQuestions(questions) {
     if (typeof question.question !== "string" || question.question.length === 0) {
       addError(`Question ${question.id} has an empty question text.`);
     } else {
+      if (questionType === "image_tap") {
+        const hasDirectCodeHint =
+          /[●=]\s*[A-Za-z0-9]{1,4}/.test(question.question) ||
+          /[（(]\s*[A-Za-z0-9]{1,4}\s*[）)]/.test(question.question);
+        if (hasDirectCodeHint) {
+          addError(
+            `Question ${question.id} (image_tap) includes direct symbol code hint in question text.`
+          );
+        }
+      }
+
       const normalizedQuestion = normalizeText(question.question);
       if (normalizedQuestion.length >= 8) {
         const ids = normalizedQuestionTextMap.get(normalizedQuestion) ?? [];
