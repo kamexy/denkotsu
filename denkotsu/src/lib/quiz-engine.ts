@@ -146,6 +146,20 @@ function getRecentQuestionIds(
   );
 }
 
+function getLatestAnsweredQuestionId(
+  answers: Array<{ questionId: string; answeredAt: number }>
+): string | null {
+  let latestId: string | null = null;
+  let latestAt = -1;
+  for (const answer of answers) {
+    if (answer.answeredAt > latestAt) {
+      latestAt = answer.answeredAt;
+      latestId = answer.questionId;
+    }
+  }
+  return latestId;
+}
+
 function applyQuestionFilters(
   questions: Question[],
   recentQuestionIds: Set<string>,
@@ -347,15 +361,21 @@ export async function selectNextQuestion(
     RECENT_CATEGORY_WINDOW
   );
   const recentQuestionIds = getRecentQuestionIds(allAnswers, RECENT_QUESTION_WINDOW);
+  const latestAnsweredQuestionId = getLatestAnsweredQuestionId(allAnswers);
+  const immediateRepeatSafePool = latestAnsweredQuestionId
+    ? modeQuestionPool.filter((question) => question.id !== latestAnsweredQuestionId)
+    : modeQuestionPool;
+  const baseSelectionPool =
+    immediateRepeatSafePool.length > 0 ? immediateRepeatSafePool : modeQuestionPool;
   const repeatDelayQuestionIds = getRecentQuestionIds(
     allAnswers,
     repeatDelayQuestions
   );
-  const nonDelayedQuestionPool = modeQuestionPool.filter(
+  const nonDelayedQuestionPool = baseSelectionPool.filter(
     (question) => !repeatDelayQuestionIds.has(question.id)
   );
   const selectionPool =
-    nonDelayedQuestionPool.length > 0 ? nonDelayedQuestionPool : modeQuestionPool;
+    nonDelayedQuestionPool.length > 0 ? nonDelayedQuestionPool : baseSelectionPool;
   const answeredIds = new Set(allAnswers.map((answer) => answer.questionId));
   const spacedById = new Map(spacedRecords.map((record) => [record.questionId, record]));
 

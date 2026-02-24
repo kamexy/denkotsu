@@ -60,8 +60,16 @@ function readJson(filePath) {
 function normalizeText(value) {
   return String(value ?? "")
     .toLowerCase()
-    .replace(/[0-9]+(?:\.[0-9]+)?/g, " ")
     .replace(/[\s　・()（）「」『』【】,.、。:：;；!?！？'"`´\-_/\\|[\]{}<>]/g, "")
+    .trim();
+}
+
+function normalizeOptionText(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[×ｘ]/g, "x")
+    .replace(/[−ー－]/g, "-")
+    .replace(/[\s　・()（）「」『』【】,.、。:：;；!?！？'"`´]/g, "")
     .trim();
 }
 
@@ -235,7 +243,7 @@ function validateQuestions(questions) {
 
     if (Array.isArray(question.options) && question.options.length > 1) {
       const normalizedOptions = question.options
-        .map((option) => normalizeText(option))
+        .map((option) => normalizeOptionText(option))
         .filter((option) => option.length > 0);
       if (normalizedOptions.length > 1) {
         const uniqueOptions = new Set(normalizedOptions);
