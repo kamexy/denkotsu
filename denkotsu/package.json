@@ -1,12 +1,15 @@
 {
   "name": "denkotsu",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
     "build:turbopack": "next build",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint",
     "check:data": "node scripts/validate-content.mjs",
     "check:monetization": "node scripts/validate-monetization-env.mjs",
@@ -29,9 +32,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }
