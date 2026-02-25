@@ -1,14 +1,19 @@
 "use client";
 
-import { Suspense, useState, useMemo } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Category } from "@/types";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/types";
-import { getAllKeyPoints, getKeyPointsByCategory } from "@/lib/key-points";
+import { getAllKeyPoints } from "@/lib/key-points";
+import { usePassPower } from "@/hooks/usePassPower";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { getLearnAdSlot, isAdsenseEnabled } from "@/lib/ads";
+import {
+  recommendKeyPoints,
+  type KeyPointRecommendation,
+} from "@/lib/key-point-recommendations";
 
 export default function LearnPage() {
   return (
@@ -44,6 +49,7 @@ function LearnFallback() {
 
 function LearnPageContent() {
   const searchParams = useSearchParams();
+  const { passPower } = usePassPower();
   const initialCategory = searchParams.get("category") as Category | null;
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">(
     initialCategory && ALL_CATEGORIES.includes(initialCategory)
@@ -66,22 +72,42 @@ function LearnPageContent() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const showLearnAd = isAdsenseEnabled();
   const learnAdSlot = getLearnAdSlot();
+  const allKeyPoints = useMemo(() => getAllKeyPoints(), []);
 
   const keyPoints = useMemo(
     () =>
       selectedCategory === "all"
-        ? getAllKeyPoints()
-        : getKeyPointsByCategory(selectedCategory as Category),
-    [selectedCategory]
+        ? allKeyPoints
+        : allKeyPoints.filter((keyPoint) => keyPoint.category === selectedCategory),
+    [allKeyPoints, selectedCategory]
+  );
+
+  const recommendedKeyPoints = useMemo(
+    () =>
+      recommendKeyPoints({
+        keyPoints: allKeyPoints,
+        passPower,
+        selectedCategory,
+        limit: selectedCategory === "all" ? 6 : 4,
+      }),
+    [allKeyPoints, passPower, selectedCategory]
   );
 
   const categoryCounts = useMemo(() => {
-    const all = getAllKeyPoints();
-    const counts: Record<string, number> = { all: all.length };
+    const counts: Record<string, number> = { all: allKeyPoints.length };
     for (const c of ALL_CATEGORIES) {
-      counts[c] = all.filter((kp) => kp.category === c).length;
+      counts[c] = allKeyPoints.filter((kp) => kp.category === c).length;
     }
     return counts;
+  }, [allKeyPoints]);
+
+  const jumpToKeyPoint = useCallback((keyPointId: string) => {
+    setExpandedId(keyPointId);
+    if (typeof window === "undefined") return;
+    window.requestAnimationFrame(() => {
+      const element = document.getElementById(`keypoint-${keyPointId}`);
+      element?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   }, []);
 
   return (
@@ -116,6 +142,15 @@ function LearnPageContent() {
         </div>
       </div>
 
+      {recommendedKeyPoints.length > 0 && (
+        <div className="px-4 pt-3">
+          <RecommendedKeyPointsPanel
+            recommendations={recommendedKeyPoints}
+            onSelect={jumpToKeyPoint}
+          />
+        </div>
+      )}
+
       {showLearnAd && (
         <div className="px-4 pt-3">
           <AdSlot
@@ -132,6 +167,7 @@ function LearnPageContent() {
           {keyPoints.map((kp) => (
             <motion.div
               key={kp.id}
+              id={`keypoint-${kp.id}`}
               layout
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -155,6 +191,47 @@ function LearnPageContent() {
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+function RecommendedKeyPointsPanel({
+  recommendations,
+  onSelect,
+}: {
+  recommendations: KeyPointRecommendation[];
+  onSelect: (keyPointId: string) => void;
+}) {
+  return (
+    <section className="panel p-4">
+      <h2 className="text-base font-semibold text-slate-700 tracking-wide">
+        おすすめ要点
+      </h2>
+      <p className="text-sm text-slate-500 mt-1">
+        合格力とカテゴリ状況から、今見ると効果が高い要点です。
+      </p>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+        {recommendations.map((item) => (
+          <button
+            key={item.keyPoint.id}
+            type="button"
+            onClick={() => onSelect(item.keyPoint.id)}
+            className="rounded-xl border border-slate-200 bg-white/85 p-3 text-left transition-colors hover:bg-white"
+          >
+            <div>
+              <span className="inline-flex whitespace-nowrap rounded bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                {CATEGORY_LABELS[item.keyPoint.category]}
+              </span>
+            </div>
+            <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
+              {item.reason}
+            </p>
+            <p className="mt-2 text-sm font-semibold text-slate-900">
+              {item.keyPoint.title}
+            </p>
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -218,16 +295,19 @@ function KeyPointCard({
   const accent = CATEGORY_ACCENT[category];
 
   return (
-    <button
-      type="button"
-      onClick={onToggle}
+    <div
       className={`w-full text-left rounded-2xl border transition-all ${
         expanded
           ? `${accent.bg} border-white/60 shadow-sm`
           : "bg-white/82 border-slate-200 hover:border-slate-300"
       }`}
     >
-      <div className="p-4">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full p-4 text-left"
+        aria-expanded={expanded}
+      >
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
@@ -257,41 +337,41 @@ function KeyPointCard({
             {formula}
           </div>
         )}
+      </button>
 
-        {/* Expandable content */}
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              {image && (
-                <div className="diagram-surface mt-3 rounded-lg overflow-hidden border">
-                  <ImageLightbox
-                    src={image}
-                    alt={title}
-                    className="w-full max-h-[180px] object-contain p-2"
-                  />
-                </div>
-              )}
-              <p className="text-base text-slate-700 leading-relaxed mt-3">
-                {body}
-              </p>
-              {example && (
-                <div className="mt-2 px-3 py-2 bg-white/70 rounded-lg border border-white/70">
-                  <p className="text-sm text-slate-500 font-semibold mb-0.5">
-                    例
-                  </p>
-                  <p className="text-base text-slate-700">{example}</p>
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </button>
+      {/* Expandable content */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden px-4 pb-4"
+          >
+            {image && (
+              <div className="diagram-surface mt-1 rounded-lg overflow-hidden border">
+                <ImageLightbox
+                  src={image}
+                  alt={title}
+                  className="w-full max-h-[180px] object-contain p-2"
+                />
+              </div>
+            )}
+            <p className="text-base text-slate-700 leading-relaxed mt-3">
+              {body}
+            </p>
+            {example && (
+              <div className="mt-2 px-3 py-2 bg-white/70 rounded-lg border border-white/70">
+                <p className="text-sm text-slate-500 font-semibold mb-0.5">
+                  例
+                </p>
+                <p className="text-base text-slate-700">{example}</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
