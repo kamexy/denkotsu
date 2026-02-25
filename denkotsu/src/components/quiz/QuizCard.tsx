@@ -131,9 +131,16 @@ function ImageTapQuestion({
     return null;
   }
 
+  const instructionId = `image-tap-instruction-${question.id}`;
+
   return (
     <div className="p-1.5">
-      <div className="relative rounded-lg overflow-hidden border border-slate-200 bg-white">
+      <div
+        className="relative rounded-lg overflow-hidden border border-slate-200 bg-white"
+        role="group"
+        aria-label="画像タップ回答エリア"
+        aria-describedby={instructionId}
+      >
         <ImageLightbox
           src={question.image}
           alt="画像タップ問題"
@@ -171,6 +178,7 @@ function ImageTapQuestion({
                 onClick={() => !showResult && onSelect(index)}
                 disabled={showResult}
                 aria-label={`画像内の選択肢${index + 1}（${question.options[index]}）`}
+                aria-pressed={!showResult ? selected : undefined}
               >
                 {showResult ? (
                   index + 1
@@ -211,7 +219,10 @@ function ImageTapQuestion({
           })}
         </div>
       ) : (
-        <p className="mt-2 rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-sm text-slate-600">
+        <p
+          id={instructionId}
+          className="mt-2 rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-sm text-slate-600"
+        >
           画像の該当箇所をタップして回答してください。
         </p>
       )}

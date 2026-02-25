@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
@@ -14,27 +14,63 @@ interface ImageLightboxProps {
 export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
   const [open, setOpen] = useState(false);
   const isSvg = src.toLowerCase().endsWith(".svg");
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const lastActiveElementRef = useRef<HTMLElement | null>(null);
 
-  const handleOpen = useCallback((e: React.MouseEvent) => {
+  const handleOpen = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
+    if ("key" in e && e.key !== "Enter" && e.key !== " ") return;
+    if ("key" in e) {
+      e.preventDefault();
+    }
+    lastActiveElementRef.current = document.activeElement as HTMLElement | null;
     setOpen(true);
   }, []);
 
   const handleClose = useCallback(() => {
     setOpen(false);
+    const last = lastActiveElementRef.current;
+    if (last) {
+      last.focus();
+    }
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        handleClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, handleClose]);
 
   return (
     <>
-      <Image
-        src={src}
-        alt={alt}
-        width={1200}
-        height={900}
-        sizes="(max-width: 480px) 100vw, 480px"
-        className={`${className} h-auto cursor-zoom-in ${isSvg ? "diagram-image rounded-md" : ""}`}
+      <button
+        type="button"
         onClick={handleOpen}
-      />
+        onKeyDown={handleOpen}
+        className="w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+        aria-label={`${alt} を拡大表示`}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          width={1200}
+          height={900}
+          sizes="(max-width: 480px) 100vw, 480px"
+          className={`${className} h-auto cursor-zoom-in ${isSvg ? "diagram-image rounded-md" : ""}`}
+        />
+      </button>
       {open &&
         createPortal(
           <AnimatePresence>
@@ -45,6 +81,9 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
               transition={{ duration: 0.15 }}
               className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm"
               onClick={handleClose}
+              role="dialog"
+              aria-modal="true"
+              aria-label="画像拡大プレビュー"
             >
               <motion.div
                 initial={{ scale: 0.85, opacity: 0 }}
@@ -64,9 +103,10 @@ export function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
                 />
               </motion.div>
               <button
+                ref={closeButtonRef}
                 type="button"
                 onClick={handleClose}
-                className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/20 text-white text-2xl"
+                className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white/20 text-white text-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 aria-label="閉じる"
               >
                 ✕

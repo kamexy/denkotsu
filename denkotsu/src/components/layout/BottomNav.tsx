@@ -24,7 +24,8 @@ export function BottomNav() {
               <Link
                 key={tab.href}
                 href={tab.href}
-                className={`flex-1 flex flex-col items-center rounded-xl py-2.5 transition-all ${
+                aria-current={active ? "page" : undefined}
+                className={`flex-1 flex flex-col items-center rounded-xl py-2.5 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 ${
                   active
                     ? "bg-teal-700 text-white shadow-sm"
                     : "text-slate-500 hover:bg-white/70"

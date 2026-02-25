@@ -41,7 +41,7 @@ export function OptionButton({
     }
   } else {
     className +=
-      " border-slate-200 bg-white/90 hover:border-teal-300 hover:bg-white active:bg-slate-50 text-slate-800 cursor-pointer shadow-[0_4px_14px_rgba(16,35,64,0.05)]";
+      " border-slate-200 bg-white/90 hover:border-teal-300 hover:bg-white active:bg-slate-50 text-slate-800 cursor-pointer shadow-[0_4px_14px_rgba(16,35,64,0.05)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500";
   }
 
   return (
