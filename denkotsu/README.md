@@ -3,6 +3,12 @@
 第二種電気工事士向けの学習アプリです。  
 クイズ・要点チェック・成績可視化を中心に、PWA とオフライン学習に対応しています。
 
+## 仕様ドキュメント
+
+- 全体仕様: `docs/SPEC.md`
+- アーキテクチャ詳細（Mermaid図付き）: `docs/architecture.md`
+- フェーズ計画: `docs/phase1-mvp.md`, `docs/phase2-engagement.md`, `docs/phase3-monetize.md`, `docs/phase4-practical.md`
+
 ## 技術スタック
 
 - Next.js 16 (App Router)
