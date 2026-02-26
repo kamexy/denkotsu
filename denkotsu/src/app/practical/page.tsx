@@ -75,6 +75,11 @@ export default function PracticalPage() {
               title="欠陥判定クイズ"
               description="合格/欠陥の見分けを鍛える"
             />
+            <MenuCard
+              href="/practical/timeline"
+              title="40分タイムライン練習"
+              description="試験当日の時間配分を体で覚える"
+            />
           </div>
         </section>
 

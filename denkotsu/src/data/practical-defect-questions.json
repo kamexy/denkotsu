@@ -6,7 +6,14 @@
     "hasDefect": true,
     "defectType": "圧着不良",
     "defectDescription": "必要刻印より大きいサイズで圧着されている。",
-    "judgingCriteria": "施工条件で指定された本数・線径に合うスリーブ/刻印であること。"
+    "judgingCriteria": "施工条件で指定された本数・線径に合うスリーブ/刻印であること。",
+    "defectMarkerPosition": {
+      "x": 41,
+      "y": 33,
+      "width": 21,
+      "height": 31
+    },
+    "defectMarkerLabel": "圧着刻印（中央）"
   },
   {
     "id": "defect-02",
@@ -15,7 +22,14 @@
     "hasDefect": true,
     "defectType": "結線不良",
     "defectDescription": "コネクタ外に芯線が露出し、絶縁距離が不足している。",
-    "judgingCriteria": "剥き代は指定範囲内で、露出導体が残らないこと。"
+    "judgingCriteria": "剥き代は指定範囲内で、露出導体が残らないこと。",
+    "defectMarkerPosition": {
+      "x": 57,
+      "y": 37,
+      "width": 20,
+      "height": 28
+    },
+    "defectMarkerLabel": "コネクタ先端の露出導体"
   },
   {
     "id": "defect-03",
@@ -24,7 +38,14 @@
     "hasDefect": true,
     "defectType": "寸法不良",
     "defectDescription": "導体の挿入長が不足し、接触不良の恐れがある。",
-    "judgingCriteria": "端子・コネクタごとの指定剥き代を満たすこと。"
+    "judgingCriteria": "端子・コネクタごとの指定剥き代を満たすこと。",
+    "defectMarkerPosition": {
+      "x": 49,
+      "y": 41,
+      "width": 18,
+      "height": 22
+    },
+    "defectMarkerLabel": "端子挿入部（導体長不足）"
   },
   {
     "id": "defect-04",
@@ -40,7 +61,14 @@
     "hasDefect": true,
     "defectType": "結線不良",
     "defectDescription": "接地側と非接地側が逆接続されている。",
-    "judgingCriteria": "極性付き器具は指定どおりの端子接続であること。"
+    "judgingCriteria": "極性付き器具は指定どおりの端子接続であること。",
+    "defectMarkerPosition": {
+      "x": 30,
+      "y": 36,
+      "width": 23,
+      "height": 30
+    },
+    "defectMarkerLabel": "接地極付コンセントの極性端子"
   },
   {
     "id": "defect-06",
@@ -56,7 +84,14 @@
     "hasDefect": true,
     "defectType": "結線不良",
     "defectDescription": "一次側/二次側の接続方向が逆である。",
-    "judgingCriteria": "器具の端子表示（LINE/LOAD等）に従って接続すること。"
+    "judgingCriteria": "器具の端子表示（LINE/LOAD等）に従って接続すること。",
+    "defectMarkerPosition": {
+      "x": 44,
+      "y": 20,
+      "width": 22,
+      "height": 18
+    },
+    "defectMarkerLabel": "漏電遮断器のLINE/LOAD端子"
   },
   {
     "id": "defect-08",
@@ -70,9 +105,16 @@
     "title": "確認表示灯の配線で白線がスイッチ側に入っている",
     "image": "/images/symbols/switch-confirm.svg",
     "hasDefect": true,
-    "defectType": "極性不良",
+    "defectType": "結線不良",
     "defectDescription": "接地側/非接地側の接続が逆になっている。",
-    "judgingCriteria": "表示灯付き器具は極性を守って結線すること。"
+    "judgingCriteria": "表示灯付き器具は極性を守って結線すること。",
+    "defectMarkerPosition": {
+      "x": 58,
+      "y": 33,
+      "width": 20,
+      "height": 30
+    },
+    "defectMarkerLabel": "表示灯スイッチのL側端子"
   },
   {
     "id": "defect-10",
@@ -80,5 +122,271 @@
     "image": "/images/symbols/switch-3way.svg",
     "hasDefect": false,
     "judgingCriteria": "共通端子と渡り線が指定どおりであること。"
+  },
+  {
+    "id": "defect-11",
+    "title": "リングスリーブ刻印が必要より小さい",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "導体本数に対して刻印が小さく、抜けの危険がある。",
+    "judgingCriteria": "刻印サイズは導体本数・線径に対し適正であること。",
+    "defectMarkerPosition": {
+      "x": 33,
+      "y": 28,
+      "width": 18,
+      "height": 26
+    },
+    "defectMarkerLabel": "圧着刻印（サイズ不足）"
+  },
+  {
+    "id": "defect-12",
+    "title": "圧着後に心線がリングスリーブ外へ突出",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "心線が規定以上に飛び出し、短絡リスクが高い。",
+    "judgingCriteria": "圧着後は心線突出・被覆噛み込みがないこと。",
+    "defectMarkerPosition": {
+      "x": 56,
+      "y": 44,
+      "width": 16,
+      "height": 18
+    },
+    "defectMarkerLabel": "心線突出部"
+  },
+  {
+    "id": "defect-13",
+    "title": "指定箇所の圧着が未施工",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "接続はされているが、圧着痕がなく固定されていない。",
+    "judgingCriteria": "指定接続点は必ず圧着または差込形で固定すること。",
+    "defectMarkerPosition": {
+      "x": 44,
+      "y": 52,
+      "width": 18,
+      "height": 18
+    },
+    "defectMarkerLabel": "未圧着の接続部"
+  },
+  {
+    "id": "defect-14",
+    "title": "2.0mm混在なのに小スリーブで圧着",
+    "image": "/images/tools/crimping-tool.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "2.0mm線を含むのに小スリーブ判定で施工している。",
+    "judgingCriteria": "線径が混在する場合は規定の判定表でサイズを選ぶこと。",
+    "defectMarkerPosition": {
+      "x": 49,
+      "y": 32,
+      "width": 19,
+      "height": 24
+    },
+    "defectMarkerLabel": "圧着工具の刻印選択部"
+  },
+  {
+    "id": "defect-15",
+    "title": "異種線径接続でスリーブ選定ミス",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "1.6mmと2.0mm混在時の判定に従っていない。",
+    "judgingCriteria": "異種線径時は合計断面積と本数でスリーブを決める。",
+    "defectMarkerPosition": {
+      "x": 28,
+      "y": 42,
+      "width": 22,
+      "height": 22
+    },
+    "defectMarkerLabel": "異種線径の接続部"
+  },
+  {
+    "id": "defect-16",
+    "title": "圧着部に被覆が噛み込んでいる",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "導体でなく被覆を圧着しており導通不良となる。",
+    "judgingCriteria": "圧着部には導体のみが入るよう剥き代を調整する。",
+    "defectMarkerPosition": {
+      "x": 48,
+      "y": 39,
+      "width": 15,
+      "height": 20
+    },
+    "defectMarkerLabel": "圧着部の被覆噛み込み"
+  },
+  {
+    "id": "defect-17",
+    "title": "3路スイッチの共通端子と渡り線を取り違え",
+    "image": "/images/symbols/switch-3way.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "共通端子に渡り線が入っており動作しない。",
+    "judgingCriteria": "3路は共通端子と渡り端子を区別して接続する。",
+    "defectMarkerPosition": {
+      "x": 61,
+      "y": 34,
+      "width": 19,
+      "height": 28
+    },
+    "defectMarkerLabel": "3路スイッチの共通端子"
+  },
+  {
+    "id": "defect-18",
+    "title": "4路スイッチの端子ペアを誤接続",
+    "image": "/images/symbols/switch-4way.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "同一ペア端子に入れるべき線が交差している。",
+    "judgingCriteria": "4路の対向端子ペアを守って配線すること。",
+    "defectMarkerPosition": {
+      "x": 54,
+      "y": 30,
+      "width": 19,
+      "height": 30
+    },
+    "defectMarkerLabel": "4路スイッチの端子ペア"
+  },
+  {
+    "id": "defect-19",
+    "title": "一般コンセントで非接地側が逆端子へ接続",
+    "image": "/images/symbols/outlet-general.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "極性指定を逆に取り、機器保護上の問題がある。",
+    "judgingCriteria": "非接地側・接地側の端子指定に従うこと。",
+    "defectMarkerPosition": {
+      "x": 32,
+      "y": 38,
+      "width": 24,
+      "height": 26
+    },
+    "defectMarkerLabel": "コンセント極性端子"
+  },
+  {
+    "id": "defect-20",
+    "title": "引掛シーリングで接地側が器具側端子に誤接続",
+    "image": "/images/symbols/light-ceiling.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "極性が逆で、点灯はしても判定上は欠陥となる。",
+    "judgingCriteria": "ランプレセプタクル・引掛シーリングは極性を厳守する。",
+    "defectMarkerPosition": {
+      "x": 52,
+      "y": 35,
+      "width": 20,
+      "height": 25
+    },
+    "defectMarkerLabel": "引掛シーリングの極性端子"
+  },
+  {
+    "id": "defect-21",
+    "title": "単極スイッチ回路で白線をスイッチ送りに使用",
+    "image": "/images/symbols/switch-single.svg",
+    "hasDefect": true,
+    "defectType": "寸法不良",
+    "defectDescription": "色別ルールに反し、識別しづらい施工になっている。",
+    "judgingCriteria": "白線は原則接地側に用い、送りには指定色を使う。",
+    "defectMarkerPosition": {
+      "x": 60,
+      "y": 29,
+      "width": 20,
+      "height": 30
+    },
+    "defectMarkerLabel": "単極スイッチの送り端子"
+  },
+  {
+    "id": "defect-22",
+    "title": "PF管サドル固定の間隔が規定を超過",
+    "image": "/images/wiring/pf-cd-pipe.svg",
+    "hasDefect": true,
+    "defectType": "寸法不良",
+    "defectDescription": "中間支持点が不足し、たわみが許容外。",
+    "judgingCriteria": "サドル固定間隔は施工条件に収まること。",
+    "defectMarkerPosition": {
+      "x": 40,
+      "y": 46,
+      "width": 28,
+      "height": 18
+    },
+    "defectMarkerLabel": "PF管の支持間隔区間"
+  },
+  {
+    "id": "defect-23",
+    "title": "圧着前の剥きしろが長すぎて露出導体が残る",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "スリーブ外に露出導体が残り、短絡リスクがある。",
+    "judgingCriteria": "圧着前剥きしろは規定寸法内に収める。",
+    "defectMarkerPosition": {
+      "x": 54,
+      "y": 30,
+      "width": 17,
+      "height": 32
+    },
+    "defectMarkerLabel": "スリーブ外の露出導体"
+  },
+  {
+    "id": "defect-24",
+    "title": "器具端子の剥きしろが長く銅線露出が過大",
+    "image": "/images/wiring/vvf-cable.svg",
+    "hasDefect": true,
+    "defectType": "寸法不良",
+    "defectDescription": "端子外に導体が見えており規定を超えている。",
+    "judgingCriteria": "端子からの露出導体は規定以下にする。",
+    "defectMarkerPosition": {
+      "x": 62,
+      "y": 35,
+      "width": 16,
+      "height": 24
+    },
+    "defectMarkerLabel": "器具端子の露出導体"
+  },
+  {
+    "id": "defect-25",
+    "title": "防水コンセントのパッキン・締付が規定どおり",
+    "image": "/images/symbols/outlet-wp.svg",
+    "hasDefect": false,
+    "judgingCriteria": "防水部材の欠落がなく、締付トルクも適正であること。"
+  },
+  {
+    "id": "defect-26",
+    "title": "配線用遮断器の一次・二次側表示どおりに施工",
+    "image": "/images/tools/breaker.svg",
+    "hasDefect": false,
+    "judgingCriteria": "端子表示に沿って接続し、緩みがないこと。"
+  },
+  {
+    "id": "defect-27",
+    "title": "ケーブルストリッパで導体に傷を入れず加工できている",
+    "image": "/images/tools/cable-stripper.svg",
+    "hasDefect": false,
+    "judgingCriteria": "導体損傷がなく、規定長で被覆除去されていること。"
+  },
+  {
+    "id": "defect-28",
+    "title": "差込形コネクタの挿入長・保持が適正",
+    "image": "/images/tools/push-connector.svg",
+    "hasDefect": false,
+    "judgingCriteria": "全心線が確実に奥まで挿入され、抜けがないこと。"
+  },
+  {
+    "id": "defect-29",
+    "title": "リングスリーブ接続で導体本数・刻印とも適正",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": false,
+    "judgingCriteria": "判定表どおりのスリーブと刻印で圧着されていること。"
+  },
+  {
+    "id": "defect-30",
+    "title": "タイマースイッチ配線が仕様どおりで動作も正常",
+    "image": "/images/symbols/switch-timer.svg",
+    "hasDefect": false,
+    "judgingCriteria": "電源/負荷/接地の各端子が仕様どおりに接続されていること。"
   }
 ]

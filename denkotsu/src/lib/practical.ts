@@ -18,6 +18,13 @@ export interface PracticalDefectQuestion {
   defectType?: string;
   defectDescription?: string;
   judgingCriteria: string;
+  defectMarkerLabel?: string;
+  defectMarkerPosition?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
 }
 
 export function getPracticalWiringProblems(): PracticalWiringProblem[] {
