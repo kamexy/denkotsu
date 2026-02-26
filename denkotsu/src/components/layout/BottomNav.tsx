@@ -8,6 +8,7 @@ const tabs = [
   { href: "/learn", label: "要点", icon: "learn" },
   { href: "/stats", label: "成績", icon: "stats" },
   { href: "/collection", label: "図鑑", icon: "collection" },
+  { href: "/practical", label: "実技", icon: "practical" },
   { href: "/settings", label: "設定", icon: "settings" },
 ] as const;
 
@@ -19,7 +20,8 @@ export function BottomNav() {
       <div className="mx-auto max-w-[480px] panel px-1 py-1.5">
         <div className="flex">
           {tabs.map((tab) => {
-            const active = pathname === tab.href;
+            const active =
+              pathname === tab.href || pathname.startsWith(`${tab.href}/`);
             return (
               <Link
                 key={tab.href}
@@ -95,6 +97,26 @@ function TabIcon({
           d="M12 3.2l2.4 4.9 5.4.8-3.9 3.8.9 5.3L12 15.5 7.2 18l.9-5.3L4.2 8.9l5.4-.8L12 3.2z"
           stroke="currentColor"
           strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  if (name === "practical") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+        <path
+          d="M14.8 4.4a2.4 2.4 0 103.4 3.4l-4.2 4.2-3-3 3.8-3.8z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M4.3 14.6l5.8 5.8 3.4-3.4-5.8-5.8-3.4 3.4z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
           strokeLinejoin="round"
         />
       </svg>

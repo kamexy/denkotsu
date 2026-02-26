@@ -1,0 +1,84 @@
+[
+  {
+    "id": "defect-01",
+    "title": "リングスリーブの刻印が条件より大きい",
+    "image": "/images/tools/ring-sleeve.svg",
+    "hasDefect": true,
+    "defectType": "圧着不良",
+    "defectDescription": "必要刻印より大きいサイズで圧着されている。",
+    "judgingCriteria": "施工条件で指定された本数・線径に合うスリーブ/刻印であること。"
+  },
+  {
+    "id": "defect-02",
+    "title": "差込形コネクタで芯線露出が長すぎる",
+    "image": "/images/tools/push-connector.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "コネクタ外に芯線が露出し、絶縁距離が不足している。",
+    "judgingCriteria": "剥き代は指定範囲内で、露出導体が残らないこと。"
+  },
+  {
+    "id": "defect-03",
+    "title": "VVF被覆剥き長さが不足して端子挿入が浅い",
+    "image": "/images/wiring/vvf-cable.svg",
+    "hasDefect": true,
+    "defectType": "寸法不良",
+    "defectDescription": "導体の挿入長が不足し、接触不良の恐れがある。",
+    "judgingCriteria": "端子・コネクタごとの指定剥き代を満たすこと。"
+  },
+  {
+    "id": "defect-04",
+    "title": "単極スイッチの端子締付が適正で見た目も良好",
+    "image": "/images/symbols/switch-single.svg",
+    "hasDefect": false,
+    "judgingCriteria": "締付不足/過剰がなく、芯線露出がないこと。"
+  },
+  {
+    "id": "defect-05",
+    "title": "接地極付コンセントで極性が逆",
+    "image": "/images/symbols/outlet-grounded.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "接地側と非接地側が逆接続されている。",
+    "judgingCriteria": "極性付き器具は指定どおりの端子接続であること。"
+  },
+  {
+    "id": "defect-06",
+    "title": "PF管の固定間隔が指定内",
+    "image": "/images/wiring/pf-cd-pipe.svg",
+    "hasDefect": false,
+    "judgingCriteria": "固定位置と間隔が施工条件に適合していること。"
+  },
+  {
+    "id": "defect-07",
+    "title": "漏電遮断器の接続方向を誤っている",
+    "image": "/images/tools/elcb.svg",
+    "hasDefect": true,
+    "defectType": "結線不良",
+    "defectDescription": "一次側/二次側の接続方向が逆である。",
+    "judgingCriteria": "器具の端子表示（LINE/LOAD等）に従って接続すること。"
+  },
+  {
+    "id": "defect-08",
+    "title": "接地抵抗計の準備手順は正しく施工に反映されている",
+    "image": "/images/tools/ground-tester.svg",
+    "hasDefect": false,
+    "judgingCriteria": "測定準備・接続手順が作業基準に合致していること。"
+  },
+  {
+    "id": "defect-09",
+    "title": "確認表示灯の配線で白線がスイッチ側に入っている",
+    "image": "/images/symbols/switch-confirm.svg",
+    "hasDefect": true,
+    "defectType": "極性不良",
+    "defectDescription": "接地側/非接地側の接続が逆になっている。",
+    "judgingCriteria": "表示灯付き器具は極性を守って結線すること。"
+  },
+  {
+    "id": "defect-10",
+    "title": "3路スイッチの共通端子と渡り線が正しく接続",
+    "image": "/images/symbols/switch-3way.svg",
+    "hasDefect": false,
+    "judgingCriteria": "共通端子と渡り線が指定どおりであること。"
+  }
+]
