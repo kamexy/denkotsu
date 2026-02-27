@@ -18,25 +18,25 @@
 
 ```mermaid
 flowchart LR
-  subgraph User[ユーザー端末]
-    Browser[Webブラウザ / PWA]
-    SW[Service Worker\npublic/sw.js]
-    IDB[(IndexedDB\nDexie)]
+  subgraph User["ユーザー端末"]
+    Browser["Webブラウザ / PWA"]
+    SW["Service Worker<br/>public/sw.js"]
+    IDB[("IndexedDB<br/>Dexie")]
   end
 
-  subgraph Pages[Cloudflare Pages]
-    Static[Static Assets\nout/*]
+  subgraph Pages["Cloudflare Pages"]
+    Static["Static Assets<br/>out/*"]
   end
 
-  subgraph Sync[Cloudflare Workers]
-    Worker[denkotsu-sync Worker]
-    D1[(D1: sync_snapshots)]
+  subgraph Sync["Cloudflare Workers"]
+    Worker["denkotsu-sync Worker"]
+    D1[("D1: sync_snapshots")]
   end
 
-  subgraph Analytics[外部計測/広告]
-    GA[Google Analytics 4]
-    ADS[Google AdSense]
-    EXT[任意 Telemetry Endpoint]
+  subgraph Analytics["外部計測/広告"]
+    GA["Google Analytics 4"]
+    ADS["Google AdSense"]
+    EXT["任意 Telemetry Endpoint"]
   end
 
   Browser -->|GET HTML/JS/CSS/JSON| Static
@@ -55,40 +55,40 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  subgraph AppRouter[src/app]
-    Home[/ /]
-    Learn[/learn]
-    Stats[/stats]
-    Settings[/settings]
-    Collection[/collection]
-    Practical[/practical/*]
+  subgraph AppRouter["src/app"]
+    Home["/"]
+    Learn["/learn"]
+    Stats["/stats"]
+    Settings["/settings"]
+    Collection["/collection"]
+    Practical["/practical/*"]
   end
 
-  subgraph UI[src/components]
-    QuizUI[quiz components]
-    LayoutUI[layout components\nBottomNav/Bootstraps]
-    AdsUI[ads components]
+  subgraph UI["src/components"]
+    QuizUI["quiz components"]
+    LayoutUI["layout components<br/>BottomNav/Bootstraps"]
+    AdsUI["ads components"]
   end
 
-  subgraph Hooks[src/hooks]
-    UseQuiz[useQuiz]
+  subgraph Hooks["src/hooks"]
+    UseQuiz["useQuiz"]
   end
 
-  subgraph Domain[src/lib]
-    Engine[quiz-engine.ts]
-    PassPower[pass-power.ts]
-    DB[db.ts]
-    SyncLib[cloud-sync.ts]
-    Theme[theme.ts]
-    PracticalLib[practical.ts\npractical-progress.ts\npractical-timeline.ts]
-    Monetize[ads.ts / telemetry.ts / analytics.ts]
+  subgraph Domain["src/lib"]
+    Engine["quiz-engine.ts"]
+    PassPower["pass-power.ts"]
+    DB["db.ts"]
+    SyncLib["cloud-sync.ts"]
+    Theme["theme.ts"]
+    PracticalLib["practical.ts<br/>practical-progress.ts<br/>practical-timeline.ts"]
+    Monetize["ads.ts / telemetry.ts / analytics.ts"]
   end
 
-  subgraph Data[src/data]
-    QJson[questions.json]
-    KJson[key-points.json]
-    PJson[practical-*.json]
-    RJson[recommended-tools.json]
+  subgraph Data["src/data"]
+    QJson["questions.json"]
+    KJson["key-points.json"]
+    PJson["practical-*.json"]
+    RJson["recommended-tools.json"]
   end
 
   Home --> UseQuiz
@@ -208,14 +208,14 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-  Dev[Developer Push] --> GH[GitHub Repository]
-  GH --> CI[GitHub Actions: ci.yml\nLint/Data/Monetization/Build]
-  GH --> DEP[GitHub Actions: deploy-pages.yml]
-  DEP --> OUT[Next build output\ndenkotsu/out]
-  OUT --> CF[Cloudflare Pages Deploy]
-  CF --> PROD[Production URL]
+  Dev["Developer Push"] --> GH["GitHub Repository"]
+  GH --> CI["GitHub Actions: ci.yml<br/>Lint/Data/Monetization/Build"]
+  GH --> DEP["GitHub Actions: deploy-pages.yml"]
+  DEP --> OUT["Next build output<br/>denkotsu/out"]
+  OUT --> CF["Cloudflare Pages Deploy"]
+  CF --> PROD["Production URL"]
 
-  DEP -.optional.-> SW[Cloudflare Worker Deploy\n(sync API)]
+  DEP -. "optional" .-> SW["Cloudflare Worker Deploy<br/>(sync API)"]
 ```
 
 ### 8.1 CI 品質ゲート
