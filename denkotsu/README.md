@@ -7,6 +7,7 @@
 
 - 全体仕様: `docs/SPEC.md`
 - アーキテクチャ詳細（Mermaid図付き）: `docs/architecture.md`
+- プロジェクト詳細監査: `docs/project-audit.md`
 - フェーズ計画: `docs/phase1-mvp.md`, `docs/phase2-engagement.md`, `docs/phase3-monetize.md`, `docs/phase4-practical.md`
 
 ## 技術スタック
