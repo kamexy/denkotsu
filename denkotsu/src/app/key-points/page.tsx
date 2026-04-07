@@ -22,14 +22,14 @@ const categoryCounts = ALL_CATEGORIES.reduce<Record<string, number>>(
 export const metadata: Metadata = {
   title: `要点一覧 | ${SITE_NAME}`,
   description:
-    "第二種電気工事士の頻出要点を、分野別に整理した静的な学習ページです。公式・解説・例題イメージをまとめて確認できます。",
+    "第二種電気工事士の頻出要点を、分野別に整理した学習ページです。公式・解説・例をまとめて確認できます。",
   alternates: {
     canonical: getAbsoluteUrl("/key-points"),
   },
   openGraph: {
     title: `要点一覧 | ${SITE_TITLE}`,
     description:
-      "第二種電気工事士の頻出要点を、分野別に整理した静的な学習ページです。",
+      "第二種電気工事士の頻出要点を、分野別に整理した学習ページです。",
     url: getAbsoluteUrl("/key-points"),
     siteName: SITE_NAME,
     type: "website",

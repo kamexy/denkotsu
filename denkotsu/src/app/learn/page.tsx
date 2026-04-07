@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Category } from "@/types";
@@ -70,6 +70,8 @@ function LearnPageContent() {
   }
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const pendingScrollTargetRef = useRef<string | null>(null);
+  const scrollRetryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showLearnAd = isAdsenseEnabled();
   const learnAdSlot = getLearnAdSlot();
   const allKeyPoints = useMemo(() => getAllKeyPoints(), []);
@@ -102,13 +104,44 @@ function LearnPageContent() {
   }, [allKeyPoints]);
 
   const jumpToKeyPoint = useCallback((keyPointId: string) => {
+    pendingScrollTargetRef.current = keyPointId;
     setExpandedId(keyPointId);
-    if (typeof window === "undefined") return;
-    window.requestAnimationFrame(() => {
-      const element = document.getElementById(`keypoint-${keyPointId}`);
-      element?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
   }, []);
+
+  useEffect(() => {
+    if (expandedId === null) return;
+    if (pendingScrollTargetRef.current !== expandedId) return;
+    if (typeof window === "undefined") return;
+
+    const scrollToTarget = (behavior: ScrollBehavior) => {
+      const element = document.getElementById(`keypoint-${expandedId}`);
+      if (!element) return;
+      element.scrollIntoView({ behavior, block: "start" });
+    };
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        scrollToTarget("smooth");
+      });
+    });
+
+    if (scrollRetryTimerRef.current !== null) {
+      clearTimeout(scrollRetryTimerRef.current);
+    }
+
+    scrollRetryTimerRef.current = setTimeout(() => {
+      scrollToTarget("smooth");
+      pendingScrollTargetRef.current = null;
+      scrollRetryTimerRef.current = null;
+    }, 260);
+
+    return () => {
+      if (scrollRetryTimerRef.current !== null) {
+        clearTimeout(scrollRetryTimerRef.current);
+        scrollRetryTimerRef.current = null;
+      }
+    };
+  }, [expandedId]);
 
   return (
     <div className="pb-28">
@@ -205,36 +238,88 @@ function RecommendedKeyPointsPanel({
     <section className="panel p-4">
       <div className="border-b border-slate-200 pb-3">
         <h2 className="text-base font-semibold tracking-wide text-slate-700">
-          おすすめ要点
+          今見るべき要点
         </h2>
         <p className="mt-1 text-sm text-slate-500">
-          合格力とカテゴリ状況から、今見ると効果が高い要点です。
+          合格力が低い分野や、まだ触れていない分野から優先して見るべき要点です。タップすると該当の要点へ移動します。
         </p>
       </div>
-      <div className="mt-1 divide-y divide-slate-200">
+      <div className="mt-3 space-y-2">
         {recommendations.map((item) => (
           <button
             key={item.keyPoint.id}
             type="button"
             onClick={() => onSelect(item.keyPoint.id)}
-            className="py-4 text-left first:pt-3 last:pb-1"
+            className="group block w-full cursor-pointer rounded-2xl border border-slate-200/90 bg-white px-3 py-3 text-left transition-all hover:border-teal-200 hover:bg-teal-50/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/25"
           >
-            <div className="flex items-start justify-between gap-3">
-              <span className="inline-flex whitespace-nowrap rounded bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
-                {CATEGORY_LABELS[item.keyPoint.category]}
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <span className="inline-flex whitespace-nowrap rounded bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                  {CATEGORY_LABELS[item.keyPoint.category]}
+                </span>
+                <p className="mt-2 text-sm font-semibold text-slate-900">
+                  {item.keyPoint.title}
+                </p>
+                <p className="mt-1 text-[12px] leading-relaxed text-slate-500">
+                  {item.reason}
+                </p>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-teal-700">
+                  下の要点へ移動
+                  <ChevronRightIcon className="h-3.5 w-3.5" />
+                </span>
+              </div>
+              <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 shadow-sm transition-all group-hover:border-teal-200 group-hover:bg-teal-50 group-hover:text-teal-700">
+                <ArrowDownIcon className="h-4 w-4" />
               </span>
-              <span className="text-sm font-semibold text-slate-400">→</span>
             </div>
-            <p className="mt-2 text-sm font-semibold text-slate-900">
-              {item.keyPoint.title}
-            </p>
-            <p className="mt-1 text-[12px] leading-relaxed text-slate-500">
-              {item.reason}
-            </p>
           </button>
         ))}
       </div>
     </section>
+  );
+}
+
+function ChevronRightIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M7.5 5.5L12 10L7.5 14.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowDownIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M10 4.75V14.25"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6.5 10.75L10 14.25L13.5 10.75"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 

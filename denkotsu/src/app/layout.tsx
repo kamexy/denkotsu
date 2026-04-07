@@ -182,7 +182,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" data-theme-preference="system" data-theme="light">
+    <html suppressHydrationWarning lang="ja" data-theme-preference="system" data-theme="light">
       <head>
         <script
           id="theme-init"

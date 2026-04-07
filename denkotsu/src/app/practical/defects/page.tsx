@@ -171,7 +171,7 @@ export default function PracticalDefectsPage() {
             </Link>
           </div>
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            欠陥判定クイズに出てくる典型例は、個別ページでも静的に確認できます。
+            欠陥判定クイズに出てくる典型例は、個別ページでもまとめて確認できます。
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {questions.slice(0, 8).map((question) => (

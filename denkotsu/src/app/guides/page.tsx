@@ -7,7 +7,7 @@ import { SITE_DESCRIPTION, SITE_TITLE, getAbsoluteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   title: "学習ガイド",
   description:
-    "第二種電気工事士の学科・技能を深く学べる記事型ガイド集。要点、配線図、法規、器具、技能試験の考え方を静的ページで整理しています。",
+    "第二種電気工事士の学科・技能を深く学べる記事型ガイド集。要点、配線図、法規、器具、技能試験の考え方を読み物として整理しています。",
   alternates: {
     canonical: getAbsoluteUrl("/guides"),
   },
@@ -45,9 +45,9 @@ export default function GuidesIndexPage() {
           </h2>
         </div>
         <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-          <li>学科と技能をつなぐ記事を、静的なURLで読めます。</li>
+          <li>学科と技能をつなぐガイド記事をまとめて読めます。</li>
           <li>要点、実技、欠陥判定、図鑑の各機能へすぐ移動できます。</li>
-          <li>AdSense 審査で評価されやすい、読めるコンテンツ層を用意しています。</li>
+          <li>試験の全体像や失点しやすいポイントを、順番に整理して確認できます。</li>
         </ul>
       </section>
 
@@ -98,7 +98,7 @@ export default function GuidesIndexPage() {
 
       <section className="mt-3 panel p-4">
         <p className="text-sm leading-relaxed text-slate-600">
-          このガイド集は、ホームのクイズや要点ページだけでは伝わりにくい背景を補うために置いています。
+          このガイド集は、ホームのクイズや要点だけでは拾いにくい背景知識や考え方を補うために用意しています。
           {SITE_TITLE}
           の中で、学科と技能の関係を一段深く確認したいときに使ってください。
         </p>

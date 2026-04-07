@@ -226,9 +226,9 @@ export default function HomePage() {
             />
             <ContentRow
               href="/key-points"
-              label="公開要点ページ"
+              label="要点一覧"
               title="1テーマずつ読み返せる"
-              body="要点を個別URLで公開しているため、検索・再訪・共有がしやすい構成です。"
+              body="1テーマずつ開けるので、復習したい要点をあとから探しやすくしています。"
             />
           </div>
         </section>
@@ -243,7 +243,7 @@ export default function HomePage() {
                 まず読むべきガイド
               </h2>
               <p className="mt-1 text-sm text-slate-500">
-                アプリの使い方だけでなく、試験の全体像や失点パターンまで静的ページで読めます。
+                アプリの使い方だけでなく、試験の全体像や失点しやすいポイントまで記事で確認できます。
               </p>
             </div>
             <Link href="/guides" className="text-sm font-semibold text-teal-700 hover:text-teal-800">
