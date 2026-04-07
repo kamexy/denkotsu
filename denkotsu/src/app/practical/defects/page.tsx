@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getPracticalDefectQuestions } from "@/lib/practical";
 
 export default function PracticalDefectsPage() {
@@ -158,7 +159,35 @@ export default function PracticalDefectsPage() {
             次の問題へ
           </button>
         </section>
+
+        <section className="panel p-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-base font-semibold text-slate-700">公開欠陥ガイド</h2>
+            <Link
+              href="/guides/skill-exam-common-failures"
+              className="text-sm font-semibold text-teal-700 hover:text-teal-800"
+            >
+              解説記事へ
+            </Link>
+          </div>
+          <p className="mt-2 text-sm leading-6 text-slate-500">
+            欠陥判定クイズに出てくる典型例は、個別ページでも静的に確認できます。
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {questions.slice(0, 8).map((question) => (
+              <Link
+                key={question.id}
+                href={`/practical/defects/${question.id}`}
+                className="rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-white"
+              >
+                {question.hasDefect ? "欠陥例" : "合格例"}: {question.title}
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

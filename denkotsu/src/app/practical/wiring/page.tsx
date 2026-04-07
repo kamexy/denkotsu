@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getPracticalWiringProblems } from "@/lib/practical";
 import {
   readCandidateCompletedIds,
@@ -58,6 +59,9 @@ export default function PracticalWiringPage() {
       <main className="px-4 pt-3 space-y-3">
         <section className="panel p-4">
           <p className="text-sm font-semibold text-slate-700">問題を選択</p>
+          <p className="mt-1 text-sm leading-6 text-slate-500">
+            各候補問題は個別ページでも確認できます。手順の考え方だけ読み返したいときは詳細ページを使ってください。
+          </p>
           <div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-7">
             {problems.map((problem) => {
               const active = selectedId === problem.id;
@@ -82,6 +86,17 @@ export default function PracticalWiringPage() {
                 </button>
               );
             })}
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {problems.slice(0, 6).map((problem) => (
+              <Link
+                key={`detail-${problem.id}`}
+                href={`/practical/wiring/${problem.id}`}
+                className="rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-white"
+              >
+                No.{problem.id} 詳細
+              </Link>
+            ))}
           </div>
         </section>
 
@@ -151,6 +166,8 @@ export default function PracticalWiringPage() {
           </div>
         </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

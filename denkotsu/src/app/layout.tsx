@@ -11,6 +11,7 @@ import {
   isAdsenseScriptEnabled,
 } from "@/lib/ads";
 import { getGaMeasurementId, getGaWarnings, isGaEnabled } from "@/lib/analytics";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site";
 import { getMonetizationTelemetryWarnings } from "@/lib/telemetry";
 
 const syncApiBase = (process.env.NEXT_PUBLIC_SYNC_API_BASE ?? "").trim();
@@ -131,14 +132,38 @@ const themeInitScript = `(() => {
 })();`;
 
 export const metadata: Metadata = {
-  title: "デンコツ - 第二種電気工事士",
-  description:
-    "スキマ時間で合格！第二種電気工事士 学習アプリ。1問10秒のクイズで、いつの間にか合格力アップ。",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "デンコツ",
+    title: SITE_NAME,
   },
 };
 

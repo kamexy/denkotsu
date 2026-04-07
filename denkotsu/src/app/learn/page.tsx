@@ -203,30 +203,33 @@ function RecommendedKeyPointsPanel({
 }) {
   return (
     <section className="panel p-4">
-      <h2 className="text-base font-semibold text-slate-700 tracking-wide">
-        おすすめ要点
-      </h2>
-      <p className="text-sm text-slate-500 mt-1">
-        合格力とカテゴリ状況から、今見ると効果が高い要点です。
-      </p>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+      <div className="border-b border-slate-200 pb-3">
+        <h2 className="text-base font-semibold tracking-wide text-slate-700">
+          おすすめ要点
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">
+          合格力とカテゴリ状況から、今見ると効果が高い要点です。
+        </p>
+      </div>
+      <div className="mt-1 divide-y divide-slate-200">
         {recommendations.map((item) => (
           <button
             key={item.keyPoint.id}
             type="button"
             onClick={() => onSelect(item.keyPoint.id)}
-            className="rounded-xl border border-slate-200 bg-white/85 p-3 text-left transition-colors hover:bg-white"
+            className="py-4 text-left first:pt-3 last:pb-1"
           >
-            <div>
+            <div className="flex items-start justify-between gap-3">
               <span className="inline-flex whitespace-nowrap rounded bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
                 {CATEGORY_LABELS[item.keyPoint.category]}
               </span>
+              <span className="text-sm font-semibold text-slate-400">→</span>
             </div>
-            <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
-              {item.reason}
-            </p>
             <p className="mt-2 text-sm font-semibold text-slate-900">
               {item.keyPoint.title}
+            </p>
+            <p className="mt-1 text-[12px] leading-relaxed text-slate-500">
+              {item.reason}
             </p>
           </button>
         ))}

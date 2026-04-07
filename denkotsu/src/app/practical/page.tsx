@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getPracticalWiringProblems } from "@/lib/practical";
 import {
   readCandidateCompletedIds,
@@ -106,7 +107,65 @@ export default function PracticalPage() {
             })}
           </div>
         </section>
+
+        <section className="panel p-4">
+          <h2 className="text-base font-semibold text-slate-700">技能試験対策の進め方</h2>
+          <div className="mt-3 grid gap-2">
+            <article className="rounded-xl border border-slate-200 bg-white/85 p-3">
+              <p className="text-sm font-semibold text-slate-800">1. 候補問題の単線図を読む</p>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                まずは器具配置とケーブル本数を見て、白線と色線をどこで分けるかを決めます。
+              </p>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white/85 p-3">
+              <p className="text-sm font-semibold text-slate-800">2. 複線図の手順を固定する</p>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                候補問題ごとに手順を固定し、迷わず組める状態にします。
+              </p>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white/85 p-3">
+              <p className="text-sm font-semibold text-slate-800">3. 欠陥判定で見直し力を付ける</p>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                完成後の極性、差込量、圧着サイズ、接続漏れを見抜けるようにします。
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section className="panel p-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-base font-semibold text-slate-700">公開ガイド</h2>
+            <Link
+              href="/guides"
+              className="text-sm font-semibold text-teal-700 hover:text-teal-800"
+            >
+              ガイド一覧へ
+            </Link>
+          </div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            <Link
+              href="/guides/skill-exam-study-plan"
+              className="rounded-xl border border-slate-200 bg-white/85 p-3 transition-colors hover:bg-white"
+            >
+              <p className="text-sm font-semibold text-slate-800">技能試験の勉強法</p>
+              <p className="mt-1 text-xs leading-6 text-slate-500">
+                候補問題、複線図、40分配分をどう組み合わせるかを整理した記事です。
+              </p>
+            </Link>
+            <Link
+              href="/guides/skill-exam-common-failures"
+              className="rounded-xl border border-slate-200 bg-white/85 p-3 transition-colors hover:bg-white"
+            >
+              <p className="text-sm font-semibold text-slate-800">欠陥判定で落ちる典型例</p>
+              <p className="mt-1 text-xs leading-6 text-slate-500">
+                欠陥ありになりやすいパターンと、見直し時のチェック順をまとめています。
+              </p>
+            </Link>
+          </div>
+        </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

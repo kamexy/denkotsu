@@ -17,7 +17,7 @@ export function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-[calc(env(safe-area-inset-bottom)+10px)]">
-      <div className="mx-auto max-w-[480px] panel px-1 py-1.5">
+      <div className="mx-auto max-w-[480px] rounded-2xl border border-slate-200 bg-[var(--surface)] px-1 py-1.5 shadow-[0_10px_24px_rgba(15,23,42,0.08)]">
         <div className="flex">
           {tabs.map((tab) => {
             const active =
@@ -30,7 +30,7 @@ export function BottomNav() {
                 className={`flex-1 flex flex-col items-center rounded-xl py-2.5 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 ${
                   active
                     ? "bg-teal-700 text-white shadow-sm"
-                    : "text-slate-500 hover:bg-white/70"
+                    : "text-slate-500 hover:bg-slate-50"
                 }`}
               >
                 <TabIcon name={tab.icon} active={active} />

@@ -6,27 +6,23 @@
   --font-display: "DIN Alternate", "Avenir Next", "Helvetica Neue",
     "Hiragino Sans", sans-serif;
 
-  --bg-1: #f2f6fb;
-  --bg-2: #e7eef7;
-  --surface: rgba(255, 255, 255, 0.84);
+  --bg-1: #f4f6f1;
+  --bg-2: #e9eee7;
+  --surface: rgba(255, 255, 255, 0.96);
   --surface-strong: #ffffff;
-  --ink: #112240;
-  --muted: #4e5d78;
-  --line: #cfdae8;
-  --panel-border: rgba(207, 218, 232, 0.9);
-  --panel-border-strong: rgba(204, 216, 233, 0.95);
-  --panel-shadow: 0 10px 30px rgba(23, 42, 79, 0.06);
-  --panel-shadow-strong: 0 6px 20px rgba(23, 42, 79, 0.06);
-  --panel-inset: rgba(255, 255, 255, 0.9);
+  --ink: #162236;
+  --muted: #5b6980;
+  --line: #d6ddd4;
+  --panel-border: rgba(206, 216, 203, 0.96);
+  --panel-border-strong: rgba(197, 209, 193, 0.96);
+  --panel-shadow: 0 10px 24px rgba(26, 39, 28, 0.04);
+  --panel-shadow-strong: 0 6px 18px rgba(26, 39, 28, 0.035);
+  --panel-inset: rgba(255, 255, 255, 0.92);
 
-  --frame-glass-a: rgba(255, 255, 255, 0.7);
-  --frame-glass-b: rgba(255, 255, 255, 0.45);
-  --frame-grad-a: #eef4fb;
-  --frame-grad-b: #f5f9ff;
-  --bg-halo-teal: rgba(15, 118, 110, 0.16);
-  --bg-halo-amber: rgba(245, 158, 11, 0.14);
-  --frame-halo-teal: rgba(15, 118, 110, 0.22);
-  --frame-halo-amber: rgba(245, 158, 11, 0.18);
+  --frame-grad-a: #edf2ea;
+  --frame-grad-b: #f7f8f4;
+  --frame-band-a: rgba(15, 118, 110, 0.06);
+  --frame-band-b: rgba(245, 158, 11, 0.05);
   --diagram-surface: #f8fbff;
   --diagram-border: #cfdae8;
 
@@ -40,27 +36,23 @@
 }
 
 :root[data-theme="dark"] {
-  --bg-1: #0b1624;
-  --bg-2: #121f32;
-  --surface: rgba(20, 32, 48, 0.84);
-  --surface-strong: #1b2b43;
-  --ink: #e7eef9;
-  --muted: #9aacc8;
-  --line: #324762;
-  --panel-border: rgba(59, 79, 109, 0.9);
-  --panel-border-strong: rgba(66, 89, 122, 0.95);
-  --panel-shadow: 0 14px 32px rgba(0, 0, 0, 0.36);
-  --panel-shadow-strong: 0 10px 24px rgba(0, 0, 0, 0.3);
+  --bg-1: #101821;
+  --bg-2: #18232d;
+  --surface: rgba(23, 34, 45, 0.96);
+  --surface-strong: #1f2d3a;
+  --ink: #e7edf6;
+  --muted: #a2b1c7;
+  --line: #2f4355;
+  --panel-border: rgba(67, 88, 109, 0.9);
+  --panel-border-strong: rgba(72, 95, 118, 0.95);
+  --panel-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+  --panel-shadow-strong: 0 10px 24px rgba(0, 0, 0, 0.18);
   --panel-inset: rgba(255, 255, 255, 0.05);
 
-  --frame-glass-a: rgba(20, 32, 48, 0.78);
-  --frame-glass-b: rgba(12, 22, 36, 0.7);
-  --frame-grad-a: #0f1c2e;
-  --frame-grad-b: #15243a;
-  --bg-halo-teal: rgba(45, 212, 191, 0.2);
-  --bg-halo-amber: rgba(251, 191, 36, 0.18);
-  --frame-halo-teal: rgba(45, 212, 191, 0.26);
-  --frame-halo-amber: rgba(251, 191, 36, 0.24);
+  --frame-grad-a: #13202c;
+  --frame-grad-b: #182632;
+  --frame-band-a: rgba(45, 212, 191, 0.08);
+  --frame-band-b: rgba(251, 191, 36, 0.06);
   --diagram-surface: #ffffff;
   --diagram-border: #9eb3cd;
 
@@ -83,10 +75,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--ink);
-  background:
-    radial-gradient(circle at 8% 12%, var(--bg-halo-teal), transparent 30%),
-    radial-gradient(circle at 88% 0%, var(--bg-halo-amber), transparent 36%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
   padding-top: env(safe-area-inset-top);
   min-height: 100dvh;
   transition:
@@ -118,8 +107,7 @@ a,
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(158deg, var(--frame-glass-a), var(--frame-glass-b)),
-    linear-gradient(0deg, var(--frame-grad-b), var(--frame-grad-a));
+    linear-gradient(180deg, var(--frame-grad-a), var(--frame-grad-b));
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
   transition:
@@ -131,43 +119,30 @@ a,
 .app-frame::before {
   content: "";
   position: absolute;
-  top: -120px;
-  right: -70px;
-  width: 240px;
-  height: 240px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle at 40% 40%,
-    var(--frame-halo-teal),
-    rgba(15, 118, 110, 0)
-  );
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 220px;
+  background:
+    linear-gradient(140deg, var(--frame-band-a), transparent 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
   pointer-events: none;
 }
 
 .app-frame::after {
   content: "";
   position: absolute;
-  bottom: -140px;
-  left: -110px;
-  width: 280px;
-  height: 280px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle at 55% 45%,
-    var(--frame-halo-amber),
-    rgba(245, 158, 11, 0)
-  );
+  inset: auto 0 0 auto;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(320deg, var(--frame-band-b), transparent 40%);
   pointer-events: none;
 }
 
 .panel {
   background: var(--surface);
   border: 1px solid var(--panel-border);
-  border-radius: 18px;
-  box-shadow:
-    var(--panel-shadow),
-    inset 0 1px 0 var(--panel-inset);
-  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: var(--panel-shadow);
   transition:
     background-color 0.24s ease,
     border-color 0.24s ease,
@@ -178,7 +153,7 @@ a,
 .panel-strong {
   background: var(--surface-strong);
   border: 1px solid var(--panel-border-strong);
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow: var(--panel-shadow-strong);
   transition:
     background-color 0.24s ease,
