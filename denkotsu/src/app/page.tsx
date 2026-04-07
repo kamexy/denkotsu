@@ -303,7 +303,7 @@ export default function HomePage() {
               今日の1問
             </h2>
             <p className="mt-1 text-sm leading-6 text-slate-500">
-              ここからは従来どおり、開いた瞬間に学習を始められるクイズエリアです。継続率を落とさないため、説明ページの下にそのまま埋め込んでいます。
+              1問ずつ気軽に取り組める確認クイズです。スキマ時間に解いて、学科と技能の理解度チェックに使えます。
             </p>
           </div>
           <HomeQuizClient />
